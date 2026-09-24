@@ -1,0 +1,91 @@
+﻿USER STORIES — SISTEMA DE GERENCIAMENTO DE OFICINA MECÂNICA
+
+
+
+User Story 1 — Cadastro de clientes e veículos
+
+
+Descrição: 
+* Como atendente da oficina, quero cadastrar clientes e seus veículos, para manter os dados dos clientes e dos veículos organizados no sistema.
+
+
+Critérios de aceitação: 
+* Cadastrar nome, telefone e e-mail do cliente.
+* Cadastrar marca, modelo, ano e placa do veículo.
+* Associar um ou mais veículos a um cliente.  
+* Consultar os dados de um cliente e seus veículos cadastrados.
+
+
+User Story 2 — Agendamento de serviços
+
+
+Descrição: 
+* Como cliente, quero agendar um serviço para meu veículo, para garantir um horário de atendimento na oficina.
+
+
+Critérios de aceitação:  
+* Selecionar o veículo que receberá o serviço. 
+* Selecionar o serviço desejado. 
+* Escolher uma data e um horário disponíveis. 
+* Confirmar ou cancelar o agendamento. 
+* Não Permitir dois agendamentos para o mesmo horário.
+
+
+User Story 3 — Criação de ordem de serviço
+
+
+Descrição: 
+* Como atendente da oficina, quero criar uma ordem de serviço para um veículo, para registrar os serviços que serão realizados e acompanhar o atendimento.
+
+
+Critérios de aceitação:  
+* Associar a ordem de serviço a um cliente e seu veículo. 
+* Registrar o diagnóstico ou problema relatado.
+* Adicionar um ou mais serviços à ordem.
+* Associar um mecânico responsável. 
+* Registrar o status da ordem de serviço.
+
+
+User Story 4 — Execução e atualização do serviço
+
+
+Descrição: 
+* Como mecânico, quero consultar e atualizar as ordens de serviço atribuídas a mim, para registrar o andamento dos serviços realizados nos veículos.
+
+
+Critérios de aceitação: 
+* Permitir ao mecânico visualizar suas ordens de serviço. 
+* Registrar o diagnóstico do veículo. 
+* Registrar os serviços realizados. 
+* Atualizar o status da ordem de serviço. 
+* Finalizar uma ordem de serviço após a conclusão do trabalho.
+
+
+User Story 5 — Controle de peças e estoque
+
+
+Descrição: 
+* Como responsável pelo estoque, quero controlar a entrada e saída de peças, para manter a quantidade disponível de cada peça atualizada.
+
+
+Critérios de aceitação: 
+* Cadastrar peças com código, descrição e preço. 
+* Registrar a entrada de peças no estoque. 
+* Registrar a saída de peças do estoque. 
+* Atualizar automaticamente a quantidade disponível. 
+* Informar quando uma peça não estiver disponível em quantidade suficiente.
+
+
+User Story 6 — Consulta do histórico do veículo
+
+
+Descrição: 
+* Como gerente da oficina, quero consultar o histórico de serviços de um veículo, para acompanhar as manutenções já realizadas.
+
+
+Critérios de aceitação: 
+* Localizar um veículo pela placa. 
+* Apresentar as ordens de serviço associadas ao veículo.
+* Apresentar os serviços realizados em cada ordem. 
+* Apresentar as datas dos serviços realizados. 
+* Apresentar o valor total das ordens de serviço concluídas.
