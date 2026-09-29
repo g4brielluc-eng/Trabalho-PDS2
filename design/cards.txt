@@ -1,0 +1,150 @@
+[
+  {
+    "name": "Cliente",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Cadastrar dados pessoais do cliente",
+      "Atualizar dados de contato",
+      "Consultar veículos associados",
+      "Associar um veículo ao cliente",
+      "Consultar histórico de serviços",
+      "Solicitar agendamento de serviço",
+      "Consultar ordens de serviço"
+    ],
+    "collaborators": [
+      "Veiculo",
+      "OrdemDeServico",
+      "Agendamento"
+    ]
+  },
+  {
+    "name": "Veiculo",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Armazenar dados do veículo",
+      "Associar o veículo a um cliente",
+      "Atualizar informações do veículo",
+      "Consultar histórico de manutenções",
+      "Registrar quilometragem",
+      "Identificar serviços realizados",
+      "Consultar ordens de serviço relacionadas"
+    ],
+    "collaborators": [
+      "Cliente",
+      "OrdemDeServico"
+    ]
+  },
+  {
+    "name": "OrdemDeServico",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Criar uma ordem de serviço",
+      "Associar a ordem a um veículo",
+      "Registrar os serviços solicitados",
+      "Associar peças utilizadas",
+      "Alterar o status da ordem",
+      "Registrar diagnóstico do veículo",
+      "Calcular o valor total do serviço",
+      "Registrar data de entrada e saída",
+      "Associar um mecânico responsável",
+      "Finalizar a ordem de serviço"
+    ],
+    "collaborators": [
+      "Veiculo",
+      "Servico",
+      "Peca",
+      "Mecanico"
+    ]
+  },
+  {
+    "name": "Mecanico",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Cadastrar dados do mecânico",
+      "Registrar especialidade",
+      "Consultar ordens de serviço atribuídas",
+      "Assumir uma ordem de serviço",
+      "Registrar diagnóstico",
+      "Registrar serviços realizados",
+      "Atualizar o andamento do serviço",
+      "Finalizar os serviços executados"
+    ],
+    "collaborators": [
+      "OrdemDeServico",
+      "Servico"
+    ]
+  },
+  {
+    "name": "Servico",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Cadastrar um tipo de serviço",
+      "Armazenar descrição do serviço",
+      "Definir preço do serviço",
+      "Atualizar preço",
+      "Consultar informações do serviço",
+      "Registrar duração estimada",
+      "Associar o serviço a uma ordem de serviço",
+      "Calcular o custo do serviço"
+    ],
+    "collaborators": [
+      "OrdemDeServico",
+      "Mecanico"
+    ]
+  },
+  {
+    "name": "Peca",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Cadastrar uma peça",
+      "Armazenar código da peça",
+      "Armazenar descrição da peça",
+      "Registrar preço",
+      "Controlar quantidade em estoque",
+      "Atualizar quantidade em estoque",
+      "Registrar entrada de peças",
+      "Registrar saída de peças",
+      "Verificar disponibilidade da peça",
+      "Associar uma peça a uma ordem de serviço"
+    ],
+    "collaborators": [
+      "OrdemDeServico",
+      "Fornecedor"
+    ]
+  },
+  {
+    "name": "Agendamento",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Registrar agendamento",
+      "Definir data e horário",
+      "Associar cliente",
+      "Associar veículo",
+      "Definir serviço solicitado",
+      "Alterar data do agendamento",
+      "Cancelar agendamento",
+      "Confirmar agendamento",
+      "Consultar agendamentos",
+      "Verificar disponibilidade de horário"
+    ],
+    "collaborators": [
+      "Cliente",
+      "Veiculo",
+      "Servico"
+    ]
+  }
+]
