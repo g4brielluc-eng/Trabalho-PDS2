@@ -47,7 +47,6 @@ public:
 
     /**
      * @brief Construtor da classe Agendamento.
-     *
      * @param data Data do agendamento.
      * @param horario Horário do agendamento.
      */
@@ -61,7 +60,6 @@ public:
 
     /**
      * @brief Define a data e o horário do agendamento.
-     *
      * @param data Data do agendamento.
      * @param horario Horário do agendamento.
      */
@@ -70,28 +68,24 @@ public:
 
     /**
      * @brief Associa um cliente ao agendamento.
-     *
      * @param cliente Cliente responsável pelo agendamento.
      */
     void associarCliente(Cliente* cliente);
 
     /**
      * @brief Associa um veículo ao agendamento.
-     *
      * @param veiculo Veículo que receberá o serviço.
      */
     void associarVeiculo(Veiculo* veiculo);
 
     /**
      * @brief Define o serviço solicitado no agendamento.
-     *
      * @param servico Serviço solicitado pelo cliente.
      */
     void definirServico(Servico* servico);
 
     /**
      * @brief Altera a data e o horário do agendamento.
-     *
      * @param novaData Nova data do agendamento.
      * @param novoHorario Novo horário do agendamento.
      */
@@ -110,14 +104,12 @@ public:
 
     /**
      * @brief Consulta os agendamentos registrados no sistema.
-     *
      * @return Lista de agendamentos registrados.
      */
     static const std::vector<Agendamento*>& consultarAgendamentos();
 
     /**
      * @brief Verifica se uma data e horário estão disponíveis.
-     *
      * @param data Data que será verificada.
      * @param horario Horário que será verificado.
      * @return true se o horário estiver disponível,
@@ -128,42 +120,36 @@ public:
 
     /**
      * @brief Retorna a data do agendamento.
-     *
      * @return Data do agendamento.
      */
     const std::string& getData() const;
 
     /**
      * @brief Retorna o horário do agendamento.
-     *
      * @return Horário do agendamento.
      */
     const std::string& getHorario() const;
 
     /**
      * @brief Retorna o cliente associado ao agendamento.
-     *
      * @return Ponteiro para o cliente associado.
      */
     Cliente* getCliente() const;
 
     /**
      * @brief Retorna o veículo associado ao agendamento.
-     *
      * @return Ponteiro para o veículo associado.
      */
     Veiculo* getVeiculo() const;
 
     /**
      * @brief Retorna o serviço solicitado.
-     *
      * @return Ponteiro para o serviço associado.
      */
     Servico* getServico() const;
 
     /**
      * @brief Retorna o status atual do agendamento.
-     *
      * @return Status atual do agendamento.
      */
     Status getStatus() const;
