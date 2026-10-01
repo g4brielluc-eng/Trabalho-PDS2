@@ -2,7 +2,7 @@
 #define STATUS_ORDEM_HPP
 
 /**
- * @brief Status possiveis de uma ordem de servico.
+ * @brief Status possíveis de uma ordem de serviço.
  *
  * Fluxo esperado:
  * @code
@@ -11,12 +11,12 @@
  * @endcode
  */
 enum class StatusOrdem {
-    ABERTA,               ///< Ordem criada, ainda sem diagnostico.
-    EM_DIAGNOSTICO,       ///< Mecanico avaliando o veiculo.
-    EM_EXECUCAO,          ///< Servicos em andamento.
-    AGUARDANDO_PECA,      ///< Execucao parada esperando peca necessaria.
-    AGUARDANDO_RETIRADA,  ///< Servico concluido; veiculo ainda na oficina.
-    FINALIZADA            ///< Veiculo entregue ao cliente (so via OrdemDeServico::finalizar).
+    ABERTA,               ///< Ordem criada, ainda sem diagnóstico.
+    EM_DIAGNOSTICO,       ///< Mecânico avaliando o veículo.
+    EM_EXECUCAO,          ///< Serviços em andamento.
+    AGUARDANDO_PECA,      ///< Execuçao parada esperando peça necessária.
+    AGUARDANDO_RETIRADA,  ///< Serviço concluido; veículo ainda na oficina.
+    FINALIZADA            ///< Veículo entregue ao cliente (so via OrdemDeServico::finalizar).
 };
 
 #endif
