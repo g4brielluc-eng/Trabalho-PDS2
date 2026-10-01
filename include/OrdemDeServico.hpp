@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include "status_ordem.hpp"
 
 class Veiculo;
 class Servico;
@@ -21,6 +22,8 @@ class Mecanico;
  * à execução de um serviço, incluindo o veículo, os serviços
  * solicitados, as peças utilizadas, o mecânico responsável,
  * o diagnóstico e o status da ordem.
+ *
+ * A ordem é criada com o status ABERTA.
  */
 class OrdemDeServico {
 private:
@@ -29,7 +32,7 @@ private:
     std::string diagnostico;
 
     /// Status atual da ordem de serviço.
-    std::string status;
+    StatusOrdem status;
 
     /// Data de entrada do veículo na oficina.
     std::string dataEntrada;
@@ -79,9 +82,14 @@ public:
 
     /**
      * @brief Altera o status da ordem de serviço.
-     * @param status Novo status da ordem.
+     *
+     * Não é possível definir o status FINALIZADA por este método;
+     * a finalização (entrega do veículo) é feita por finalizar().
+     *
+     * @param novoStatus Novo status da ordem.
+     * @throws std::invalid_argument se novoStatus for FINALIZADA.
      */
-    void alterarStatus(const std::string& status);
+    void alterarStatus(StatusOrdem novoStatus);
 
     /**
      * @brief Registra o diagnóstico do veículo.
@@ -102,21 +110,20 @@ public:
     void definirDataEntrada(const std::string& data);
 
     /**
-     * @brief Define a data de saída do veículo.
-     * @param data Data de saída.
-     */
-    void definirDataSaida(const std::string& data);
-
-    /**
      * @brief Associa um mecânico responsável à ordem de serviço.
      * @param mecanico Mecânico responsável.
      */
     void associarMecanico(Mecanico* mecanico);
 
     /**
-     * @brief Finaliza a ordem de serviço.
+     * @brief Finaliza a ordem quando o veículo é entregue ao cliente.
+     *
+     * Altera o status para FINALIZADA e registra a data de saída.
+     *
+     * @param dataSaida Data de entrega do veículo.
+     * @throws std::logic_error se o status atual não for AGUARDANDO_RETIRADA.
      */
-    void finalizar();
+    void finalizar(const std::string& dataSaida);
 
 };
 
