@@ -6,12 +6,8 @@
 #include <vector>
 
 Cliente::Cliente(std::string nome, std::string cpf, std::string contato, std::string endereco)
-    : nome(nome) 
-{
-    this->cpf = cpf;    
-    this->contato = contato;
-    this->endereco = endereco;
-}
+    : nome(nome), cpf(cpf), contato(contato), endereco(endereco){}
+
 
 void Cliente::setContato(std::string contato){
     this->contato = contato;
