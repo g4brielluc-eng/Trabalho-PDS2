@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "status_ordem.hpp"
+#include "Status_Ordem.hpp"
 
 class OrdemDeServico;
 class Servico;
@@ -58,7 +58,7 @@ public:
 
     /**
      * @brief Registra o diagnóstico em uma ordem atribuída ao mecânico.
-     * @param ordem Ordem atribuída ao mecânico.
+     * @param ordem Ordem atribuída ao mecânico. 
      * @param diagnostico Problema encontrado no veículo.
      */
     void registrarDiagnostico(OrdemDeServico* ordem, const std::string& diagnostico);
