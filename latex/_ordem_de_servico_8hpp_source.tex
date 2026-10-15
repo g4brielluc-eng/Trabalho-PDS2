@@ -1,0 +1,65 @@
+\doxysection{Ordem\+De\+Servico.\+hpp}
+\hypertarget{_ordem_de_servico_8hpp_source}{}\label{_ordem_de_servico_8hpp_source}\index{include/OrdemDeServico.hpp@{include/OrdemDeServico.hpp}}
+\doxymbox{\hyperlink{_ordem_de_servico_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#ifndef\ ORDEM\_DE\_SERVICO\_HPP}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ ORDEM\_DE\_SERVICO\_HPP}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_status___ordem_8hpp}{status\_ordem.hpp}}"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_veiculo}{Veiculo}};}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_servico}{Servico}};}
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_peca}{Peca}};}
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_mecanico}{Mecanico}};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_ordem_de_servico_a0d98138a8c630fee0f67b633aa719f90}{OrdemDeServico}}\ \{}
+\DoxyCodeLine{00029\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00032\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_ordem_de_servico_a87f886e9a8f24b2d40f6cef2cf776e40}{diagnostico}};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00035\ \ \ \ \ \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430}{StatusOrdem}}\ \doxymbox{\hyperlink{class_ordem_de_servico_ab7d9948cfa5635704ad3a4116d42cad8}{status}};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_ordem_de_servico_a09f3c7c6d82f4dd1d38fa1f5970ad23d}{dataEntrada}};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00041\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_ordem_de_servico_af45dd47e3aca2264155c881ad21588e6}{dataSaida}};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00044\ \ \ \ \ \doxymbox{\hyperlink{class_veiculo}{Veiculo}}*\ \doxymbox{\hyperlink{class_ordem_de_servico_a36f791f32f1110c198ba832f9bb87fe5}{veiculo}};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00047\ \ \ \ \ \doxymbox{\hyperlink{class_mecanico}{Mecanico}}*\ \doxymbox{\hyperlink{class_ordem_de_servico_a31fe8bdf72c7a4fad3d7b667ff318c48}{mecanico}};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00050\ \ \ \ \ std::vector<Servico*>\ \doxymbox{\hyperlink{class_ordem_de_servico_a6e0eb1e548f6f3def260b7cc94aba0c9}{servicos}};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00053\ \ \ \ \ std::vector<Peca*>\ \doxymbox{\hyperlink{class_ordem_de_servico_a5e83f3eaab9dc1e967695b30f154ceb5}{pecas}};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00062\ \ \ \ \ \doxymbox{\hyperlink{class_ordem_de_servico_a0d98138a8c630fee0f67b633aa719f90}{OrdemDeServico}}(\doxymbox{\hyperlink{class_veiculo}{Veiculo}}*\ \doxymbox{\hyperlink{class_ordem_de_servico_a36f791f32f1110c198ba832f9bb87fe5}{veiculo}},}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_ordem_de_servico_a09f3c7c6d82f4dd1d38fa1f5970ad23d}{dataEntrada}});}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_ordem_de_servico_ad84c11a6251ed6c5171b5196637e837a}{associarVeiculo}}(\doxymbox{\hyperlink{class_veiculo}{Veiculo}}*\ \doxymbox{\hyperlink{class_ordem_de_servico_a36f791f32f1110c198ba832f9bb87fe5}{veiculo}});}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_ordem_de_servico_acbcc19c269102405c39d4dc580f0e388}{adicionarServico}}(\doxymbox{\hyperlink{class_servico}{Servico}}*\ servico);}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_ordem_de_servico_a11ce3f4530c047d1c20e0bf336b96e17}{adicionarPeca}}(\doxymbox{\hyperlink{class_peca}{Peca}}*\ peca);}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_ordem_de_servico_a2cc0981e1df2bee3d1582d4ed9d476c3}{alterarStatus}}(\doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430}{StatusOrdem}}\ novoStatus);}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_ordem_de_servico_a6be5b874c2b4f159e02b4848ac4a6f08}{registrarDiagnostico}}(\textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_ordem_de_servico_a87f886e9a8f24b2d40f6cef2cf776e40}{diagnostico}});}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_ordem_de_servico_a17ec0d928d5c64025991760db1842766}{calcularValorTotal}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_ordem_de_servico_a4d4bc7e4607b7cb83d0d45725bbcbfe7}{definirDataEntrada}}(\textcolor{keyword}{const}\ std::string\&\ data);}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_ordem_de_servico_a0c668c5c53d4eedfa8e191fe936002a5}{associarMecanico}}(\doxymbox{\hyperlink{class_mecanico}{Mecanico}}*\ \doxymbox{\hyperlink{class_ordem_de_servico_a31fe8bdf72c7a4fad3d7b667ff318c48}{mecanico}});}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_ordem_de_servico_a3d89376aac460a04a9054be735e2d800}{finalizar}}(\textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_ordem_de_servico_af45dd47e3aca2264155c881ad21588e6}{dataSaida}});}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \};}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ ORDEM\_DE\_SERVICO\_HPP}}
+
+\end{DoxyCode}

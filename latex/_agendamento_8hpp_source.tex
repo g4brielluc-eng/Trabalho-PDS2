@@ -1,0 +1,82 @@
+\doxysection{Agendamento.\+hpp}
+\hypertarget{_agendamento_8hpp_source}{}\label{_agendamento_8hpp_source}\index{include/Agendamento.hpp@{include/Agendamento.hpp}}
+\doxymbox{\hyperlink{_agendamento_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ AGENDAMENTO\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ AGENDAMENTO\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_cliente}{Cliente}};}
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_veiculo}{Veiculo}};}
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_servico}{Servico}};}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_agendamento_aa0656da652039724531de26b4a00a3a7}{Agendamento}}\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \doxymbox{\hyperlink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5ba}{Status}}\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ PENDENTE,}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ CONFIRMADO,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ CANCELADO}
+\DoxyCodeLine{00028\ \ \ \ \ \};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00031\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_agendamento_ad66b42b433fb26faedef5b9dcd997531}{data}};}
+\DoxyCodeLine{00032\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_agendamento_ae11c810ad41fa34ccff23c47fedf7d3c}{horario}};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \doxymbox{\hyperlink{class_cliente}{Cliente}}*\ \doxymbox{\hyperlink{class_agendamento_a2c29698137179fb98fbf123f79d4a389}{cliente}};}
+\DoxyCodeLine{00035\ \ \ \ \ \doxymbox{\hyperlink{class_veiculo}{Veiculo}}*\ \doxymbox{\hyperlink{class_agendamento_abf55fb0ed1e886e4ab373ba4b8a56067}{veiculo}};}
+\DoxyCodeLine{00036\ \ \ \ \ \doxymbox{\hyperlink{class_servico}{Servico}}*\ \doxymbox{\hyperlink{class_agendamento_a25d9880954aa71c6572845180ca7cb15}{servico}};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \doxymbox{\hyperlink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5ba}{Status}}\ \doxymbox{\hyperlink{class_agendamento_a22022e0122964a4f5d6a63ee83836a55}{status}};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ \ \ \ \ *\ Armazena\ os\ agendamentos\ registrados\ no\ sistema.}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ \ \ \ \ *\ É\ utilizada\ para\ consulta\ e\ verificação\ de\ disponibilidade.}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{static}\ std::vector<Agendamento*>\ \doxymbox{\hyperlink{class_agendamento_a096292ea4cc2996b5dc20db8a6fe17ae}{agendamentos}};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00053\ \ \ \ \ \doxymbox{\hyperlink{class_agendamento_aa0656da652039724531de26b4a00a3a7}{Agendamento}}(\textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_agendamento_ad66b42b433fb26faedef5b9dcd997531}{data}},}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_agendamento_ae11c810ad41fa34ccff23c47fedf7d3c}{horario}});}
+\DoxyCodeLine{00058\ \ \ \ \ \doxymbox{\hyperlink{class_agendamento_a2aadf9004b46bdbfbb108b9704e3ee47}{\string~Agendamento}}();\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_agendamento_af49fbc246131c8f59e691822eb2414c1}{registrarAgendamento}}();}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_agendamento_a3eca476fc6cb93edc0df873c6c2ffc8b}{associarCliente}}(\doxymbox{\hyperlink{class_cliente}{Cliente}}*\ \doxymbox{\hyperlink{class_agendamento_a2c29698137179fb98fbf123f79d4a389}{cliente}});}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_agendamento_a5afa7ed050f7fc6269ba1995470ace65}{associarVeiculo}}(\doxymbox{\hyperlink{class_veiculo}{Veiculo}}*\ \doxymbox{\hyperlink{class_agendamento_abf55fb0ed1e886e4ab373ba4b8a56067}{veiculo}});}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_agendamento_ab5dad8c1ab0646845466f9b407eebcc0}{definirServico}}(\doxymbox{\hyperlink{class_servico}{Servico}}*\ \doxymbox{\hyperlink{class_agendamento_a25d9880954aa71c6572845180ca7cb15}{servico}});}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_agendamento_af5c484b577b095d302923df7fe8269eb}{alterarDataHorario}}(\textcolor{keyword}{const}\ std::string\&\ novaData,}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ novoHorario);}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_agendamento_ac245d2b54f8cb0a68a8ef17c76c392cb}{cancelar}}();}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_agendamento_ada712d48867ef979e1540b5000ecd75e}{confirmar}}();}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ std::vector<Agendamento*>\&\ \doxymbox{\hyperlink{class_agendamento_ac51296ea7a48967d1f62dbcbe60025aa}{consultarAgendamentos}}();}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_agendamento_a5e1857612d100b3eb5f6bdaa3cb3dc5a}{verificarDisponibilidade}}(\textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_agendamento_ad66b42b433fb26faedef5b9dcd997531}{data}},}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_agendamento_ae11c810ad41fa34ccff23c47fedf7d3c}{horario}});}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_agendamento_ab3229f6a247afd98b7815d899a04d36b}{getData}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_agendamento_a662f6928dbe3e331b7a91bc1e23798cb}{getHorario}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00134\ \ \ \ \ \doxymbox{\hyperlink{class_cliente}{Cliente}}*\ \doxymbox{\hyperlink{class_agendamento_aef695e1e22a58a03a2cc7ec12122021f}{getCliente}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00140\ \ \ \ \ \doxymbox{\hyperlink{class_veiculo}{Veiculo}}*\ \doxymbox{\hyperlink{class_agendamento_a480a8b89e086b969d75bddb71f762aba}{getVeiculo}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00146\ \ \ \ \ \doxymbox{\hyperlink{class_servico}{Servico}}*\ \doxymbox{\hyperlink{class_agendamento_abd51c7498b270a3aacfae766e6a68e25}{getServico}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00152\ \ \ \ \ \doxymbox{\hyperlink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5ba}{Status}}\ \doxymbox{\hyperlink{class_agendamento_a628dfbcdd3b720062643220a67071c4a}{getStatus}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00153\ \};}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ AGENDAMENTO\_H}}
+
+\end{DoxyCode}

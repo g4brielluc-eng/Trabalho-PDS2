@@ -1,0 +1,334 @@
+\doxysection{Ordem\+De\+Servico Class Reference}
+\hypertarget{class_ordem_de_servico}{}\label{class_ordem_de_servico}\index{OrdemDeServico@{OrdemDeServico}}
+
+
+Representa uma ordem de serviço da oficina mecânica.  
+
+
+
+
+{\ttfamily \+\#include $<$Ordem\+De\+Servico.\+hpp$>$}
+
+
+
+Collaboration diagram for Ordem\+De\+Servico:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{class_ordem_de_servico__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_ordem_de_servico_a0d98138a8c630fee0f67b633aa719f90}{Ordem\+De\+Servico}} (\doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*}veiculo, const std::\+string \&data\+Entrada)
+\begin{DoxyCompactList}\small\item\em Construtor da classe \doxylink{class_ordem_de_servico}{Ordem\+De\+Servico}. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_ordem_de_servico_ad84c11a6251ed6c5171b5196637e837a}{associar\+Veiculo}} (\doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*}veiculo)
+\begin{DoxyCompactList}\small\item\em Associa um veículo à ordem de serviço. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_ordem_de_servico_acbcc19c269102405c39d4dc580f0e388}{adicionar\+Servico}} (\doxymbox{\hyperlink{class_servico}{Servico}} \texorpdfstring{$\ast$}{*}servico)
+\begin{DoxyCompactList}\small\item\em Adiciona um serviço à ordem de serviço. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_ordem_de_servico_a11ce3f4530c047d1c20e0bf336b96e17}{adicionar\+Peca}} (\doxymbox{\hyperlink{class_peca}{Peca}} \texorpdfstring{$\ast$}{*}peca)
+\begin{DoxyCompactList}\small\item\em Adiciona uma peça utilizada na ordem de serviço. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_ordem_de_servico_a2cc0981e1df2bee3d1582d4ed9d476c3}{alterar\+Status}} (\doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430}{Status\+Ordem}} novo\+Status)
+\begin{DoxyCompactList}\small\item\em Altera o status da ordem de serviço. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_ordem_de_servico_a6be5b874c2b4f159e02b4848ac4a6f08}{registrar\+Diagnostico}} (const std::\+string \&diagnostico)
+\begin{DoxyCompactList}\small\item\em Registra o diagnóstico do veículo. \end{DoxyCompactList}\item 
+float \doxymbox{\hyperlink{class_ordem_de_servico_a17ec0d928d5c64025991760db1842766}{calcular\+Valor\+Total}} () const
+\begin{DoxyCompactList}\small\item\em Calcula o valor total da ordem de serviço. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_ordem_de_servico_a4d4bc7e4607b7cb83d0d45725bbcbfe7}{definir\+Data\+Entrada}} (const std::\+string \&data)
+\begin{DoxyCompactList}\small\item\em Define a data de entrada do veículo. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_ordem_de_servico_a0c668c5c53d4eedfa8e191fe936002a5}{associar\+Mecanico}} (\doxymbox{\hyperlink{class_mecanico}{Mecanico}} \texorpdfstring{$\ast$}{*}mecanico)
+\begin{DoxyCompactList}\small\item\em Associa um mecânico responsável à ordem de serviço. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_ordem_de_servico_a3d89376aac460a04a9054be735e2d800}{finalizar}} (const std::\+string \&data\+Saida)
+\begin{DoxyCompactList}\small\item\em Finaliza a ordem quando o veículo é entregue ao cliente. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std::\+string \doxymbox{\hyperlink{class_ordem_de_servico_a87f886e9a8f24b2d40f6cef2cf776e40}{diagnostico}}
+\begin{DoxyCompactList}\small\item\em Diagnóstico realizado no veículo. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430}{Status\+Ordem}} \doxymbox{\hyperlink{class_ordem_de_servico_ab7d9948cfa5635704ad3a4116d42cad8}{status}}
+\begin{DoxyCompactList}\small\item\em Status atual da ordem de serviço. \end{DoxyCompactList}\item 
+std::\+string \doxymbox{\hyperlink{class_ordem_de_servico_a09f3c7c6d82f4dd1d38fa1f5970ad23d}{data\+Entrada}}
+\begin{DoxyCompactList}\small\item\em Data de entrada do veículo na oficina. \end{DoxyCompactList}\item 
+std::\+string \doxymbox{\hyperlink{class_ordem_de_servico_af45dd47e3aca2264155c881ad21588e6}{data\+Saida}}
+\begin{DoxyCompactList}\small\item\em Data de saída do veículo da oficina. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_ordem_de_servico_a36f791f32f1110c198ba832f9bb87fe5}{veiculo}}
+\begin{DoxyCompactList}\small\item\em Veículo relacionado à ordem de serviço. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_mecanico}{Mecanico}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_ordem_de_servico_a31fe8bdf72c7a4fad3d7b667ff318c48}{mecanico}}
+\begin{DoxyCompactList}\small\item\em Mecânico responsável pela ordem de serviço. \end{DoxyCompactList}\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_servico}{Servico}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_ordem_de_servico_a6e0eb1e548f6f3def260b7cc94aba0c9}{servicos}}
+\begin{DoxyCompactList}\small\item\em Lista de serviços solicitados na ordem. \end{DoxyCompactList}\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_peca}{Peca}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_ordem_de_servico_a5e83f3eaab9dc1e967695b30f154ceb5}{pecas}}
+\begin{DoxyCompactList}\small\item\em Lista de peças utilizadas na ordem. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Representa uma ordem de serviço da oficina mecânica. 
+
+A classe \doxylink{class_ordem_de_servico}{Ordem\+De\+Servico} armazena as informações relacionadas à execução de um serviço, incluindo o veículo, os serviços solicitados, as peças utilizadas, o mecânico responsável, o diagnóstico e o status da ordem.
+
+A ordem é criada com o status ABERTA. 
+
+\label{class_ordem_de_servico_doc-constructors}
+\Hypertarget{class_ordem_de_servico_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_ordem_de_servico_a0d98138a8c630fee0f67b633aa719f90}\index{OrdemDeServico@{OrdemDeServico}!OrdemDeServico@{OrdemDeServico}}
+\index{OrdemDeServico@{OrdemDeServico}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{OrdemDeServico()}{OrdemDeServico()}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a0d98138a8c630fee0f67b633aa719f90} 
+Ordem\+De\+Servico::\+\+Ordem\+De\+Servico (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*}}]{veiculo}{, }\item[{const std::\+string \&}]{data\+Entrada}{}\end{DoxyParamCaption})}
+
+
+
+Construtor da classe \doxylink{class_ordem_de_servico}{Ordem\+De\+Servico}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em veiculo} & Veículo relacionado à ordem de serviço. \\
+\hline
+{\em data\+Entrada} & Data de entrada do veículo na oficina. \\
+\hline
+\end{DoxyParams}
+
+
+\label{class_ordem_de_servico_doc-func-members}
+\Hypertarget{class_ordem_de_servico_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_ordem_de_servico_a11ce3f4530c047d1c20e0bf336b96e17}\index{OrdemDeServico@{OrdemDeServico}!adicionarPeca@{adicionarPeca}}
+\index{adicionarPeca@{adicionarPeca}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{adicionarPeca()}{adicionarPeca()}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a11ce3f4530c047d1c20e0bf336b96e17} 
+void Ordem\+De\+Servico::\+adicionar\+Peca (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_peca}{Peca}} \texorpdfstring{$\ast$}{*}}]{peca}{}\end{DoxyParamCaption})}
+
+
+
+Adiciona uma peça utilizada na ordem de serviço. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em peca} & Peça a ser adicionada. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_ordem_de_servico_acbcc19c269102405c39d4dc580f0e388}\index{OrdemDeServico@{OrdemDeServico}!adicionarServico@{adicionarServico}}
+\index{adicionarServico@{adicionarServico}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{adicionarServico()}{adicionarServico()}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_acbcc19c269102405c39d4dc580f0e388} 
+void Ordem\+De\+Servico::\+adicionar\+Servico (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_servico}{Servico}} \texorpdfstring{$\ast$}{*}}]{servico}{}\end{DoxyParamCaption})}
+
+
+
+Adiciona um serviço à ordem de serviço. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em servico} & Serviço a ser adicionado. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_ordem_de_servico_a2cc0981e1df2bee3d1582d4ed9d476c3}\index{OrdemDeServico@{OrdemDeServico}!alterarStatus@{alterarStatus}}
+\index{alterarStatus@{alterarStatus}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{alterarStatus()}{alterarStatus()}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a2cc0981e1df2bee3d1582d4ed9d476c3} 
+void Ordem\+De\+Servico::\+alterar\+Status (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430}{Status\+Ordem}}}]{novo\+Status}{}\end{DoxyParamCaption})}
+
+
+
+Altera o status da ordem de serviço. 
+
+Não é possível definir o status FINALIZADA por este método; a finalização (entrega do veículo) é feita por \doxylink{class_ordem_de_servico_a3d89376aac460a04a9054be735e2d800}{finalizar()}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em novo\+Status} & Novo status da ordem. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std::\+invalid\+\_\+argument} & se novo\+Status for FINALIZADA. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{class_ordem_de_servico_a0c668c5c53d4eedfa8e191fe936002a5}\index{OrdemDeServico@{OrdemDeServico}!associarMecanico@{associarMecanico}}
+\index{associarMecanico@{associarMecanico}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{associarMecanico()}{associarMecanico()}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a0c668c5c53d4eedfa8e191fe936002a5} 
+void Ordem\+De\+Servico::\+associar\+Mecanico (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_mecanico}{Mecanico}} \texorpdfstring{$\ast$}{*}}]{mecanico}{}\end{DoxyParamCaption})}
+
+
+
+Associa um mecânico responsável à ordem de serviço. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mecanico} & Mecânico responsável. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_ordem_de_servico_ad84c11a6251ed6c5171b5196637e837a}\index{OrdemDeServico@{OrdemDeServico}!associarVeiculo@{associarVeiculo}}
+\index{associarVeiculo@{associarVeiculo}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{associarVeiculo()}{associarVeiculo()}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_ad84c11a6251ed6c5171b5196637e837a} 
+void Ordem\+De\+Servico::\+associar\+Veiculo (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*}}]{veiculo}{}\end{DoxyParamCaption})}
+
+
+
+Associa um veículo à ordem de serviço. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em veiculo} & Veículo a ser associado. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_ordem_de_servico_a17ec0d928d5c64025991760db1842766}\index{OrdemDeServico@{OrdemDeServico}!calcularValorTotal@{calcularValorTotal}}
+\index{calcularValorTotal@{calcularValorTotal}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{calcularValorTotal()}{calcularValorTotal()}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a17ec0d928d5c64025991760db1842766} 
+float Ordem\+De\+Servico::\+calcular\+Valor\+Total (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Calcula o valor total da ordem de serviço. 
+
+\begin{DoxyReturn}{Returns}
+Valor total dos serviços e peças utilizados. 
+\end{DoxyReturn}
+\Hypertarget{class_ordem_de_servico_a4d4bc7e4607b7cb83d0d45725bbcbfe7}\index{OrdemDeServico@{OrdemDeServico}!definirDataEntrada@{definirDataEntrada}}
+\index{definirDataEntrada@{definirDataEntrada}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{definirDataEntrada()}{definirDataEntrada()}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a4d4bc7e4607b7cb83d0d45725bbcbfe7} 
+void Ordem\+De\+Servico::\+definir\+Data\+Entrada (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{data}{}\end{DoxyParamCaption})}
+
+
+
+Define a data de entrada do veículo. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Data de entrada. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_ordem_de_servico_a3d89376aac460a04a9054be735e2d800}\index{OrdemDeServico@{OrdemDeServico}!finalizar@{finalizar}}
+\index{finalizar@{finalizar}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{finalizar()}{finalizar()}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a3d89376aac460a04a9054be735e2d800} 
+void Ordem\+De\+Servico::\+finalizar (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{data\+Saida}{}\end{DoxyParamCaption})}
+
+
+
+Finaliza a ordem quando o veículo é entregue ao cliente. 
+
+Altera o status para FINALIZADA e registra a data de saída.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data\+Saida} & Data de entrega do veículo. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std::\+logic\+\_\+error} & se o status atual não for AGUARDANDO\+\_\+\+RETIRADA. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{class_ordem_de_servico_a6be5b874c2b4f159e02b4848ac4a6f08}\index{OrdemDeServico@{OrdemDeServico}!registrarDiagnostico@{registrarDiagnostico}}
+\index{registrarDiagnostico@{registrarDiagnostico}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{registrarDiagnostico()}{registrarDiagnostico()}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a6be5b874c2b4f159e02b4848ac4a6f08} 
+void Ordem\+De\+Servico::\+registrar\+Diagnostico (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{diagnostico}{}\end{DoxyParamCaption})}
+
+
+
+Registra o diagnóstico do veículo. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em diagnostico} & Diagnóstico realizado. \\
+\hline
+\end{DoxyParams}
+
+
+\label{class_ordem_de_servico_doc-variable-members}
+\Hypertarget{class_ordem_de_servico_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_ordem_de_servico_a09f3c7c6d82f4dd1d38fa1f5970ad23d}\index{OrdemDeServico@{OrdemDeServico}!dataEntrada@{dataEntrada}}
+\index{dataEntrada@{dataEntrada}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{dataEntrada}{dataEntrada}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a09f3c7c6d82f4dd1d38fa1f5970ad23d} 
+std::\+string Ordem\+De\+Servico::\+data\+Entrada\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Data de entrada do veículo na oficina. 
+
+\Hypertarget{class_ordem_de_servico_af45dd47e3aca2264155c881ad21588e6}\index{OrdemDeServico@{OrdemDeServico}!dataSaida@{dataSaida}}
+\index{dataSaida@{dataSaida}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{dataSaida}{dataSaida}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_af45dd47e3aca2264155c881ad21588e6} 
+std::\+string Ordem\+De\+Servico::\+data\+Saida\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Data de saída do veículo da oficina. 
+
+\Hypertarget{class_ordem_de_servico_a87f886e9a8f24b2d40f6cef2cf776e40}\index{OrdemDeServico@{OrdemDeServico}!diagnostico@{diagnostico}}
+\index{diagnostico@{diagnostico}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{diagnostico}{diagnostico}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a87f886e9a8f24b2d40f6cef2cf776e40} 
+std::\+string Ordem\+De\+Servico::\+diagnostico\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Diagnóstico realizado no veículo. 
+
+\Hypertarget{class_ordem_de_servico_a31fe8bdf72c7a4fad3d7b667ff318c48}\index{OrdemDeServico@{OrdemDeServico}!mecanico@{mecanico}}
+\index{mecanico@{mecanico}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{mecanico}{mecanico}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a31fe8bdf72c7a4fad3d7b667ff318c48} 
+\doxymbox{\hyperlink{class_mecanico}{Mecanico}}\texorpdfstring{$\ast$}{*} Ordem\+De\+Servico::\+mecanico\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Mecânico responsável pela ordem de serviço. 
+
+\Hypertarget{class_ordem_de_servico_a5e83f3eaab9dc1e967695b30f154ceb5}\index{OrdemDeServico@{OrdemDeServico}!pecas@{pecas}}
+\index{pecas@{pecas}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{pecas}{pecas}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a5e83f3eaab9dc1e967695b30f154ceb5} 
+std::\+vector$<$\doxymbox{\hyperlink{class_peca}{Peca}}\texorpdfstring{$\ast$}{*}$>$ Ordem\+De\+Servico::\+pecas\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Lista de peças utilizadas na ordem. 
+
+\Hypertarget{class_ordem_de_servico_a6e0eb1e548f6f3def260b7cc94aba0c9}\index{OrdemDeServico@{OrdemDeServico}!servicos@{servicos}}
+\index{servicos@{servicos}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{servicos}{servicos}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a6e0eb1e548f6f3def260b7cc94aba0c9} 
+std::\+vector$<$\doxymbox{\hyperlink{class_servico}{Servico}}\texorpdfstring{$\ast$}{*}$>$ Ordem\+De\+Servico::\+servicos\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Lista de serviços solicitados na ordem. 
+
+\Hypertarget{class_ordem_de_servico_ab7d9948cfa5635704ad3a4116d42cad8}\index{OrdemDeServico@{OrdemDeServico}!status@{status}}
+\index{status@{status}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{status}{status}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_ab7d9948cfa5635704ad3a4116d42cad8} 
+\doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430}{Status\+Ordem}} Ordem\+De\+Servico::\+status\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Status atual da ordem de serviço. 
+
+\Hypertarget{class_ordem_de_servico_a36f791f32f1110c198ba832f9bb87fe5}\index{OrdemDeServico@{OrdemDeServico}!veiculo@{veiculo}}
+\index{veiculo@{veiculo}!OrdemDeServico@{OrdemDeServico}}
+\doxysubsubsection{\texorpdfstring{veiculo}{veiculo}}
+{\footnotesize\ttfamily \label{class_ordem_de_servico_a36f791f32f1110c198ba832f9bb87fe5} 
+\doxymbox{\hyperlink{class_veiculo}{Veiculo}}\texorpdfstring{$\ast$}{*} Ordem\+De\+Servico::\+veiculo\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Veículo relacionado à ordem de serviço. 
+
+
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+include/\doxymbox{\hyperlink{_ordem_de_servico_8hpp}{Ordem\+De\+Servico.\+hpp}}\end{DoxyCompactItemize}

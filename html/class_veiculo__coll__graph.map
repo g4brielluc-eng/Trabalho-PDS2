@@ -1,0 +1,5 @@
+<map id="Veiculo" name="Veiculo">
+<area shape="rect" id="Node000001" title="Representa um veículo cadastrado no sistema da oficina." alt="" coords="5,102,70,128"/>
+<area shape="rect" id="Node000002" href="$class_cliente.html" title="Representa um cliente da oficina." alt="" coords="6,5,69,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="40,45,40,102,35,101,35,47"/>
+</map>

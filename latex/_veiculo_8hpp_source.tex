@@ -1,0 +1,58 @@
+\doxysection{Veiculo.\+hpp}
+\hypertarget{_veiculo_8hpp_source}{}\label{_veiculo_8hpp_source}\index{include/Veiculo.hpp@{include/Veiculo.hpp}}
+\doxymbox{\hyperlink{_veiculo_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ VEICULO\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ VEICULO\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_cliente}{Cliente}};}
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}};}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_veiculo_a9ee4af49933c1fa086eaac21c5aa878a}{Veiculo}}\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00019\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_veiculo_abb62d98acb37a2dd132a46af27cec41e}{marca}};}
+\DoxyCodeLine{00020\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_veiculo_aeff42e2b98e77aed203c5196fb883e38}{modelo}};}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_veiculo_a3f288a049c252c8aee5b50a0b1a37ed6}{ano}};}
+\DoxyCodeLine{00022\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_veiculo_aab5e8527605ca9f899aa53ff031fcbd7}{placa}};}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_veiculo_a0af3ad5f70ec2fd17995e1192bb0c0e9}{quilometragem}};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \doxymbox{\hyperlink{class_cliente}{Cliente}}*\ \doxymbox{\hyperlink{class_veiculo_afd1cd5e5a83ce63da8a430d25eedb2fa}{cliente}};}
+\DoxyCodeLine{00026\ \ \ \ \ std::vector<OrdemDeServico*>\ \doxymbox{\hyperlink{class_veiculo_abe40f04b0e4085e566085e6d668b5edf}{ordensServico}};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00038\ \ \ \ \ \doxymbox{\hyperlink{class_veiculo_a9ee4af49933c1fa086eaac21c5aa878a}{Veiculo}}(\textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_veiculo_abb62d98acb37a2dd132a46af27cec41e}{marca}},}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_veiculo_aeff42e2b98e77aed203c5196fb883e38}{modelo}},}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_veiculo_a3f288a049c252c8aee5b50a0b1a37ed6}{ano}},}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_veiculo_aab5e8527605ca9f899aa53ff031fcbd7}{placa}},}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_veiculo_a0af3ad5f70ec2fd17995e1192bb0c0e9}{quilometragem}});}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_veiculo_abf117d1fb16e170cd3f0ec64dff4bf08}{associarCliente}}(\doxymbox{\hyperlink{class_cliente}{Cliente}}*\ \doxymbox{\hyperlink{class_veiculo_afd1cd5e5a83ce63da8a430d25eedb2fa}{cliente}});}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_veiculo_ae8b653186915adc981c013d9b675a1ab}{atualizarInformacoes}}(\textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_veiculo_aab5e8527605ca9f899aa53ff031fcbd7}{placa}});}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_veiculo_a723eb4078ff72d7ab7b3e2b3a37a99b4}{registrarQuilometragem}}(\textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_veiculo_a0af3ad5f70ec2fd17995e1192bb0c0e9}{quilometragem}});}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<OrdemDeServico*>\&\ \doxymbox{\hyperlink{class_veiculo_a7ee7b605c0c792544756f08f3901f8ce}{consultarOrdensServico}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_veiculo_a0d59cb478add153e7fc872336294cae0}{consultarHistoricoManutencoes}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_veiculo_ae209227f67b4068972292528a1de79bf}{getMarca}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_veiculo_a3737b42826988c110eb790a200ab7372}{getModelo}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_veiculo_ad4ae158ba12f069c3e399e35f95bc35c}{getAno}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_veiculo_a8a154ee4be1194ac5c182930f14d00d4}{getPlaca}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_veiculo_a872a7717caf1d6201b768cc678e21b7d}{getQuilometragem}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00109\ \ \ \ \ \doxymbox{\hyperlink{class_cliente}{Cliente}}*\ \doxymbox{\hyperlink{class_veiculo_a3f5e789063a948c1bc4af12d1dd7045f}{getCliente}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00110\ \};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ VEICULO\_H}}
+
+\end{DoxyCode}

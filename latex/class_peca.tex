@@ -1,0 +1,240 @@
+\doxysection{Peca Class Reference}
+\hypertarget{class_peca}{}\label{class_peca}\index{Peca@{Peca}}
+
+
+Representa uma peça do estoque da oficina.  
+
+
+
+
+{\ttfamily \+\#include $<$Peca.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{class_peca_a51f0a81a1dd38e73e3a8e87bd297532c}{set\+Codigo}} (std::\+string codigo)
+\begin{DoxyCompactList}\small\item\em Define o código da peça. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_peca_ac00b6369fc59c00814da3440a25b68aa}{set\+Descricao}} (std::\+string descricao)
+\begin{DoxyCompactList}\small\item\em Define a descrição da peça. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_peca_a94375d049bcfdec93787db01b898cac2}{set\+Preco}} (float preco)
+\begin{DoxyCompactList}\small\item\em Define o preço da peça. \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{class_peca_a2cb28508a130beed90ba452848105ca0}{get\+Quantidade}} () const
+\begin{DoxyCompactList}\small\item\em Obtém a quantidade da peça em estoque. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_peca_abb2a2e1f57ba616fd9133eda9baade05}{set\+Quantidade}} (int newquantidade)
+\begin{DoxyCompactList}\small\item\em Define a quantidade da peça em estoque. \end{DoxyCompactList}\item 
+bool \doxymbox{\hyperlink{class_peca_aa4e0a8787398ccd634cfbacfec76fb92}{disponivel}} () const
+\begin{DoxyCompactList}\small\item\em Verifica se a peça está disponível em estoque. \end{DoxyCompactList}\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_peca_a585afb222f3517b2c40d5ad12cda3aa1}{get\+Servicos}} () const
+\begin{DoxyCompactList}\small\item\em Obtém as ordens de serviço associadas à peça. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_peca_a523e05c6805ad0e176f7f2fecf28a552}{set\+Servicos}} (\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*}ordemdeservico)
+\begin{DoxyCompactList}\small\item\em Associa uma ordem de serviço à peça. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std::\+string \doxymbox{\hyperlink{class_peca_a43487d75eba6e59c5934e2b02ac27e36}{codigo}}
+\begin{DoxyCompactList}\small\item\em Código identificador da peça. \end{DoxyCompactList}\item 
+std::\+string \doxymbox{\hyperlink{class_peca_ab3b8679b46b887a0700b3cd4d0aa8651}{descricao}}
+\begin{DoxyCompactList}\small\item\em Descrição da peça. \end{DoxyCompactList}\item 
+float \doxymbox{\hyperlink{class_peca_a5343bfdf634a215317950d6749a317b3}{preco}}
+\begin{DoxyCompactList}\small\item\em Preço unitário da peça. \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{class_peca_a27017ae74e5124d92baca33dad734241}{quantidade}}
+\begin{DoxyCompactList}\small\item\em Quantidade da peça em estoque. \end{DoxyCompactList}\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_peca_adf4000600f88378997e7685449d7b828}{veiculos}}
+\begin{DoxyCompactList}\small\item\em Lista de veículos associados à peça. \end{DoxyCompactList}\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_peca_ab292707b5afb5223df5c5192aad0dc45}{servicos}}
+\begin{DoxyCompactList}\small\item\em Lista de ordens de serviço que utilizam a peça. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Representa uma peça do estoque da oficina. 
+
+Armazena código, descrição, preço e quantidade em estoque da peça, além dos veículos e ordens de serviço associados a ela. 
+
+\label{class_peca_doc-func-members}
+\Hypertarget{class_peca_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_peca_aa4e0a8787398ccd634cfbacfec76fb92}\index{Peca@{Peca}!disponivel@{disponivel}}
+\index{disponivel@{disponivel}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{disponivel()}{disponivel()}}
+{\footnotesize\ttfamily \label{class_peca_aa4e0a8787398ccd634cfbacfec76fb92} 
+bool Peca::\+disponivel (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Verifica se a peça está disponível em estoque. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} se houver peça disponível, {\ttfamily false} caso contrário. 
+\end{DoxyReturn}
+\Hypertarget{class_peca_a2cb28508a130beed90ba452848105ca0}\index{Peca@{Peca}!getQuantidade@{getQuantidade}}
+\index{getQuantidade@{getQuantidade}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{getQuantidade()}{getQuantidade()}}
+{\footnotesize\ttfamily \label{class_peca_a2cb28508a130beed90ba452848105ca0} 
+int Peca::\+get\+Quantidade (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Obtém a quantidade da peça em estoque. 
+
+\begin{DoxyReturn}{Returns}
+Quantidade em estoque. 
+\end{DoxyReturn}
+\Hypertarget{class_peca_a585afb222f3517b2c40d5ad12cda3aa1}\index{Peca@{Peca}!getServicos@{getServicos}}
+\index{getServicos@{getServicos}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{getServicos()}{getServicos()}}
+{\footnotesize\ttfamily \label{class_peca_a585afb222f3517b2c40d5ad12cda3aa1} 
+std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ Peca::\+get\+Servicos (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Obtém as ordens de serviço associadas à peça. 
+
+\begin{DoxyReturn}{Returns}
+Vetor de ponteiros para as ordens de serviço. 
+\end{DoxyReturn}
+\Hypertarget{class_peca_a51f0a81a1dd38e73e3a8e87bd297532c}\index{Peca@{Peca}!setCodigo@{setCodigo}}
+\index{setCodigo@{setCodigo}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{setCodigo()}{setCodigo()}}
+{\footnotesize\ttfamily \label{class_peca_a51f0a81a1dd38e73e3a8e87bd297532c} 
+void Peca::\+set\+Codigo (\begin{DoxyParamCaption}\item[{std::\+string}]{codigo}{}\end{DoxyParamCaption})}
+
+
+
+Define o código da peça. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em codigo} & Novo código da peça. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_peca_ac00b6369fc59c00814da3440a25b68aa}\index{Peca@{Peca}!setDescricao@{setDescricao}}
+\index{setDescricao@{setDescricao}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{setDescricao()}{setDescricao()}}
+{\footnotesize\ttfamily \label{class_peca_ac00b6369fc59c00814da3440a25b68aa} 
+void Peca::\+set\+Descricao (\begin{DoxyParamCaption}\item[{std::\+string}]{descricao}{}\end{DoxyParamCaption})}
+
+
+
+Define a descrição da peça. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em descricao} & Nova descrição da peça. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_peca_a94375d049bcfdec93787db01b898cac2}\index{Peca@{Peca}!setPreco@{setPreco}}
+\index{setPreco@{setPreco}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{setPreco()}{setPreco()}}
+{\footnotesize\ttfamily \label{class_peca_a94375d049bcfdec93787db01b898cac2} 
+void Peca::\+set\+Preco (\begin{DoxyParamCaption}\item[{float}]{preco}{}\end{DoxyParamCaption})}
+
+
+
+Define o preço da peça. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em preco} & Novo preço unitário da peça. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_peca_abb2a2e1f57ba616fd9133eda9baade05}\index{Peca@{Peca}!setQuantidade@{setQuantidade}}
+\index{setQuantidade@{setQuantidade}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{setQuantidade()}{setQuantidade()}}
+{\footnotesize\ttfamily \label{class_peca_abb2a2e1f57ba616fd9133eda9baade05} 
+void Peca::\+set\+Quantidade (\begin{DoxyParamCaption}\item[{int}]{newquantidade}{}\end{DoxyParamCaption})}
+
+
+
+Define a quantidade da peça em estoque. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em newquantidade} & Nova quantidade em estoque. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_peca_a523e05c6805ad0e176f7f2fecf28a552}\index{Peca@{Peca}!setServicos@{setServicos}}
+\index{setServicos@{setServicos}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{setServicos()}{setServicos()}}
+{\footnotesize\ttfamily \label{class_peca_a523e05c6805ad0e176f7f2fecf28a552} 
+void Peca::\+set\+Servicos (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*}}]{ordemdeservico}{}\end{DoxyParamCaption})}
+
+
+
+Associa uma ordem de serviço à peça. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ordemdeservico} & Ponteiro para a ordem de serviço a ser associada. \\
+\hline
+\end{DoxyParams}
+
+
+\label{class_peca_doc-variable-members}
+\Hypertarget{class_peca_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_peca_a43487d75eba6e59c5934e2b02ac27e36}\index{Peca@{Peca}!codigo@{codigo}}
+\index{codigo@{codigo}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{codigo}{codigo}}
+{\footnotesize\ttfamily \label{class_peca_a43487d75eba6e59c5934e2b02ac27e36} 
+std::\+string Peca::\+codigo\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Código identificador da peça. 
+
+\Hypertarget{class_peca_ab3b8679b46b887a0700b3cd4d0aa8651}\index{Peca@{Peca}!descricao@{descricao}}
+\index{descricao@{descricao}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{descricao}{descricao}}
+{\footnotesize\ttfamily \label{class_peca_ab3b8679b46b887a0700b3cd4d0aa8651} 
+std::\+string Peca::\+descricao\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Descrição da peça. 
+
+\Hypertarget{class_peca_a5343bfdf634a215317950d6749a317b3}\index{Peca@{Peca}!preco@{preco}}
+\index{preco@{preco}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{preco}{preco}}
+{\footnotesize\ttfamily \label{class_peca_a5343bfdf634a215317950d6749a317b3} 
+float Peca::\+preco\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Preço unitário da peça. 
+
+\Hypertarget{class_peca_a27017ae74e5124d92baca33dad734241}\index{Peca@{Peca}!quantidade@{quantidade}}
+\index{quantidade@{quantidade}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{quantidade}{quantidade}}
+{\footnotesize\ttfamily \label{class_peca_a27017ae74e5124d92baca33dad734241} 
+int Peca::\+quantidade\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Quantidade da peça em estoque. 
+
+\Hypertarget{class_peca_ab292707b5afb5223df5c5192aad0dc45}\index{Peca@{Peca}!servicos@{servicos}}
+\index{servicos@{servicos}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{servicos}{servicos}}
+{\footnotesize\ttfamily \label{class_peca_ab292707b5afb5223df5c5192aad0dc45} 
+std::\+vector$<$\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}}\texorpdfstring{$\ast$}{*}$>$ Peca::\+servicos\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Lista de ordens de serviço que utilizam a peça. 
+
+\Hypertarget{class_peca_adf4000600f88378997e7685449d7b828}\index{Peca@{Peca}!veiculos@{veiculos}}
+\index{veiculos@{veiculos}!Peca@{Peca}}
+\doxysubsubsection{\texorpdfstring{veiculos}{veiculos}}
+{\footnotesize\ttfamily \label{class_peca_adf4000600f88378997e7685449d7b828} 
+std::\+vector$<$\doxymbox{\hyperlink{class_veiculo}{Veiculo}}\texorpdfstring{$\ast$}{*}$>$ Peca::\+veiculos\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Lista de veículos associados à peça. 
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+include/\doxymbox{\hyperlink{_peca_8hpp}{Peca.\+hpp}}\item 
+src/\doxymbox{\hyperlink{_peca_8cpp}{Peca.\+cpp}}\end{DoxyCompactItemize}
