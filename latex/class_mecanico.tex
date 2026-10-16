@@ -1,0 +1,246 @@
+\doxysection{Mecanico Class Reference}
+\hypertarget{class_mecanico}{}\label{class_mecanico}\index{Mecanico@{Mecanico}}
+
+
+Representa um mecânico da oficina.  
+
+
+
+
+{\ttfamily \+\#include $<$Mecanico.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_mecanico_af6d309373a9cc30ec0218f1c24c34850}{Mecanico}} (int id, const std::\+string \&nome, const std::\+string \&especialidade)
+\begin{DoxyCompactList}\small\item\em Cadastra um mecânico. \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{class_mecanico_a4f5d0fcee35826b55a59216f1564f54a}{get\+Id}} () const
+\begin{DoxyCompactList}\small\item\em Retorna o ID do mecânico. \end{DoxyCompactList}\item 
+std::\+string \doxymbox{\hyperlink{class_mecanico_aeacdf02d07ddd8b918393fd3fdba7af1}{get\+Nome}} () const
+\begin{DoxyCompactList}\small\item\em Retorna o nome do mecânico. \end{DoxyCompactList}\item 
+std::\+string \doxymbox{\hyperlink{class_mecanico_a709ec7343c8e43a6b8d7cde6e982fdce}{get\+Especialidade}} () const
+\begin{DoxyCompactList}\small\item\em Retorna a especialidade do mecânico. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_mecanico_a8b12547c12b11d43d4b983ba6b507c84}{alterar\+Especialidade}} (const std::\+string \&especialidade)
+\begin{DoxyCompactList}\small\item\em Altera a especialidade. \end{DoxyCompactList}\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_mecanico_a24d1370d57fb34c38ad813093deeb8f1}{consultar\+Ordens\+Atribuidas}} () const
+\begin{DoxyCompactList}\small\item\em Retorna as ordens de serviço atribuídas ao mecânico. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_mecanico_ac857030001be423ebbac1de229331a0f}{assumir\+Ordem}} (\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*}ordem)
+\begin{DoxyCompactList}\small\item\em Assume uma ordem de serviço. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_mecanico_a24a321a01d9c249de799d62e1dba5a9f}{registrar\+Diagnostico}} (\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*}ordem, const std::\+string \&diagnostico)
+\begin{DoxyCompactList}\small\item\em Registra o diagnóstico em uma ordem atribuída ao mecânico. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_mecanico_a99a771a7ca7d2ae0bfa281ea136cdf7e}{registrar\+Servico\+Realizado}} (\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*}ordem, \doxymbox{\hyperlink{class_servico}{Servico}} \texorpdfstring{$\ast$}{*}servico)
+\begin{DoxyCompactList}\small\item\em Registra um serviço realizado em uma ordem. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_mecanico_a5553c3dc3c01b893210dfd05d6a84c47}{atualizar\+Andamento}} (\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*}ordem, \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430}{Status\+Ordem}} novo\+Status)
+\begin{DoxyCompactList}\small\item\em Atualiza o andamento (status) da ordem. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \doxymbox{\hyperlink{class_mecanico_aa518a423fdf1f40c273c564e91d3d0ef}{id\_}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_mecanico_aa31227cacb34f8f312ae95fd29e25cf6}{nome\_}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_mecanico_a0f8e3fee64d83d5a00ec7601eccf2d1c}{especialidade\_}}
+\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_mecanico_a569e49b2669a37baa65ef37c63d823ec}{ordens\_}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Representa um mecânico da oficina. 
+
+Os métodos que recebem uma \doxylink{class_ordem_de_servico}{Ordem\+De\+Servico} exigem que ela esteja atribuída a este mecânico; caso contrário, lançam std::\+logic\+\_\+error. 
+
+\label{class_mecanico_doc-constructors}
+\Hypertarget{class_mecanico_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_mecanico_af6d309373a9cc30ec0218f1c24c34850}\index{Mecanico@{Mecanico}!Mecanico@{Mecanico}}
+\index{Mecanico@{Mecanico}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{Mecanico()}{Mecanico()}}
+{\footnotesize\ttfamily \label{class_mecanico_af6d309373a9cc30ec0218f1c24c34850} 
+Mecanico::\+\+Mecanico (\begin{DoxyParamCaption}\item[{int}]{id}{, }\item[{const std::\+string \&}]{nome}{, }\item[{const std::\+string \&}]{especialidade}{}\end{DoxyParamCaption})}
+
+
+
+Cadastra um mecânico. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & ID único do mecânico. \\
+\hline
+{\em nome} & Nome do mecânico. \\
+\hline
+{\em especialidade} & Área de atuação do mecânico. \\
+\hline
+\end{DoxyParams}
+
+
+\label{class_mecanico_doc-func-members}
+\Hypertarget{class_mecanico_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_mecanico_a8b12547c12b11d43d4b983ba6b507c84}\index{Mecanico@{Mecanico}!alterarEspecialidade@{alterarEspecialidade}}
+\index{alterarEspecialidade@{alterarEspecialidade}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{alterarEspecialidade()}{alterarEspecialidade()}}
+{\footnotesize\ttfamily \label{class_mecanico_a8b12547c12b11d43d4b983ba6b507c84} 
+void Mecanico::\+alterar\+Especialidade (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{especialidade}{}\end{DoxyParamCaption})}
+
+
+
+Altera a especialidade. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em especialidade} & Nova especialidade do mecânico. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_mecanico_ac857030001be423ebbac1de229331a0f}\index{Mecanico@{Mecanico}!assumirOrdem@{assumirOrdem}}
+\index{assumirOrdem@{assumirOrdem}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{assumirOrdem()}{assumirOrdem()}}
+{\footnotesize\ttfamily \label{class_mecanico_ac857030001be423ebbac1de229331a0f} 
+void Mecanico::\+assumir\+Ordem (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*}}]{ordem}{}\end{DoxyParamCaption})}
+
+
+
+Assume uma ordem de serviço. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ordem} & Ordem a assumir (não pode ser nula). \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std::\+invalid\+\_\+argument} & se a ordem for nula. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{class_mecanico_a5553c3dc3c01b893210dfd05d6a84c47}\index{Mecanico@{Mecanico}!atualizarAndamento@{atualizarAndamento}}
+\index{atualizarAndamento@{atualizarAndamento}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{atualizarAndamento()}{atualizarAndamento()}}
+{\footnotesize\ttfamily \label{class_mecanico_a5553c3dc3c01b893210dfd05d6a84c47} 
+void Mecanico::\+atualizar\+Andamento (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*}}]{ordem}{, }\item[{\doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430}{Status\+Ordem}}}]{novo\+Status}{}\end{DoxyParamCaption})}
+
+
+
+Atualiza o andamento (status) da ordem. 
+
+O mecânico só atualiza o status da ordem até "{}\+AGUARDANDO\+\_\+\+RETIRADA"{}. Ele não pode alterar o status para FINALIZADA; a finalização (entrega do veículo) é feita por \doxylink{class_ordem_de_servico_a3d89376aac460a04a9054be735e2d800}{Ordem\+De\+Servico::\+finalizar}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ordem} & Ordem atribuída a este mecânico. \\
+\hline
+{\em novo\+Status} & Novo status. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std::\+invalid\+\_\+argument} & se novo\+Status for FINALIZADA. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{class_mecanico_a24d1370d57fb34c38ad813093deeb8f1}\index{Mecanico@{Mecanico}!consultarOrdensAtribuidas@{consultarOrdensAtribuidas}}
+\index{consultarOrdensAtribuidas@{consultarOrdensAtribuidas}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{consultarOrdensAtribuidas()}{consultarOrdensAtribuidas()}}
+{\footnotesize\ttfamily \label{class_mecanico_a24d1370d57fb34c38ad813093deeb8f1} 
+std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ Mecanico::\+consultar\+Ordens\+Atribuidas (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna as ordens de serviço atribuídas ao mecânico. 
+
+\Hypertarget{class_mecanico_a709ec7343c8e43a6b8d7cde6e982fdce}\index{Mecanico@{Mecanico}!getEspecialidade@{getEspecialidade}}
+\index{getEspecialidade@{getEspecialidade}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{getEspecialidade()}{getEspecialidade()}}
+{\footnotesize\ttfamily \label{class_mecanico_a709ec7343c8e43a6b8d7cde6e982fdce} 
+std::\+string Mecanico::\+get\+Especialidade (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna a especialidade do mecânico. 
+
+\Hypertarget{class_mecanico_a4f5d0fcee35826b55a59216f1564f54a}\index{Mecanico@{Mecanico}!getId@{getId}}
+\index{getId@{getId}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{getId()}{getId()}}
+{\footnotesize\ttfamily \label{class_mecanico_a4f5d0fcee35826b55a59216f1564f54a} 
+int Mecanico::\+get\+Id (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna o ID do mecânico. 
+
+\Hypertarget{class_mecanico_aeacdf02d07ddd8b918393fd3fdba7af1}\index{Mecanico@{Mecanico}!getNome@{getNome}}
+\index{getNome@{getNome}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{getNome()}{getNome()}}
+{\footnotesize\ttfamily \label{class_mecanico_aeacdf02d07ddd8b918393fd3fdba7af1} 
+std::\+string Mecanico::\+get\+Nome (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna o nome do mecânico. 
+
+\Hypertarget{class_mecanico_a24a321a01d9c249de799d62e1dba5a9f}\index{Mecanico@{Mecanico}!registrarDiagnostico@{registrarDiagnostico}}
+\index{registrarDiagnostico@{registrarDiagnostico}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{registrarDiagnostico()}{registrarDiagnostico()}}
+{\footnotesize\ttfamily \label{class_mecanico_a24a321a01d9c249de799d62e1dba5a9f} 
+void Mecanico::\+registrar\+Diagnostico (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*}}]{ordem}{, }\item[{const std::\+string \&}]{diagnostico}{}\end{DoxyParamCaption})}
+
+
+
+Registra o diagnóstico em uma ordem atribuída ao mecânico. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ordem} & Ordem atribuída ao mecânico. \\
+\hline
+{\em diagnostico} & Problema encontrado no veículo. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_mecanico_a99a771a7ca7d2ae0bfa281ea136cdf7e}\index{Mecanico@{Mecanico}!registrarServicoRealizado@{registrarServicoRealizado}}
+\index{registrarServicoRealizado@{registrarServicoRealizado}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{registrarServicoRealizado()}{registrarServicoRealizado()}}
+{\footnotesize\ttfamily \label{class_mecanico_a99a771a7ca7d2ae0bfa281ea136cdf7e} 
+void Mecanico::\+registrar\+Servico\+Realizado (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*}}]{ordem}{, }\item[{\doxymbox{\hyperlink{class_servico}{Servico}} \texorpdfstring{$\ast$}{*}}]{servico}{}\end{DoxyParamCaption})}
+
+
+
+Registra um serviço realizado em uma ordem. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ordem} & Ordem atribuída ao mecânico. \\
+\hline
+{\em servico} & Serviço executado pelo mecânico. \\
+\hline
+\end{DoxyParams}
+
+
+\label{class_mecanico_doc-variable-members}
+\Hypertarget{class_mecanico_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_mecanico_a0f8e3fee64d83d5a00ec7601eccf2d1c}\index{Mecanico@{Mecanico}!especialidade\_@{especialidade\_}}
+\index{especialidade\_@{especialidade\_}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{especialidade\_}{especialidade\_}}
+{\footnotesize\ttfamily \label{class_mecanico_a0f8e3fee64d83d5a00ec7601eccf2d1c} 
+std::\+string Mecanico::\+especialidade\_\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_mecanico_aa518a423fdf1f40c273c564e91d3d0ef}\index{Mecanico@{Mecanico}!id\_@{id\_}}
+\index{id\_@{id\_}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{id\_}{id\_}}
+{\footnotesize\ttfamily \label{class_mecanico_aa518a423fdf1f40c273c564e91d3d0ef} 
+int Mecanico::\+id\_\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_mecanico_aa31227cacb34f8f312ae95fd29e25cf6}\index{Mecanico@{Mecanico}!nome\_@{nome\_}}
+\index{nome\_@{nome\_}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{nome\_}{nome\_}}
+{\footnotesize\ttfamily \label{class_mecanico_aa31227cacb34f8f312ae95fd29e25cf6} 
+std::\+string Mecanico::\+nome\_\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_mecanico_a569e49b2669a37baa65ef37c63d823ec}\index{Mecanico@{Mecanico}!ordens\_@{ordens\_}}
+\index{ordens\_@{ordens\_}!Mecanico@{Mecanico}}
+\doxysubsubsection{\texorpdfstring{ordens\_}{ordens\_}}
+{\footnotesize\ttfamily \label{class_mecanico_a569e49b2669a37baa65ef37c63d823ec} 
+std::\+vector$<$\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}}\texorpdfstring{$\ast$}{*}$>$ Mecanico::\+ordens\_\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+include/\doxymbox{\hyperlink{_mecanico_8hpp}{Mecanico.\+hpp}}\end{DoxyCompactItemize}

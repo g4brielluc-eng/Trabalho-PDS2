@@ -52,19 +52,16 @@ public:
      */
     Agendamento(const std::string& data,
                 const std::string& horario);
+    /**
+     * @brief Destrutor da classe Agendamento.
+     */
+    ~Agendamento();            
 
     /**
      * @brief Registra o agendamento no sistema.
      */
     void registrarAgendamento();
 
-    /**
-     * @brief Define a data e o horário do agendamento.
-     * @param data Data do agendamento.
-     * @param horario Horário do agendamento.
-     */
-    void definirDataHorario(const std::string& data,
-                            const std::string& horario);
 
     /**
      * @brief Associa um cliente ao agendamento.
@@ -89,7 +86,7 @@ public:
      * @param novaData Nova data do agendamento.
      * @param novoHorario Novo horário do agendamento.
      */
-    void alterarData(const std::string& novaData,
+    void alterarDataHorario(const std::string& novaData,
                      const std::string& novoHorario);
 
     /**

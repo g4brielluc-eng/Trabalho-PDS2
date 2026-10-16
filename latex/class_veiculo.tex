@@ -1,0 +1,300 @@
+\doxysection{Veiculo Class Reference}
+\hypertarget{class_veiculo}{}\label{class_veiculo}\index{Veiculo@{Veiculo}}
+
+
+Representa um veículo cadastrado no sistema da oficina.  
+
+
+
+
+{\ttfamily \+\#include $<$Veiculo.\+hpp$>$}
+
+
+
+Collaboration diagram for Veiculo:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=139pt]{class_veiculo__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_veiculo_a9ee4af49933c1fa086eaac21c5aa878a}{Veiculo}} (const std::\+string \&marca, const std::\+string \&modelo, int ano, const std::\+string \&placa, int quilometragem)
+\begin{DoxyCompactList}\small\item\em Construtor da classe \doxylink{class_veiculo}{Veiculo}. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_veiculo_abf117d1fb16e170cd3f0ec64dff4bf08}{associar\+Cliente}} (\doxymbox{\hyperlink{class_cliente}{Cliente}} \texorpdfstring{$\ast$}{*}cliente)
+\begin{DoxyCompactList}\small\item\em Associa o veículo a um cliente. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_veiculo_ae8b653186915adc981c013d9b675a1ab}{atualizar\+Informacoes}} (const std::\+string \&placa)
+\begin{DoxyCompactList}\small\item\em Atualiza as informações básicas do veículo. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_veiculo_a723eb4078ff72d7ab7b3e2b3a37a99b4}{registrar\+Quilometragem}} (int quilometragem)
+\begin{DoxyCompactList}\small\item\em Registra a quilometragem atual do veículo. \end{DoxyCompactList}\item 
+const std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ \& \doxymbox{\hyperlink{class_veiculo_a7ee7b605c0c792544756f08f3901f8ce}{consultar\+Ordens\+Servico}} () const
+\begin{DoxyCompactList}\small\item\em Consulta as ordens de serviço relacionadas ao veículo. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_veiculo_a0d59cb478add153e7fc872336294cae0}{consultar\+Historico\+Manutencoes}} () const
+\begin{DoxyCompactList}\small\item\em Consulta o histórico de manutenções do veículo. O histórico é obtido a partir das ordens de serviço relacionadas ao veículo. \end{DoxyCompactList}\item 
+const std::\+string \& \doxymbox{\hyperlink{class_veiculo_ae209227f67b4068972292528a1de79bf}{get\+Marca}} () const
+\begin{DoxyCompactList}\small\item\em Retorna a marca do veículo. \end{DoxyCompactList}\item 
+const std::\+string \& \doxymbox{\hyperlink{class_veiculo_a3737b42826988c110eb790a200ab7372}{get\+Modelo}} () const
+\begin{DoxyCompactList}\small\item\em Retorna o modelo do veículo. \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{class_veiculo_ad4ae158ba12f069c3e399e35f95bc35c}{get\+Ano}} () const
+\begin{DoxyCompactList}\small\item\em Retorna o ano do veículo. \end{DoxyCompactList}\item 
+const std::\+string \& \doxymbox{\hyperlink{class_veiculo_a8a154ee4be1194ac5c182930f14d00d4}{get\+Placa}} () const
+\begin{DoxyCompactList}\small\item\em Retorna a placa do veículo. \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{class_veiculo_a872a7717caf1d6201b768cc678e21b7d}{get\+Quilometragem}} () const
+\begin{DoxyCompactList}\small\item\em Retorna a quilometragem atual do veículo. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_cliente}{Cliente}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_veiculo_a3f5e789063a948c1bc4af12d1dd7045f}{get\+Cliente}} () const
+\begin{DoxyCompactList}\small\item\em Retorna o cliente associado ao veículo. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std::\+string \doxymbox{\hyperlink{class_veiculo_abb62d98acb37a2dd132a46af27cec41e}{marca}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_veiculo_aeff42e2b98e77aed203c5196fb883e38}{modelo}}
+\item 
+int \doxymbox{\hyperlink{class_veiculo_a3f288a049c252c8aee5b50a0b1a37ed6}{ano}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_veiculo_aab5e8527605ca9f899aa53ff031fcbd7}{placa}}
+\item 
+int \doxymbox{\hyperlink{class_veiculo_a0af3ad5f70ec2fd17995e1192bb0c0e9}{quilometragem}}
+\item 
+\doxymbox{\hyperlink{class_cliente}{Cliente}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_veiculo_afd1cd5e5a83ce63da8a430d25eedb2fa}{cliente}}
+\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_veiculo_abe40f04b0e4085e566085e6d668b5edf}{ordens\+Servico}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Representa um veículo cadastrado no sistema da oficina. 
+
+A classe \doxylink{class_veiculo}{Veiculo} armazena os dados básicos do veículo, permite sua associação a um cliente e mantém as ordens de serviço relacionadas a ele. 
+
+\label{class_veiculo_doc-constructors}
+\Hypertarget{class_veiculo_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_veiculo_a9ee4af49933c1fa086eaac21c5aa878a}\index{Veiculo@{Veiculo}!Veiculo@{Veiculo}}
+\index{Veiculo@{Veiculo}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{Veiculo()}{Veiculo()}}
+{\footnotesize\ttfamily \label{class_veiculo_a9ee4af49933c1fa086eaac21c5aa878a} 
+Veiculo::\+\+Veiculo (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{marca}{, }\item[{const std::\+string \&}]{modelo}{, }\item[{int}]{ano}{, }\item[{const std::\+string \&}]{placa}{, }\item[{int}]{quilometragem}{}\end{DoxyParamCaption})}
+
+
+
+Construtor da classe \doxylink{class_veiculo}{Veiculo}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em marca} & Marca do veículo. \\
+\hline
+{\em modelo} & Modelo do veículo. \\
+\hline
+{\em ano} & Ano do veículo. \\
+\hline
+{\em placa} & Placa do veículo. \\
+\hline
+{\em quilometragem} & Quilometragem atual do veículo. \\
+\hline
+\end{DoxyParams}
+
+
+\label{class_veiculo_doc-func-members}
+\Hypertarget{class_veiculo_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_veiculo_abf117d1fb16e170cd3f0ec64dff4bf08}\index{Veiculo@{Veiculo}!associarCliente@{associarCliente}}
+\index{associarCliente@{associarCliente}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{associarCliente()}{associarCliente()}}
+{\footnotesize\ttfamily \label{class_veiculo_abf117d1fb16e170cd3f0ec64dff4bf08} 
+void Veiculo::\+associar\+Cliente (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_cliente}{Cliente}} \texorpdfstring{$\ast$}{*}}]{cliente}{}\end{DoxyParamCaption})}
+
+
+
+Associa o veículo a um cliente. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cliente} & \doxylink{class_cliente}{Cliente} associado ao veículo. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_veiculo_ae8b653186915adc981c013d9b675a1ab}\index{Veiculo@{Veiculo}!atualizarInformacoes@{atualizarInformacoes}}
+\index{atualizarInformacoes@{atualizarInformacoes}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{atualizarInformacoes()}{atualizarInformacoes()}}
+{\footnotesize\ttfamily \label{class_veiculo_ae8b653186915adc981c013d9b675a1ab} 
+void Veiculo::\+atualizar\+Informacoes (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{placa}{}\end{DoxyParamCaption})}
+
+
+
+Atualiza as informações básicas do veículo. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em placa} & Nova placa do veículo. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_veiculo_a0d59cb478add153e7fc872336294cae0}\index{Veiculo@{Veiculo}!consultarHistoricoManutencoes@{consultarHistoricoManutencoes}}
+\index{consultarHistoricoManutencoes@{consultarHistoricoManutencoes}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{consultarHistoricoManutencoes()}{consultarHistoricoManutencoes()}}
+{\footnotesize\ttfamily \label{class_veiculo_a0d59cb478add153e7fc872336294cae0} 
+void Veiculo::\+consultar\+Historico\+Manutencoes (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Consulta o histórico de manutenções do veículo. O histórico é obtido a partir das ordens de serviço relacionadas ao veículo. 
+
+\Hypertarget{class_veiculo_a7ee7b605c0c792544756f08f3901f8ce}\index{Veiculo@{Veiculo}!consultarOrdensServico@{consultarOrdensServico}}
+\index{consultarOrdensServico@{consultarOrdensServico}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{consultarOrdensServico()}{consultarOrdensServico()}}
+{\footnotesize\ttfamily \label{class_veiculo_a7ee7b605c0c792544756f08f3901f8ce} 
+const std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ \& Veiculo::\+consultar\+Ordens\+Servico (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Consulta as ordens de serviço relacionadas ao veículo. 
+
+\begin{DoxyReturn}{Returns}
+Lista de ordens de serviço relacionadas ao veículo. 
+\end{DoxyReturn}
+\Hypertarget{class_veiculo_ad4ae158ba12f069c3e399e35f95bc35c}\index{Veiculo@{Veiculo}!getAno@{getAno}}
+\index{getAno@{getAno}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{getAno()}{getAno()}}
+{\footnotesize\ttfamily \label{class_veiculo_ad4ae158ba12f069c3e399e35f95bc35c} 
+int Veiculo::\+get\+Ano (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna o ano do veículo. 
+
+\begin{DoxyReturn}{Returns}
+Ano do veículo. 
+\end{DoxyReturn}
+\Hypertarget{class_veiculo_a3f5e789063a948c1bc4af12d1dd7045f}\index{Veiculo@{Veiculo}!getCliente@{getCliente}}
+\index{getCliente@{getCliente}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{getCliente()}{getCliente()}}
+{\footnotesize\ttfamily \label{class_veiculo_a3f5e789063a948c1bc4af12d1dd7045f} 
+\doxymbox{\hyperlink{class_cliente}{Cliente}} \texorpdfstring{$\ast$}{*} Veiculo::\+get\+Cliente (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna o cliente associado ao veículo. 
+
+\begin{DoxyReturn}{Returns}
+Ponteiro para o cliente associado. 
+\end{DoxyReturn}
+\Hypertarget{class_veiculo_ae209227f67b4068972292528a1de79bf}\index{Veiculo@{Veiculo}!getMarca@{getMarca}}
+\index{getMarca@{getMarca}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{getMarca()}{getMarca()}}
+{\footnotesize\ttfamily \label{class_veiculo_ae209227f67b4068972292528a1de79bf} 
+const std::\+string \& Veiculo::\+get\+Marca (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna a marca do veículo. 
+
+\begin{DoxyReturn}{Returns}
+Marca do veículo. 
+\end{DoxyReturn}
+\Hypertarget{class_veiculo_a3737b42826988c110eb790a200ab7372}\index{Veiculo@{Veiculo}!getModelo@{getModelo}}
+\index{getModelo@{getModelo}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{getModelo()}{getModelo()}}
+{\footnotesize\ttfamily \label{class_veiculo_a3737b42826988c110eb790a200ab7372} 
+const std::\+string \& Veiculo::\+get\+Modelo (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna o modelo do veículo. 
+
+\begin{DoxyReturn}{Returns}
+Modelo do veículo. 
+\end{DoxyReturn}
+\Hypertarget{class_veiculo_a8a154ee4be1194ac5c182930f14d00d4}\index{Veiculo@{Veiculo}!getPlaca@{getPlaca}}
+\index{getPlaca@{getPlaca}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{getPlaca()}{getPlaca()}}
+{\footnotesize\ttfamily \label{class_veiculo_a8a154ee4be1194ac5c182930f14d00d4} 
+const std::\+string \& Veiculo::\+get\+Placa (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna a placa do veículo. 
+
+\begin{DoxyReturn}{Returns}
+Placa do veículo. 
+\end{DoxyReturn}
+\Hypertarget{class_veiculo_a872a7717caf1d6201b768cc678e21b7d}\index{Veiculo@{Veiculo}!getQuilometragem@{getQuilometragem}}
+\index{getQuilometragem@{getQuilometragem}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{getQuilometragem()}{getQuilometragem()}}
+{\footnotesize\ttfamily \label{class_veiculo_a872a7717caf1d6201b768cc678e21b7d} 
+int Veiculo::\+get\+Quilometragem (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna a quilometragem atual do veículo. 
+
+\begin{DoxyReturn}{Returns}
+Quilometragem atual do veículo. 
+\end{DoxyReturn}
+\Hypertarget{class_veiculo_a723eb4078ff72d7ab7b3e2b3a37a99b4}\index{Veiculo@{Veiculo}!registrarQuilometragem@{registrarQuilometragem}}
+\index{registrarQuilometragem@{registrarQuilometragem}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{registrarQuilometragem()}{registrarQuilometragem()}}
+{\footnotesize\ttfamily \label{class_veiculo_a723eb4078ff72d7ab7b3e2b3a37a99b4} 
+void Veiculo::\+registrar\+Quilometragem (\begin{DoxyParamCaption}\item[{int}]{quilometragem}{}\end{DoxyParamCaption})}
+
+
+
+Registra a quilometragem atual do veículo. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em quilometragem} & Nova quilometragem do veículo. \\
+\hline
+\end{DoxyParams}
+
+
+\label{class_veiculo_doc-variable-members}
+\Hypertarget{class_veiculo_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_veiculo_a3f288a049c252c8aee5b50a0b1a37ed6}\index{Veiculo@{Veiculo}!ano@{ano}}
+\index{ano@{ano}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{ano}{ano}}
+{\footnotesize\ttfamily \label{class_veiculo_a3f288a049c252c8aee5b50a0b1a37ed6} 
+int Veiculo::\+ano\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_veiculo_afd1cd5e5a83ce63da8a430d25eedb2fa}\index{Veiculo@{Veiculo}!cliente@{cliente}}
+\index{cliente@{cliente}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{cliente}{cliente}}
+{\footnotesize\ttfamily \label{class_veiculo_afd1cd5e5a83ce63da8a430d25eedb2fa} 
+\doxymbox{\hyperlink{class_cliente}{Cliente}}\texorpdfstring{$\ast$}{*} Veiculo::\+cliente\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_veiculo_abb62d98acb37a2dd132a46af27cec41e}\index{Veiculo@{Veiculo}!marca@{marca}}
+\index{marca@{marca}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{marca}{marca}}
+{\footnotesize\ttfamily \label{class_veiculo_abb62d98acb37a2dd132a46af27cec41e} 
+std::\+string Veiculo::\+marca\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_veiculo_aeff42e2b98e77aed203c5196fb883e38}\index{Veiculo@{Veiculo}!modelo@{modelo}}
+\index{modelo@{modelo}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{modelo}{modelo}}
+{\footnotesize\ttfamily \label{class_veiculo_aeff42e2b98e77aed203c5196fb883e38} 
+std::\+string Veiculo::\+modelo\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_veiculo_abe40f04b0e4085e566085e6d668b5edf}\index{Veiculo@{Veiculo}!ordensServico@{ordensServico}}
+\index{ordensServico@{ordensServico}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{ordensServico}{ordensServico}}
+{\footnotesize\ttfamily \label{class_veiculo_abe40f04b0e4085e566085e6d668b5edf} 
+std::\+vector$<$\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}}\texorpdfstring{$\ast$}{*}$>$ Veiculo::\+ordens\+Servico\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_veiculo_aab5e8527605ca9f899aa53ff031fcbd7}\index{Veiculo@{Veiculo}!placa@{placa}}
+\index{placa@{placa}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{placa}{placa}}
+{\footnotesize\ttfamily \label{class_veiculo_aab5e8527605ca9f899aa53ff031fcbd7} 
+std::\+string Veiculo::\+placa\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_veiculo_a0af3ad5f70ec2fd17995e1192bb0c0e9}\index{Veiculo@{Veiculo}!quilometragem@{quilometragem}}
+\index{quilometragem@{quilometragem}!Veiculo@{Veiculo}}
+\doxysubsubsection{\texorpdfstring{quilometragem}{quilometragem}}
+{\footnotesize\ttfamily \label{class_veiculo_a0af3ad5f70ec2fd17995e1192bb0c0e9} 
+int Veiculo::\+quilometragem\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+include/\doxymbox{\hyperlink{_veiculo_8hpp}{Veiculo.\+hpp}}\end{DoxyCompactItemize}

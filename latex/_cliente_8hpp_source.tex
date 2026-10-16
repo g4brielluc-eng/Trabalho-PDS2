@@ -1,0 +1,50 @@
+\doxysection{Cliente.\+hpp}
+\hypertarget{_cliente_8hpp_source}{}\label{_cliente_8hpp_source}\index{include/Cliente.hpp@{include/Cliente.hpp}}
+\doxymbox{\hyperlink{_cliente_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#ifndef\ CLIENTE\_H}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ CLIENTE\_H}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_veiculo}{Veiculo}};}
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}};}
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_agendamento}{Agendamento}};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_cliente_ab801a4e9f7a670670e15415f9575aa58}{Cliente}}\{}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ nome}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_cliente_aa76956ceb05ecabb0f23018987f5e5e4}{cpf}},\ \doxymbox{\hyperlink{class_cliente_afa3c7aa85fb74a6ab6b50ea33037bb09}{contato}},\ \doxymbox{\hyperlink{class_cliente_a4781d5ff8d85ff8b16502335dd2d124d}{endereco}};}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ std::vector<Veiculo*>\ \doxymbox{\hyperlink{class_cliente_af170ff24f4f25581c74e0c318965901d}{veiculos}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ std::vector<OrdemDeServico*>\ \doxymbox{\hyperlink{class_cliente_acad674304613b825643c51a84808328c}{servicos}};}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ std::vector<Agendamento*>\ \doxymbox{\hyperlink{class_cliente_ac862fc214567b64f5865847855f1bcd5}{agendamentos}};}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{class_cliente_ab801a4e9f7a670670e15415f9575aa58}{Cliente}}(std::string\ nome,\ \ std::string\ \doxymbox{\hyperlink{class_cliente_aa76956ceb05ecabb0f23018987f5e5e4}{cpf}},\ std::string\ \doxymbox{\hyperlink{class_cliente_afa3c7aa85fb74a6ab6b50ea33037bb09}{contato}},\ std::string\ \doxymbox{\hyperlink{class_cliente_a4781d5ff8d85ff8b16502335dd2d124d}{endereco}});}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_cliente_a76a31c20bfa038a159643668e3f80e80}{setContato}}(\textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_cliente_afa3c7aa85fb74a6ab6b50ea33037bb09}{contato}});}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{class_veiculo}{Veiculo}}\ \doxymbox{\hyperlink{class_cliente_ab028298ef5c005ff53141e7fdfe22195}{getVeiculos}}();}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_cliente_a08f082ba70303d97cbd45ac2252ff635}{setVeiculos}}(\doxymbox{\hyperlink{class_veiculo}{Veiculo}}\ veiculo);}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}}\ \doxymbox{\hyperlink{class_cliente_aee6c5020afefaf1c4dc0b85d0dca55dd}{getServicos}}();}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_cliente_a4f431da78f2d2ba44c7276aaf311140c}{setServicos}}(\doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}}\ ordemdeservico);}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_cliente_abbb2daa3285077991d88443dfa1ae7b9}{setAgendamento}}\ (\doxymbox{\hyperlink{class_agendamento}{Agendamento}});}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

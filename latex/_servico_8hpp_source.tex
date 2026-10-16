@@ -1,0 +1,58 @@
+\doxysection{Servico.\+hpp}
+\hypertarget{_servico_8hpp_source}{}\label{_servico_8hpp_source}\index{include/Servico.hpp@{include/Servico.hpp}}
+\doxymbox{\hyperlink{_servico_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#ifndef\ SERVICO\_HPP}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ SERVICO\_HPP}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_servico_afb7de9c6358dbfd51b01b4bbe4929661}{Servico}}\ \{}
+\DoxyCodeLine{00030\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00032\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_servico_aa0f21b253d72237eb32b1e95bb860878}{nome}};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00035\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_servico_ac39bb8ef9b3b43af90116cf060f92c06}{descricao}};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_servico_a14e15290ff2d388e6b0b4d869d4e3648}{preco}};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_servico_a60320a10cb96970f1a41e1cc233d56a3}{duracaoEstimada}};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00044\ \ \ \ \ std::vector<OrdemDeServico*>\ \doxymbox{\hyperlink{class_servico_ad33084e62e9bca850f22e8e0d76352aa}{ordens}};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00056\ \ \ \ \ \doxymbox{\hyperlink{class_servico_afb7de9c6358dbfd51b01b4bbe4929661}{Servico}}(\textcolor{keyword}{const}\ std::string\&\ nomeServico,}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ descricaoServico,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ precoServico,}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ duracaoMinutos);}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_servico_aafc8dc3ae838294e29f28257db2020fd}{getNome}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_servico_a880f54ec552b22716e6a914f97be0b86}{getDescricao}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_servico_a1e48b71e7e373db5ef37a79be0a91df3}{getPreco}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_servico_a629dc0fab779d15602a2011bd7ffcb40}{getDuracaoEstimada}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<OrdemDeServico*>\&\ \doxymbox{\hyperlink{class_servico_a8aa9cea8f1d5aee7c7130f29dfec567b}{getOrdens}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_servico_a2b1a96693fd23a6b588906288ad3006c}{atualizarDescricao}}(\textcolor{keyword}{const}\ std::string\&\ novaDescricao);}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_servico_aeec6599cea685a703bf011cb07a61676}{atualizarPreco}}(\textcolor{keywordtype}{float}\ novoPreco);}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_servico_ae1e938306b1d6939fb91fc406b141f36}{registrarDuracaoEstimada}}(\textcolor{keywordtype}{int}\ minutos);}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00119\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_servico_ae3259a4535450fcbfedf1565b84835d3}{consultarInformacoes}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_servico_a77f04959a53b118c279157e8bdcba07b}{associarOrdem}}(\doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}}*\ ordem);}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_servico_aa4d48942d8e0aaf03a89f041aa5d105c}{calcularCusto}}(\textcolor{keywordtype}{int}\ quantidade\ =\ 1)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00139\ \};}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ SERVICO\_HPP}}
+
+\end{DoxyCode}

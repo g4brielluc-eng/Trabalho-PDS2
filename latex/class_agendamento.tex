@@ -1,0 +1,421 @@
+\doxysection{Agendamento Class Reference}
+\hypertarget{class_agendamento}{}\label{class_agendamento}\index{Agendamento@{Agendamento}}
+
+
+Representa um agendamento de serviço da oficina.  
+
+
+
+
+{\ttfamily \+\#include $<$Agendamento.\+hpp$>$}
+
+
+
+Collaboration diagram for Agendamento:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=256pt]{class_agendamento__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum class \doxymbox{\hyperlink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5ba}{Status}} \{ \doxymbox{\hyperlink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5baa5db6793615bbf632cf6293870605bb10}{PENDENTE}}
+, \doxymbox{\hyperlink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5baa04e4b98833da8f71fe78501904b69694}{CONFIRMADO}}
+, \doxymbox{\hyperlink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5baaf2af27b0fea4e60a6adab45a438f6310}{CANCELADO}}
+ \}
+\begin{DoxyCompactList}\small\item\em Representa a situação atual do agendamento. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_agendamento_aa0656da652039724531de26b4a00a3a7}{Agendamento}} (const std::\+string \&data, const std::\+string \&horario)
+\begin{DoxyCompactList}\small\item\em Construtor da classe \doxylink{class_agendamento}{Agendamento}. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_agendamento_a2aadf9004b46bdbfbb108b9704e3ee47}{\texorpdfstring{$\sim$}{\string~}\+Agendamento}} ()
+\begin{DoxyCompactList}\small\item\em Destrutor da classe \doxylink{class_agendamento}{Agendamento}. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_agendamento_af49fbc246131c8f59e691822eb2414c1}{registrar\+Agendamento}} ()
+\begin{DoxyCompactList}\small\item\em Registra o agendamento no sistema. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_agendamento_a3eca476fc6cb93edc0df873c6c2ffc8b}{associar\+Cliente}} (\doxymbox{\hyperlink{class_cliente}{Cliente}} \texorpdfstring{$\ast$}{*}cliente)
+\begin{DoxyCompactList}\small\item\em Associa um cliente ao agendamento. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_agendamento_a5afa7ed050f7fc6269ba1995470ace65}{associar\+Veiculo}} (\doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*}veiculo)
+\begin{DoxyCompactList}\small\item\em Associa um veículo ao agendamento. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_agendamento_ab5dad8c1ab0646845466f9b407eebcc0}{definir\+Servico}} (\doxymbox{\hyperlink{class_servico}{Servico}} \texorpdfstring{$\ast$}{*}servico)
+\begin{DoxyCompactList}\small\item\em Define o serviço solicitado no agendamento. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_agendamento_af5c484b577b095d302923df7fe8269eb}{alterar\+Data\+Horario}} (const std::\+string \&nova\+Data, const std::\+string \&novo\+Horario)
+\begin{DoxyCompactList}\small\item\em Altera a data e o horário do agendamento. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_agendamento_ac245d2b54f8cb0a68a8ef17c76c392cb}{cancelar}} ()
+\begin{DoxyCompactList}\small\item\em Cancela o agendamento. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_agendamento_ada712d48867ef979e1540b5000ecd75e}{confirmar}} ()
+\begin{DoxyCompactList}\small\item\em Confirma o agendamento. \end{DoxyCompactList}\item 
+const std::\+string \& \doxymbox{\hyperlink{class_agendamento_ab3229f6a247afd98b7815d899a04d36b}{get\+Data}} () const
+\begin{DoxyCompactList}\small\item\em Retorna a data do agendamento. \end{DoxyCompactList}\item 
+const std::\+string \& \doxymbox{\hyperlink{class_agendamento_a662f6928dbe3e331b7a91bc1e23798cb}{get\+Horario}} () const
+\begin{DoxyCompactList}\small\item\em Retorna o horário do agendamento. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_cliente}{Cliente}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_agendamento_aef695e1e22a58a03a2cc7ec12122021f}{get\+Cliente}} () const
+\begin{DoxyCompactList}\small\item\em Retorna o cliente associado ao agendamento. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_agendamento_a480a8b89e086b969d75bddb71f762aba}{get\+Veiculo}} () const
+\begin{DoxyCompactList}\small\item\em Retorna o veículo associado ao agendamento. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_servico}{Servico}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_agendamento_abd51c7498b270a3aacfae766e6a68e25}{get\+Servico}} () const
+\begin{DoxyCompactList}\small\item\em Retorna o serviço solicitado. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5ba}{Status}} \doxymbox{\hyperlink{class_agendamento_a628dfbcdd3b720062643220a67071c4a}{get\+Status}} () const
+\begin{DoxyCompactList}\small\item\em Retorna o status atual do agendamento. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static const std::\+vector$<$ \doxymbox{\hyperlink{class_agendamento}{Agendamento}} \texorpdfstring{$\ast$}{*} $>$ \& \doxymbox{\hyperlink{class_agendamento_ac51296ea7a48967d1f62dbcbe60025aa}{consultar\+Agendamentos}} ()
+\begin{DoxyCompactList}\small\item\em Consulta os agendamentos registrados no sistema. \end{DoxyCompactList}\item 
+static bool \doxymbox{\hyperlink{class_agendamento_a5e1857612d100b3eb5f6bdaa3cb3dc5a}{verificar\+Disponibilidade}} (const std::\+string \&data, const std::\+string \&horario)
+\begin{DoxyCompactList}\small\item\em Verifica se uma data e horário estão disponíveis. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std::\+string \doxymbox{\hyperlink{class_agendamento_ad66b42b433fb26faedef5b9dcd997531}{data}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_agendamento_ae11c810ad41fa34ccff23c47fedf7d3c}{horario}}
+\item 
+\doxymbox{\hyperlink{class_cliente}{Cliente}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_agendamento_a2c29698137179fb98fbf123f79d4a389}{cliente}}
+\item 
+\doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_agendamento_abf55fb0ed1e886e4ab373ba4b8a56067}{veiculo}}
+\item 
+\doxymbox{\hyperlink{class_servico}{Servico}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_agendamento_a25d9880954aa71c6572845180ca7cb15}{servico}}
+\item 
+\doxymbox{\hyperlink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5ba}{Status}} \doxymbox{\hyperlink{class_agendamento_a22022e0122964a4f5d6a63ee83836a55}{status}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static std::\+vector$<$ \doxymbox{\hyperlink{class_agendamento}{Agendamento}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_agendamento_a096292ea4cc2996b5dc20db8a6fe17ae}{agendamentos}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Representa um agendamento de serviço da oficina. 
+
+A classe \doxylink{class_agendamento}{Agendamento} armazena as informações referentes ao agendamento de um serviço, incluindo cliente, veículo, serviço solicitado, data, horário e situação do agendamento. 
+
+\label{class_agendamento_doc-enum-members}
+\Hypertarget{class_agendamento_doc-enum-members}
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5ba}\index{Agendamento@{Agendamento}!Status@{Status}}
+\index{Status@{Status}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{Status}{Status}}
+{\footnotesize\ttfamily \label{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5ba} 
+enum class \doxymbox{\hyperlink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5ba}{Agendamento::\+\+Status}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Representa a situação atual do agendamento. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PENDENTE@{PENDENTE}!Agendamento@{Agendamento}}
+\index{Agendamento@{Agendamento}!PENDENTE@{PENDENTE}}
+}\Hypertarget{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5baa5db6793615bbf632cf6293870605bb10}\label{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5baa5db6793615bbf632cf6293870605bb10} 
+PENDENTE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CONFIRMADO@{CONFIRMADO}!Agendamento@{Agendamento}}
+\index{Agendamento@{Agendamento}!CONFIRMADO@{CONFIRMADO}}
+}\Hypertarget{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5baa04e4b98833da8f71fe78501904b69694}\label{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5baa04e4b98833da8f71fe78501904b69694} 
+CONFIRMADO&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CANCELADO@{CANCELADO}!Agendamento@{Agendamento}}
+\index{Agendamento@{Agendamento}!CANCELADO@{CANCELADO}}
+}\Hypertarget{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5baaf2af27b0fea4e60a6adab45a438f6310}\label{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5baaf2af27b0fea4e60a6adab45a438f6310} 
+CANCELADO&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{class_agendamento_doc-constructors}
+\Hypertarget{class_agendamento_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_agendamento_aa0656da652039724531de26b4a00a3a7}\index{Agendamento@{Agendamento}!Agendamento@{Agendamento}}
+\index{Agendamento@{Agendamento}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{Agendamento()}{Agendamento()}}
+{\footnotesize\ttfamily \label{class_agendamento_aa0656da652039724531de26b4a00a3a7} 
+Agendamento::\+\+Agendamento (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{data}{, }\item[{const std::\+string \&}]{horario}{}\end{DoxyParamCaption})}
+
+
+
+Construtor da classe \doxylink{class_agendamento}{Agendamento}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Data do agendamento. \\
+\hline
+{\em horario} & Horário do agendamento. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_agendamento_a2aadf9004b46bdbfbb108b9704e3ee47}\index{Agendamento@{Agendamento}!````~Agendamento@{\texorpdfstring{$\sim$}{\string~}Agendamento}}
+\index{````~Agendamento@{\texorpdfstring{$\sim$}{\string~}Agendamento}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Agendamento()}{\string~Agendamento()}}
+{\footnotesize\ttfamily \label{class_agendamento_a2aadf9004b46bdbfbb108b9704e3ee47} 
+Agendamento::\+\texorpdfstring{$\sim$}{\string~}\+Agendamento (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Destrutor da classe \doxylink{class_agendamento}{Agendamento}. 
+
+
+
+\label{class_agendamento_doc-func-members}
+\Hypertarget{class_agendamento_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_agendamento_af5c484b577b095d302923df7fe8269eb}\index{Agendamento@{Agendamento}!alterarDataHorario@{alterarDataHorario}}
+\index{alterarDataHorario@{alterarDataHorario}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{alterarDataHorario()}{alterarDataHorario()}}
+{\footnotesize\ttfamily \label{class_agendamento_af5c484b577b095d302923df7fe8269eb} 
+void Agendamento::\+alterar\+Data\+Horario (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{nova\+Data}{, }\item[{const std::\+string \&}]{novo\+Horario}{}\end{DoxyParamCaption})}
+
+
+
+Altera a data e o horário do agendamento. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nova\+Data} & Nova data do agendamento. \\
+\hline
+{\em novo\+Horario} & Novo horário do agendamento. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_agendamento_a3eca476fc6cb93edc0df873c6c2ffc8b}\index{Agendamento@{Agendamento}!associarCliente@{associarCliente}}
+\index{associarCliente@{associarCliente}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{associarCliente()}{associarCliente()}}
+{\footnotesize\ttfamily \label{class_agendamento_a3eca476fc6cb93edc0df873c6c2ffc8b} 
+void Agendamento::\+associar\+Cliente (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_cliente}{Cliente}} \texorpdfstring{$\ast$}{*}}]{cliente}{}\end{DoxyParamCaption})}
+
+
+
+Associa um cliente ao agendamento. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cliente} & \doxylink{class_cliente}{Cliente} responsável pelo agendamento. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_agendamento_a5afa7ed050f7fc6269ba1995470ace65}\index{Agendamento@{Agendamento}!associarVeiculo@{associarVeiculo}}
+\index{associarVeiculo@{associarVeiculo}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{associarVeiculo()}{associarVeiculo()}}
+{\footnotesize\ttfamily \label{class_agendamento_a5afa7ed050f7fc6269ba1995470ace65} 
+void Agendamento::\+associar\+Veiculo (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*}}]{veiculo}{}\end{DoxyParamCaption})}
+
+
+
+Associa um veículo ao agendamento. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em veiculo} & Veículo que receberá o serviço. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_agendamento_ac245d2b54f8cb0a68a8ef17c76c392cb}\index{Agendamento@{Agendamento}!cancelar@{cancelar}}
+\index{cancelar@{cancelar}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{cancelar()}{cancelar()}}
+{\footnotesize\ttfamily \label{class_agendamento_ac245d2b54f8cb0a68a8ef17c76c392cb} 
+void Agendamento::\+cancelar (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Cancela o agendamento. 
+
+\Hypertarget{class_agendamento_ada712d48867ef979e1540b5000ecd75e}\index{Agendamento@{Agendamento}!confirmar@{confirmar}}
+\index{confirmar@{confirmar}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{confirmar()}{confirmar()}}
+{\footnotesize\ttfamily \label{class_agendamento_ada712d48867ef979e1540b5000ecd75e} 
+void Agendamento::\+confirmar (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Confirma o agendamento. 
+
+\Hypertarget{class_agendamento_ac51296ea7a48967d1f62dbcbe60025aa}\index{Agendamento@{Agendamento}!consultarAgendamentos@{consultarAgendamentos}}
+\index{consultarAgendamentos@{consultarAgendamentos}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{consultarAgendamentos()}{consultarAgendamentos()}}
+{\footnotesize\ttfamily \label{class_agendamento_ac51296ea7a48967d1f62dbcbe60025aa} 
+const std::\+vector$<$ \doxymbox{\hyperlink{class_agendamento}{Agendamento}} \texorpdfstring{$\ast$}{*} $>$ \& Agendamento::\+consultar\+Agendamentos (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Consulta os agendamentos registrados no sistema. 
+
+\begin{DoxyReturn}{Returns}
+Lista de agendamentos registrados. 
+\end{DoxyReturn}
+\Hypertarget{class_agendamento_ab5dad8c1ab0646845466f9b407eebcc0}\index{Agendamento@{Agendamento}!definirServico@{definirServico}}
+\index{definirServico@{definirServico}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{definirServico()}{definirServico()}}
+{\footnotesize\ttfamily \label{class_agendamento_ab5dad8c1ab0646845466f9b407eebcc0} 
+void Agendamento::\+definir\+Servico (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_servico}{Servico}} \texorpdfstring{$\ast$}{*}}]{servico}{}\end{DoxyParamCaption})}
+
+
+
+Define o serviço solicitado no agendamento. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em servico} & Serviço solicitado pelo cliente. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_agendamento_aef695e1e22a58a03a2cc7ec12122021f}\index{Agendamento@{Agendamento}!getCliente@{getCliente}}
+\index{getCliente@{getCliente}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{getCliente()}{getCliente()}}
+{\footnotesize\ttfamily \label{class_agendamento_aef695e1e22a58a03a2cc7ec12122021f} 
+\doxymbox{\hyperlink{class_cliente}{Cliente}} \texorpdfstring{$\ast$}{*} Agendamento::\+get\+Cliente (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna o cliente associado ao agendamento. 
+
+\begin{DoxyReturn}{Returns}
+Ponteiro para o cliente associado. 
+\end{DoxyReturn}
+\Hypertarget{class_agendamento_ab3229f6a247afd98b7815d899a04d36b}\index{Agendamento@{Agendamento}!getData@{getData}}
+\index{getData@{getData}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{getData()}{getData()}}
+{\footnotesize\ttfamily \label{class_agendamento_ab3229f6a247afd98b7815d899a04d36b} 
+const std::\+string \& Agendamento::\+get\+Data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna a data do agendamento. 
+
+\begin{DoxyReturn}{Returns}
+Data do agendamento. 
+\end{DoxyReturn}
+\Hypertarget{class_agendamento_a662f6928dbe3e331b7a91bc1e23798cb}\index{Agendamento@{Agendamento}!getHorario@{getHorario}}
+\index{getHorario@{getHorario}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{getHorario()}{getHorario()}}
+{\footnotesize\ttfamily \label{class_agendamento_a662f6928dbe3e331b7a91bc1e23798cb} 
+const std::\+string \& Agendamento::\+get\+Horario (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna o horário do agendamento. 
+
+\begin{DoxyReturn}{Returns}
+Horário do agendamento. 
+\end{DoxyReturn}
+\Hypertarget{class_agendamento_abd51c7498b270a3aacfae766e6a68e25}\index{Agendamento@{Agendamento}!getServico@{getServico}}
+\index{getServico@{getServico}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{getServico()}{getServico()}}
+{\footnotesize\ttfamily \label{class_agendamento_abd51c7498b270a3aacfae766e6a68e25} 
+\doxymbox{\hyperlink{class_servico}{Servico}} \texorpdfstring{$\ast$}{*} Agendamento::\+get\+Servico (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna o serviço solicitado. 
+
+\begin{DoxyReturn}{Returns}
+Ponteiro para o serviço associado. 
+\end{DoxyReturn}
+\Hypertarget{class_agendamento_a628dfbcdd3b720062643220a67071c4a}\index{Agendamento@{Agendamento}!getStatus@{getStatus}}
+\index{getStatus@{getStatus}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{getStatus()}{getStatus()}}
+{\footnotesize\ttfamily \label{class_agendamento_a628dfbcdd3b720062643220a67071c4a} 
+\doxymbox{\hyperlink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5ba}{Status}} Agendamento::\+get\+Status (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna o status atual do agendamento. 
+
+\begin{DoxyReturn}{Returns}
+\doxylink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5ba}{Status} atual do agendamento. 
+\end{DoxyReturn}
+\Hypertarget{class_agendamento_a480a8b89e086b969d75bddb71f762aba}\index{Agendamento@{Agendamento}!getVeiculo@{getVeiculo}}
+\index{getVeiculo@{getVeiculo}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{getVeiculo()}{getVeiculo()}}
+{\footnotesize\ttfamily \label{class_agendamento_a480a8b89e086b969d75bddb71f762aba} 
+\doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*} Agendamento::\+get\+Veiculo (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna o veículo associado ao agendamento. 
+
+\begin{DoxyReturn}{Returns}
+Ponteiro para o veículo associado. 
+\end{DoxyReturn}
+\Hypertarget{class_agendamento_af49fbc246131c8f59e691822eb2414c1}\index{Agendamento@{Agendamento}!registrarAgendamento@{registrarAgendamento}}
+\index{registrarAgendamento@{registrarAgendamento}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{registrarAgendamento()}{registrarAgendamento()}}
+{\footnotesize\ttfamily \label{class_agendamento_af49fbc246131c8f59e691822eb2414c1} 
+void Agendamento::\+registrar\+Agendamento (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Registra o agendamento no sistema. 
+
+\Hypertarget{class_agendamento_a5e1857612d100b3eb5f6bdaa3cb3dc5a}\index{Agendamento@{Agendamento}!verificarDisponibilidade@{verificarDisponibilidade}}
+\index{verificarDisponibilidade@{verificarDisponibilidade}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{verificarDisponibilidade()}{verificarDisponibilidade()}}
+{\footnotesize\ttfamily \label{class_agendamento_a5e1857612d100b3eb5f6bdaa3cb3dc5a} 
+bool Agendamento::\+verificar\+Disponibilidade (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{data}{, }\item[{const std::\+string \&}]{horario}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Verifica se uma data e horário estão disponíveis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Data que será verificada. \\
+\hline
+{\em horario} & Horário que será verificado. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true se o horário estiver disponível, false caso contrário. 
+\end{DoxyReturn}
+
+
+\label{class_agendamento_doc-variable-members}
+\Hypertarget{class_agendamento_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_agendamento_a096292ea4cc2996b5dc20db8a6fe17ae}\index{Agendamento@{Agendamento}!agendamentos@{agendamentos}}
+\index{agendamentos@{agendamentos}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{agendamentos}{agendamentos}}
+{\footnotesize\ttfamily \label{class_agendamento_a096292ea4cc2996b5dc20db8a6fe17ae} 
+std::\+vector$<$\doxymbox{\hyperlink{class_agendamento}{Agendamento}}\texorpdfstring{$\ast$}{*}$>$ Agendamento::\+agendamentos\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\Hypertarget{class_agendamento_a2c29698137179fb98fbf123f79d4a389}\index{Agendamento@{Agendamento}!cliente@{cliente}}
+\index{cliente@{cliente}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{cliente}{cliente}}
+{\footnotesize\ttfamily \label{class_agendamento_a2c29698137179fb98fbf123f79d4a389} 
+\doxymbox{\hyperlink{class_cliente}{Cliente}}\texorpdfstring{$\ast$}{*} Agendamento::\+cliente\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_agendamento_ad66b42b433fb26faedef5b9dcd997531}\index{Agendamento@{Agendamento}!data@{data}}
+\index{data@{data}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily \label{class_agendamento_ad66b42b433fb26faedef5b9dcd997531} 
+std::\+string Agendamento::\+data\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_agendamento_ae11c810ad41fa34ccff23c47fedf7d3c}\index{Agendamento@{Agendamento}!horario@{horario}}
+\index{horario@{horario}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{horario}{horario}}
+{\footnotesize\ttfamily \label{class_agendamento_ae11c810ad41fa34ccff23c47fedf7d3c} 
+std::\+string Agendamento::\+horario\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_agendamento_a25d9880954aa71c6572845180ca7cb15}\index{Agendamento@{Agendamento}!servico@{servico}}
+\index{servico@{servico}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{servico}{servico}}
+{\footnotesize\ttfamily \label{class_agendamento_a25d9880954aa71c6572845180ca7cb15} 
+\doxymbox{\hyperlink{class_servico}{Servico}}\texorpdfstring{$\ast$}{*} Agendamento::\+servico\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_agendamento_a22022e0122964a4f5d6a63ee83836a55}\index{Agendamento@{Agendamento}!status@{status}}
+\index{status@{status}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{status}{status}}
+{\footnotesize\ttfamily \label{class_agendamento_a22022e0122964a4f5d6a63ee83836a55} 
+\doxymbox{\hyperlink{class_agendamento_a7e86f0e0a3ab13fa7d9b2882a7b7b5ba}{Status}} Agendamento::\+status\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_agendamento_abf55fb0ed1e886e4ab373ba4b8a56067}\index{Agendamento@{Agendamento}!veiculo@{veiculo}}
+\index{veiculo@{veiculo}!Agendamento@{Agendamento}}
+\doxysubsubsection{\texorpdfstring{veiculo}{veiculo}}
+{\footnotesize\ttfamily \label{class_agendamento_abf55fb0ed1e886e4ab373ba4b8a56067} 
+\doxymbox{\hyperlink{class_veiculo}{Veiculo}}\texorpdfstring{$\ast$}{*} Agendamento::\+veiculo\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+include/\doxymbox{\hyperlink{_agendamento_8hpp}{Agendamento.\+hpp}}\end{DoxyCompactItemize}

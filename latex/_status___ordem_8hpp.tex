@@ -1,0 +1,82 @@
+\doxysection{include/\+\+Status\+\_\+\+Ordem.hpp File Reference}
+\hypertarget{_status___ordem_8hpp}{}\label{_status___ordem_8hpp}\index{include/Status\_Ordem.hpp@{include/Status\_Ordem.hpp}}
+This graph shows which files directly or indirectly include this file:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_status___ordem_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430}{Status\+Ordem}} \{ \newline
+\doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ab12e2ff165314491743060d8055ab4bc}{ABERTA}}
+, \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ac42ab65a66e80ed53112830739aa29c1}{EM\+\_\+\+DIAGNOSTICO}}
+, \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430a2495949e23b3bed9c2fea01c3f5f3049}{EM\+\_\+\+EXECUCAO}}
+, \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ac7a4874c4bca9ce4ca1fe150052fc41a}{AGUARDANDO\+\_\+\+PECA}}
+, \newline
+\doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430a4fb3949bc0348a23f0dde27141c76722}{AGUARDANDO\+\_\+\+RETIRADA}}
+, \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ae15685469080f6f6fa539433c9caa2b5}{FINALIZADA}}
+ \}
+\begin{DoxyCompactList}\small\item\em Status possíveis de uma ordem de serviço. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\label{_status___ordem_8hpp_doc-enum-members}
+\Hypertarget{_status___ordem_8hpp_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430}\index{Status\_Ordem.hpp@{Status\_Ordem.hpp}!StatusOrdem@{StatusOrdem}}
+\index{StatusOrdem@{StatusOrdem}!Status\_Ordem.hpp@{Status\_Ordem.hpp}}
+\doxysubsubsection{\texorpdfstring{StatusOrdem}{StatusOrdem}}
+{\footnotesize\ttfamily \label{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430} 
+enum class \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430}{Status\+Ordem}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Status possíveis de uma ordem de serviço. 
+
+Fluxo esperado: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ab12e2ff165314491743060d8055ab4bc}{ABERTA}}\ -\/>\ \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ac42ab65a66e80ed53112830739aa29c1}{EM\_DIAGNOSTICO}}\ -\/>\ \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430a2495949e23b3bed9c2fea01c3f5f3049}{EM\_EXECUCAO}}\ <-\/>\ \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ac7a4874c4bca9ce4ca1fe150052fc41a}{AGUARDANDO\_PECA}}}
+\DoxyCodeLine{\ \ \ \ \ \ \ -\/>\ \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430a4fb3949bc0348a23f0dde27141c76722}{AGUARDANDO\_RETIRADA}}\ -\/>\ \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ae15685469080f6f6fa539433c9caa2b5}{FINALIZADA}}}
+
+\end{DoxyCode}
+ \begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ABERTA@{ABERTA}!Status\_Ordem.hpp@{Status\_Ordem.hpp}}
+\index{Status\_Ordem.hpp@{Status\_Ordem.hpp}!ABERTA@{ABERTA}}
+}\Hypertarget{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ab12e2ff165314491743060d8055ab4bc}\label{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ab12e2ff165314491743060d8055ab4bc} 
+ABERTA&Ordem criada, ainda sem diagnóstico. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EM\_DIAGNOSTICO@{EM\_DIAGNOSTICO}!Status\_Ordem.hpp@{Status\_Ordem.hpp}}
+\index{Status\_Ordem.hpp@{Status\_Ordem.hpp}!EM\_DIAGNOSTICO@{EM\_DIAGNOSTICO}}
+}\Hypertarget{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ac42ab65a66e80ed53112830739aa29c1}\label{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ac42ab65a66e80ed53112830739aa29c1} 
+EM\+\_\+\+DIAGNOSTICO&Mecânico avaliando o veículo. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EM\_EXECUCAO@{EM\_EXECUCAO}!Status\_Ordem.hpp@{Status\_Ordem.hpp}}
+\index{Status\_Ordem.hpp@{Status\_Ordem.hpp}!EM\_EXECUCAO@{EM\_EXECUCAO}}
+}\Hypertarget{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430a2495949e23b3bed9c2fea01c3f5f3049}\label{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430a2495949e23b3bed9c2fea01c3f5f3049} 
+EM\+\_\+\+EXECUCAO&Serviços em andamento. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{AGUARDANDO\_PECA@{AGUARDANDO\_PECA}!Status\_Ordem.hpp@{Status\_Ordem.hpp}}
+\index{Status\_Ordem.hpp@{Status\_Ordem.hpp}!AGUARDANDO\_PECA@{AGUARDANDO\_PECA}}
+}\Hypertarget{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ac7a4874c4bca9ce4ca1fe150052fc41a}\label{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ac7a4874c4bca9ce4ca1fe150052fc41a} 
+AGUARDANDO\+\_\+\+PECA&Execuçao parada esperando peça necessária. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{AGUARDANDO\_RETIRADA@{AGUARDANDO\_RETIRADA}!Status\_Ordem.hpp@{Status\_Ordem.hpp}}
+\index{Status\_Ordem.hpp@{Status\_Ordem.hpp}!AGUARDANDO\_RETIRADA@{AGUARDANDO\_RETIRADA}}
+}\Hypertarget{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430a4fb3949bc0348a23f0dde27141c76722}\label{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430a4fb3949bc0348a23f0dde27141c76722} 
+AGUARDANDO\+\_\+\+RETIRADA&Serviço concluido; veículo ainda na oficina. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FINALIZADA@{FINALIZADA}!Status\_Ordem.hpp@{Status\_Ordem.hpp}}
+\index{Status\_Ordem.hpp@{Status\_Ordem.hpp}!FINALIZADA@{FINALIZADA}}
+}\Hypertarget{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ae15685469080f6f6fa539433c9caa2b5}\label{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430ae15685469080f6f6fa539433c9caa2b5} 
+FINALIZADA&Veículo entregue ao cliente (so via \doxylink{class_ordem_de_servico_a3d89376aac460a04a9054be735e2d800}{Ordem\+De\+Servico::\+finalizar}). \\
+\hline
+
+\end{DoxyEnumFields}

@@ -1,0 +1,228 @@
+\doxysection{Cliente Class Reference}
+\hypertarget{class_cliente}{}\label{class_cliente}\index{Cliente@{Cliente}}
+
+
+Representa um cliente da oficina.  
+
+
+
+
+{\ttfamily \+\#include $<$Cliente.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_cliente_ab801a4e9f7a670670e15415f9575aa58}{Cliente}} (std::\+string nome, std::\+string cpf, std::\+string contato, std::\+string endereco)
+\begin{DoxyCompactList}\small\item\em Construtor da classe \doxylink{class_cliente}{Cliente}. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_cliente_a76a31c20bfa038a159643668e3f80e80}{set\+Contato}} (int contato)
+\begin{DoxyCompactList}\small\item\em Define o contato do cliente. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_veiculo}{Veiculo}} \doxymbox{\hyperlink{class_cliente_ab028298ef5c005ff53141e7fdfe22195}{get\+Veiculos}} ()
+\begin{DoxyCompactList}\small\item\em Obtém um veículo do cliente. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_cliente_a08f082ba70303d97cbd45ac2252ff635}{set\+Veiculos}} (\doxymbox{\hyperlink{class_veiculo}{Veiculo}} veiculo)
+\begin{DoxyCompactList}\small\item\em Associa um veículo ao cliente. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \doxymbox{\hyperlink{class_cliente_aee6c5020afefaf1c4dc0b85d0dca55dd}{get\+Servicos}} ()
+\begin{DoxyCompactList}\small\item\em Obtém uma ordem de serviço do cliente. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_cliente_a4f431da78f2d2ba44c7276aaf311140c}{set\+Servicos}} (\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} ordemdeservico)
+\begin{DoxyCompactList}\small\item\em Associa uma ordem de serviço ao cliente. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_cliente_abbb2daa3285077991d88443dfa1ae7b9}{set\+Agendamento}} (\doxymbox{\hyperlink{class_agendamento}{Agendamento}})
+\begin{DoxyCompactList}\small\item\em Associa um agendamento ao cliente. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const std::\+string nome std::\+string \doxymbox{\hyperlink{class_cliente_aa76956ceb05ecabb0f23018987f5e5e4}{cpf}}
+\begin{DoxyCompactList}\small\item\em Nome do cliente (não pode ser alterado após a construção). \end{DoxyCompactList}\item 
+const std::\+string nome std::\+string \doxymbox{\hyperlink{class_cliente_afa3c7aa85fb74a6ab6b50ea33037bb09}{contato}}
+\item 
+const std::\+string nome std::\+string \doxymbox{\hyperlink{class_cliente_a4781d5ff8d85ff8b16502335dd2d124d}{endereco}}
+\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_cliente_af170ff24f4f25581c74e0c318965901d}{veiculos}}
+\begin{DoxyCompactList}\small\item\em Lista de veículos pertencentes ao cliente. \end{DoxyCompactList}\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_cliente_acad674304613b825643c51a84808328c}{servicos}}
+\begin{DoxyCompactList}\small\item\em Lista de ordens de serviço associadas ao cliente. \end{DoxyCompactList}\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_agendamento}{Agendamento}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_cliente_ac862fc214567b64f5865847855f1bcd5}{agendamentos}}
+\begin{DoxyCompactList}\small\item\em Lista de agendamentos feitos pelo cliente. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Representa um cliente da oficina. 
+
+Armazena os dados pessoais do cliente, além dos veículos, ordens de serviço e agendamentos associados a ele. 
+
+\label{class_cliente_doc-constructors}
+\Hypertarget{class_cliente_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_cliente_ab801a4e9f7a670670e15415f9575aa58}\index{Cliente@{Cliente}!Cliente@{Cliente}}
+\index{Cliente@{Cliente}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{Cliente()}{Cliente()}}
+{\footnotesize\ttfamily \label{class_cliente_ab801a4e9f7a670670e15415f9575aa58} 
+Cliente::\+\+Cliente (\begin{DoxyParamCaption}\item[{std::\+string}]{nome}{, }\item[{std::\+string}]{cpf}{, }\item[{std::\+string}]{contato}{, }\item[{std::\+string}]{endereco}{}\end{DoxyParamCaption})}
+
+
+
+Construtor da classe \doxylink{class_cliente}{Cliente}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nome} & Nome do cliente. \\
+\hline
+{\em cpf} & CPF do cliente. \\
+\hline
+{\em contato} & Informação de contato do cliente. \\
+\hline
+{\em endereco} & Endereço do cliente. \\
+\hline
+\end{DoxyParams}
+
+
+\label{class_cliente_doc-func-members}
+\Hypertarget{class_cliente_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_cliente_aee6c5020afefaf1c4dc0b85d0dca55dd}\index{Cliente@{Cliente}!getServicos@{getServicos}}
+\index{getServicos@{getServicos}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{getServicos()}{getServicos()}}
+{\footnotesize\ttfamily \label{class_cliente_aee6c5020afefaf1c4dc0b85d0dca55dd} 
+std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ \& Cliente::\+get\+Servicos (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Obtém uma ordem de serviço do cliente. 
+
+\begin{DoxyReturn}{Returns}
+Ordem de serviço do cliente. 
+\end{DoxyReturn}
+\Hypertarget{class_cliente_ab028298ef5c005ff53141e7fdfe22195}\index{Cliente@{Cliente}!getVeiculos@{getVeiculos}}
+\index{getVeiculos@{getVeiculos}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{getVeiculos()}{getVeiculos()}}
+{\footnotesize\ttfamily \label{class_cliente_ab028298ef5c005ff53141e7fdfe22195} 
+std::\+vector$<$ \doxymbox{\hyperlink{class_veiculo}{Veiculo}} \texorpdfstring{$\ast$}{*} $>$ \& Cliente::\+get\+Veiculos (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Obtém um veículo do cliente. 
+
+\begin{DoxyReturn}{Returns}
+Veículo do cliente. 
+\end{DoxyReturn}
+\Hypertarget{class_cliente_abbb2daa3285077991d88443dfa1ae7b9}\index{Cliente@{Cliente}!setAgendamento@{setAgendamento}}
+\index{setAgendamento@{setAgendamento}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{setAgendamento()}{setAgendamento()}}
+{\footnotesize\ttfamily \label{class_cliente_abbb2daa3285077991d88443dfa1ae7b9} 
+void Cliente::\+set\+Agendamento (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_agendamento}{Agendamento}}}]{}{}\end{DoxyParamCaption})}
+
+
+
+Associa um agendamento ao cliente. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em agendamento} & \doxylink{class_agendamento}{Agendamento} a ser associado. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_cliente_a76a31c20bfa038a159643668e3f80e80}\index{Cliente@{Cliente}!setContato@{setContato}}
+\index{setContato@{setContato}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{setContato()}{setContato()}}
+{\footnotesize\ttfamily \label{class_cliente_a76a31c20bfa038a159643668e3f80e80} 
+void Cliente::\+set\+Contato (\begin{DoxyParamCaption}\item[{int}]{contato}{}\end{DoxyParamCaption})}
+
+
+
+Define o contato do cliente. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em contato} & Novo contato do cliente. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_cliente_a4f431da78f2d2ba44c7276aaf311140c}\index{Cliente@{Cliente}!setServicos@{setServicos}}
+\index{setServicos@{setServicos}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{setServicos()}{setServicos()}}
+{\footnotesize\ttfamily \label{class_cliente_a4f431da78f2d2ba44c7276aaf311140c} 
+void Cliente::\+set\+Servicos (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}}}]{ordemdeservico}{}\end{DoxyParamCaption})}
+
+
+
+Associa uma ordem de serviço ao cliente. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ordemdeservico} & Ordem de serviço a ser associada. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_cliente_a08f082ba70303d97cbd45ac2252ff635}\index{Cliente@{Cliente}!setVeiculos@{setVeiculos}}
+\index{setVeiculos@{setVeiculos}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{setVeiculos()}{setVeiculos()}}
+{\footnotesize\ttfamily \label{class_cliente_a08f082ba70303d97cbd45ac2252ff635} 
+void Cliente::\+set\+Veiculos (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_veiculo}{Veiculo}}}]{veiculo}{}\end{DoxyParamCaption})}
+
+
+
+Associa um veículo ao cliente. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em veiculo} & Veículo a ser associado. \\
+\hline
+\end{DoxyParams}
+
+
+\label{class_cliente_doc-variable-members}
+\Hypertarget{class_cliente_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_cliente_ac862fc214567b64f5865847855f1bcd5}\index{Cliente@{Cliente}!agendamentos@{agendamentos}}
+\index{agendamentos@{agendamentos}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{agendamentos}{agendamentos}}
+{\footnotesize\ttfamily \label{class_cliente_ac862fc214567b64f5865847855f1bcd5} 
+std::\+vector$<$\doxymbox{\hyperlink{class_agendamento}{Agendamento}}\texorpdfstring{$\ast$}{*}$>$ Cliente::\+agendamentos\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Lista de agendamentos feitos pelo cliente. 
+
+\Hypertarget{class_cliente_afa3c7aa85fb74a6ab6b50ea33037bb09}\index{Cliente@{Cliente}!contato@{contato}}
+\index{contato@{contato}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{contato}{contato}}
+{\footnotesize\ttfamily \label{class_cliente_afa3c7aa85fb74a6ab6b50ea33037bb09} 
+const std::\+string nome std::\+string Cliente::\+contato\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_cliente_aa76956ceb05ecabb0f23018987f5e5e4}\index{Cliente@{Cliente}!cpf@{cpf}}
+\index{cpf@{cpf}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{cpf}{cpf}}
+{\footnotesize\ttfamily \label{class_cliente_aa76956ceb05ecabb0f23018987f5e5e4} 
+const std::\+string nome std::\+string Cliente::\+cpf\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Nome do cliente (não pode ser alterado após a construção). 
+
+CPF do cliente. Contato do cliente (telefone, e-\/mail, etc.). Endereço do cliente. \Hypertarget{class_cliente_a4781d5ff8d85ff8b16502335dd2d124d}\index{Cliente@{Cliente}!endereco@{endereco}}
+\index{endereco@{endereco}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{endereco}{endereco}}
+{\footnotesize\ttfamily \label{class_cliente_a4781d5ff8d85ff8b16502335dd2d124d} 
+const std::\+string nome std::\+string Cliente::\+endereco\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_cliente_acad674304613b825643c51a84808328c}\index{Cliente@{Cliente}!servicos@{servicos}}
+\index{servicos@{servicos}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{servicos}{servicos}}
+{\footnotesize\ttfamily \label{class_cliente_acad674304613b825643c51a84808328c} 
+std::\+vector$<$\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}}\texorpdfstring{$\ast$}{*}$>$ Cliente::\+servicos\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Lista de ordens de serviço associadas ao cliente. 
+
+\Hypertarget{class_cliente_af170ff24f4f25581c74e0c318965901d}\index{Cliente@{Cliente}!veiculos@{veiculos}}
+\index{veiculos@{veiculos}!Cliente@{Cliente}}
+\doxysubsubsection{\texorpdfstring{veiculos}{veiculos}}
+{\footnotesize\ttfamily \label{class_cliente_af170ff24f4f25581c74e0c318965901d} 
+std::\+vector$<$\doxymbox{\hyperlink{class_veiculo}{Veiculo}}\texorpdfstring{$\ast$}{*}$>$ Cliente::\+veiculos\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Lista de veículos pertencentes ao cliente. 
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+include/\doxymbox{\hyperlink{_cliente_8hpp}{Cliente.\+hpp}}\item 
+src/\doxymbox{\hyperlink{_cliente_8cpp}{Cliente.\+cpp}}\end{DoxyCompactItemize}

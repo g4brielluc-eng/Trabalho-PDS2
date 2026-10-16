@@ -1,0 +1,340 @@
+\doxysection{Servico Class Reference}
+\hypertarget{class_servico}{}\label{class_servico}\index{Servico@{Servico}}
+
+
+Representa um tipo de serviço oferecido pela oficina.  
+
+
+
+
+{\ttfamily \+\#include $<$Servico.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_servico_afb7de9c6358dbfd51b01b4bbe4929661}{Servico}} (const std::\+string \&nome\+Servico, const std::\+string \&descricao\+Servico, float preco\+Servico, int duracao\+Minutos)
+\begin{DoxyCompactList}\small\item\em Cadastra um novo tipo de serviço. \end{DoxyCompactList}\item 
+const std::\+string \& \doxymbox{\hyperlink{class_servico_aafc8dc3ae838294e29f28257db2020fd}{get\+Nome}} () const
+\begin{DoxyCompactList}\small\item\em Retorna o nome do serviço. \end{DoxyCompactList}\item 
+const std::\+string \& \doxymbox{\hyperlink{class_servico_a880f54ec552b22716e6a914f97be0b86}{get\+Descricao}} () const
+\begin{DoxyCompactList}\small\item\em Retorna a descrição do serviço. \end{DoxyCompactList}\item 
+float \doxymbox{\hyperlink{class_servico_a1e48b71e7e373db5ef37a79be0a91df3}{get\+Preco}} () const
+\begin{DoxyCompactList}\small\item\em Retorna o preço base do serviço. \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{class_servico_a629dc0fab779d15602a2011bd7ffcb40}{get\+Duracao\+Estimada}} () const
+\begin{DoxyCompactList}\small\item\em Retorna a duração estimada do serviço. \end{DoxyCompactList}\item 
+const std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ \& \doxymbox{\hyperlink{class_servico_a8aa9cea8f1d5aee7c7130f29dfec567b}{get\+Ordens}} () const
+\begin{DoxyCompactList}\small\item\em Retorna as ordens de serviço associadas a este serviço. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_servico_a2b1a96693fd23a6b588906288ad3006c}{atualizar\+Descricao}} (const std::\+string \&nova\+Descricao)
+\begin{DoxyCompactList}\small\item\em Atualiza a descrição do serviço. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_servico_aeec6599cea685a703bf011cb07a61676}{atualizar\+Preco}} (float novo\+Preco)
+\begin{DoxyCompactList}\small\item\em Atualiza o preço do serviço. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_servico_ae1e938306b1d6939fb91fc406b141f36}{registrar\+Duracao\+Estimada}} (int minutos)
+\begin{DoxyCompactList}\small\item\em Registra a duração estimada do serviço. \end{DoxyCompactList}\item 
+std::\+string \doxymbox{\hyperlink{class_servico_ae3259a4535450fcbfedf1565b84835d3}{consultar\+Informacoes}} () const
+\begin{DoxyCompactList}\small\item\em Consulta as informações do serviço. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_servico_a77f04959a53b118c279157e8bdcba07b}{associar\+Ordem}} (\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*}ordem)
+\begin{DoxyCompactList}\small\item\em Associa o serviço a uma ordem de serviço. \end{DoxyCompactList}\item 
+float \doxymbox{\hyperlink{class_servico_aa4d48942d8e0aaf03a89f041aa5d105c}{calcular\+Custo}} (int quantidade=1) const
+\begin{DoxyCompactList}\small\item\em Calcula o custo do serviço. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std::\+string \doxymbox{\hyperlink{class_servico_aa0f21b253d72237eb32b1e95bb860878}{nome}}
+\begin{DoxyCompactList}\small\item\em Nome do serviço (não pode ser vazio). \end{DoxyCompactList}\item 
+std::\+string \doxymbox{\hyperlink{class_servico_ac39bb8ef9b3b43af90116cf060f92c06}{descricao}}
+\begin{DoxyCompactList}\small\item\em Descrição detalhada do serviço. \end{DoxyCompactList}\item 
+float \doxymbox{\hyperlink{class_servico_a14e15290ff2d388e6b0b4d869d4e3648}{preco}}
+\begin{DoxyCompactList}\small\item\em Preço base do serviço, em reais (\texorpdfstring{$>$}{>}= 0). \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{class_servico_a60320a10cb96970f1a41e1cc233d56a3}{duracao\+Estimada}}
+\begin{DoxyCompactList}\small\item\em Duração estimada do serviço, em minutos (\texorpdfstring{$>$}{>} 0). \end{DoxyCompactList}\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ \doxymbox{\hyperlink{class_servico_ad33084e62e9bca850f22e8e0d76352aa}{ordens}}
+\begin{DoxyCompactList}\small\item\em Ordens de serviço às quais este serviço está associado. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Representa um tipo de serviço oferecido pela oficina. 
+
+A classe \doxylink{class_servico}{Servico} armazena o nome, a descrição, o preço e a duração estimada de um serviço (por exemplo, "{}\+Troca de óleo"{}). Um mesmo serviço pode ser solicitado em várias ordens de serviço, que ficam registradas nele por meio de \doxylink{class_servico_a77f04959a53b118c279157e8bdcba07b}{associar\+Ordem()}.
+
+Os métodos que recebem valores inválidos (preço negativo, duração não positiva, texto vazio ou ponteiro nulo) lançam std::\+invalid\+\_\+argument.
+
+Colabora com:
+\begin{DoxyItemize}
+\item \doxylink{class_ordem_de_servico}{Ordem\+De\+Servico}: utiliza o serviço e o preço dele no cálculo do total;
+\item \doxylink{class_agendamento}{Agendamento} e \doxylink{class_mecanico}{Mecanico}: referenciam o serviço solicitado/\+executado. 
+\end{DoxyItemize}
+
+\label{class_servico_doc-constructors}
+\Hypertarget{class_servico_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_servico_afb7de9c6358dbfd51b01b4bbe4929661}\index{Servico@{Servico}!Servico@{Servico}}
+\index{Servico@{Servico}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{Servico()}{Servico()}}
+{\footnotesize\ttfamily \label{class_servico_afb7de9c6358dbfd51b01b4bbe4929661} 
+Servico::\+\+Servico (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{nome\+Servico}{, }\item[{const std::\+string \&}]{descricao\+Servico}{, }\item[{float}]{preco\+Servico}{, }\item[{int}]{duracao\+Minutos}{}\end{DoxyParamCaption})}
+
+
+
+Cadastra um novo tipo de serviço. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nome\+Servico} & Nome do serviço (não pode ser vazio). \\
+\hline
+{\em descricao\+Servico} & Descrição do serviço. \\
+\hline
+{\em preco\+Servico} & Preço base do serviço (deve ser \texorpdfstring{$>$}{>}= 0). \\
+\hline
+{\em duracao\+Minutos} & Duração estimada em minutos (deve ser \texorpdfstring{$>$}{>} 0). \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std::\+invalid\+\_\+argument} & se o nome for vazio, o preço for negativo ou a duração for menor ou igual a zero. \\
+\hline
+\end{DoxyExceptions}
+
+
+\label{class_servico_doc-func-members}
+\Hypertarget{class_servico_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_servico_a77f04959a53b118c279157e8bdcba07b}\index{Servico@{Servico}!associarOrdem@{associarOrdem}}
+\index{associarOrdem@{associarOrdem}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{associarOrdem()}{associarOrdem()}}
+{\footnotesize\ttfamily \label{class_servico_a77f04959a53b118c279157e8bdcba07b} 
+void Servico::\+associar\+Ordem (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*}}]{ordem}{}\end{DoxyParamCaption})}
+
+
+
+Associa o serviço a uma ordem de serviço. 
+
+Se a ordem já estiver associada, a chamada não tem efeito (a mesma ordem não é registrada duas vezes).
+
+
+\begin{DoxyParams}{Parameters}
+{\em ordem} & Ordem de serviço que utiliza este serviço (não pode ser nula). \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std::\+invalid\+\_\+argument} & se a ordem for nula. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{class_servico_a2b1a96693fd23a6b588906288ad3006c}\index{Servico@{Servico}!atualizarDescricao@{atualizarDescricao}}
+\index{atualizarDescricao@{atualizarDescricao}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{atualizarDescricao()}{atualizarDescricao()}}
+{\footnotesize\ttfamily \label{class_servico_a2b1a96693fd23a6b588906288ad3006c} 
+void Servico::\+atualizar\+Descricao (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{nova\+Descricao}{}\end{DoxyParamCaption})}
+
+
+
+Atualiza a descrição do serviço. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nova\+Descricao} & Nova descrição do serviço. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_servico_aeec6599cea685a703bf011cb07a61676}\index{Servico@{Servico}!atualizarPreco@{atualizarPreco}}
+\index{atualizarPreco@{atualizarPreco}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{atualizarPreco()}{atualizarPreco()}}
+{\footnotesize\ttfamily \label{class_servico_aeec6599cea685a703bf011cb07a61676} 
+void Servico::\+atualizar\+Preco (\begin{DoxyParamCaption}\item[{float}]{novo\+Preco}{}\end{DoxyParamCaption})}
+
+
+
+Atualiza o preço do serviço. 
+
+A alteração vale apenas para novos cálculos; não há histórico de preços anteriores.
+
+
+\begin{DoxyParams}{Parameters}
+{\em novo\+Preco} & Novo preço do serviço (deve ser \texorpdfstring{$>$}{>}= 0). \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std::\+invalid\+\_\+argument} & se novo\+Preco for negativo. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{class_servico_aa4d48942d8e0aaf03a89f041aa5d105c}\index{Servico@{Servico}!calcularCusto@{calcularCusto}}
+\index{calcularCusto@{calcularCusto}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{calcularCusto()}{calcularCusto()}}
+{\footnotesize\ttfamily \label{class_servico_aa4d48942d8e0aaf03a89f041aa5d105c} 
+float Servico::\+calcular\+Custo (\begin{DoxyParamCaption}\item[{int}]{quantidade}{ = {\ttfamily 1}}\end{DoxyParamCaption}) const}
+
+
+
+Calcula o custo do serviço. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em quantidade} & Quantas vezes o serviço é executado (deve ser \texorpdfstring{$>$}{>}= 1). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Preço do serviço multiplicado pela quantidade. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std::\+invalid\+\_\+argument} & se quantidade for menor que 1. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{class_servico_ae3259a4535450fcbfedf1565b84835d3}\index{Servico@{Servico}!consultarInformacoes@{consultarInformacoes}}
+\index{consultarInformacoes@{consultarInformacoes}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{consultarInformacoes()}{consultarInformacoes()}}
+{\footnotesize\ttfamily \label{class_servico_ae3259a4535450fcbfedf1565b84835d3} 
+std::\+string Servico::\+consultar\+Informacoes (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Consulta as informações do serviço. 
+
+\begin{DoxyReturn}{Returns}
+Texto com nome, descrição, preço e duração estimada. 
+\end{DoxyReturn}
+\Hypertarget{class_servico_a880f54ec552b22716e6a914f97be0b86}\index{Servico@{Servico}!getDescricao@{getDescricao}}
+\index{getDescricao@{getDescricao}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{getDescricao()}{getDescricao()}}
+{\footnotesize\ttfamily \label{class_servico_a880f54ec552b22716e6a914f97be0b86} 
+const std::\+string \& Servico::\+get\+Descricao (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna a descrição do serviço. 
+
+\begin{DoxyReturn}{Returns}
+Descrição do serviço. 
+\end{DoxyReturn}
+\Hypertarget{class_servico_a629dc0fab779d15602a2011bd7ffcb40}\index{Servico@{Servico}!getDuracaoEstimada@{getDuracaoEstimada}}
+\index{getDuracaoEstimada@{getDuracaoEstimada}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{getDuracaoEstimada()}{getDuracaoEstimada()}}
+{\footnotesize\ttfamily \label{class_servico_a629dc0fab779d15602a2011bd7ffcb40} 
+int Servico::\+get\+Duracao\+Estimada (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna a duração estimada do serviço. 
+
+\begin{DoxyReturn}{Returns}
+Duração estimada, em minutos. 
+\end{DoxyReturn}
+\Hypertarget{class_servico_aafc8dc3ae838294e29f28257db2020fd}\index{Servico@{Servico}!getNome@{getNome}}
+\index{getNome@{getNome}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{getNome()}{getNome()}}
+{\footnotesize\ttfamily \label{class_servico_aafc8dc3ae838294e29f28257db2020fd} 
+const std::\+string \& Servico::\+get\+Nome (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna o nome do serviço. 
+
+\begin{DoxyReturn}{Returns}
+Nome do serviço. 
+\end{DoxyReturn}
+\Hypertarget{class_servico_a8aa9cea8f1d5aee7c7130f29dfec567b}\index{Servico@{Servico}!getOrdens@{getOrdens}}
+\index{getOrdens@{getOrdens}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{getOrdens()}{getOrdens()}}
+{\footnotesize\ttfamily \label{class_servico_a8aa9cea8f1d5aee7c7130f29dfec567b} 
+const std::\+vector$<$ \doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}} \texorpdfstring{$\ast$}{*} $>$ \& Servico::\+get\+Ordens (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna as ordens de serviço associadas a este serviço. 
+
+\begin{DoxyReturn}{Returns}
+Lista de ponteiros para as ordens associadas. 
+\end{DoxyReturn}
+\Hypertarget{class_servico_a1e48b71e7e373db5ef37a79be0a91df3}\index{Servico@{Servico}!getPreco@{getPreco}}
+\index{getPreco@{getPreco}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{getPreco()}{getPreco()}}
+{\footnotesize\ttfamily \label{class_servico_a1e48b71e7e373db5ef37a79be0a91df3} 
+float Servico::\+get\+Preco (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retorna o preço base do serviço. 
+
+\begin{DoxyReturn}{Returns}
+Preço do serviço, em reais. 
+\end{DoxyReturn}
+\Hypertarget{class_servico_ae1e938306b1d6939fb91fc406b141f36}\index{Servico@{Servico}!registrarDuracaoEstimada@{registrarDuracaoEstimada}}
+\index{registrarDuracaoEstimada@{registrarDuracaoEstimada}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{registrarDuracaoEstimada()}{registrarDuracaoEstimada()}}
+{\footnotesize\ttfamily \label{class_servico_ae1e938306b1d6939fb91fc406b141f36} 
+void Servico::\+registrar\+Duracao\+Estimada (\begin{DoxyParamCaption}\item[{int}]{minutos}{}\end{DoxyParamCaption})}
+
+
+
+Registra a duração estimada do serviço. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em minutos} & Nova duração estimada, em minutos (deve ser \texorpdfstring{$>$}{>} 0). \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std::\+invalid\+\_\+argument} & se minutos for menor ou igual a zero. \\
+\hline
+\end{DoxyExceptions}
+
+
+\label{class_servico_doc-variable-members}
+\Hypertarget{class_servico_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_servico_ac39bb8ef9b3b43af90116cf060f92c06}\index{Servico@{Servico}!descricao@{descricao}}
+\index{descricao@{descricao}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{descricao}{descricao}}
+{\footnotesize\ttfamily \label{class_servico_ac39bb8ef9b3b43af90116cf060f92c06} 
+std::\+string Servico::\+descricao\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Descrição detalhada do serviço. 
+
+\Hypertarget{class_servico_a60320a10cb96970f1a41e1cc233d56a3}\index{Servico@{Servico}!duracaoEstimada@{duracaoEstimada}}
+\index{duracaoEstimada@{duracaoEstimada}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{duracaoEstimada}{duracaoEstimada}}
+{\footnotesize\ttfamily \label{class_servico_a60320a10cb96970f1a41e1cc233d56a3} 
+int Servico::\+duracao\+Estimada\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Duração estimada do serviço, em minutos (\texorpdfstring{$>$}{>} 0). 
+
+\Hypertarget{class_servico_aa0f21b253d72237eb32b1e95bb860878}\index{Servico@{Servico}!nome@{nome}}
+\index{nome@{nome}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{nome}{nome}}
+{\footnotesize\ttfamily \label{class_servico_aa0f21b253d72237eb32b1e95bb860878} 
+std::\+string Servico::\+nome\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Nome do serviço (não pode ser vazio). 
+
+\Hypertarget{class_servico_ad33084e62e9bca850f22e8e0d76352aa}\index{Servico@{Servico}!ordens@{ordens}}
+\index{ordens@{ordens}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{ordens}{ordens}}
+{\footnotesize\ttfamily \label{class_servico_ad33084e62e9bca850f22e8e0d76352aa} 
+std::\+vector$<$\doxymbox{\hyperlink{class_ordem_de_servico}{Ordem\+De\+Servico}}\texorpdfstring{$\ast$}{*}$>$ Servico::\+ordens\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Ordens de serviço às quais este serviço está associado. 
+
+\Hypertarget{class_servico_a14e15290ff2d388e6b0b4d869d4e3648}\index{Servico@{Servico}!preco@{preco}}
+\index{preco@{preco}!Servico@{Servico}}
+\doxysubsubsection{\texorpdfstring{preco}{preco}}
+{\footnotesize\ttfamily \label{class_servico_a14e15290ff2d388e6b0b4d869d4e3648} 
+float Servico::\+preco\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Preço base do serviço, em reais (\texorpdfstring{$>$}{>}= 0). 
+
+
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+include/\doxymbox{\hyperlink{_servico_8hpp}{Servico.\+hpp}}\end{DoxyCompactItemize}

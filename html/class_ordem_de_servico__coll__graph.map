@@ -1,0 +1,9 @@
+<map id="OrdemDeServico" name="OrdemDeServico">
+<area shape="rect" id="Node000001" title="Representa uma ordem de serviço da oficina mecânica." alt="" coords="25,199,146,224"/>
+<area shape="rect" id="Node000002" href="$class_veiculo.html" title="Representa um veículo cadastrado no sistema da oficina." alt="" coords="5,102,70,128"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="40,141,51,173,71,198,66,199,46,176,38,146"/>
+<area shape="rect" id="Node000003" href="$class_cliente.html" title="Representa um cliente da oficina." alt="" coords="6,5,69,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="38,44,40,102,35,101,37,49"/>
+<area shape="rect" id="Node000004" href="$class_mecanico.html" title="Representa um mecânico da oficina." alt="" coords="94,102,171,128"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="122,140,94,200,89,196,117,142"/>
+</map>

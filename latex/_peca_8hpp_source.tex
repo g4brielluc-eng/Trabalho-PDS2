@@ -1,0 +1,51 @@
+\doxysection{Peca.\+hpp}
+\hypertarget{_peca_8hpp_source}{}\label{_peca_8hpp_source}\index{include/Peca.hpp@{include/Peca.hpp}}
+\doxymbox{\hyperlink{_peca_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#ifndef\ PECA\_H}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ PECA\_H}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_veiculo}{Veiculo}};}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}};}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_peca}{Peca}}\{}
+\DoxyCodeLine{00025\ \ \ \ }
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_peca_a43487d75eba6e59c5934e2b02ac27e36}{codigo}};}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_peca_ab3b8679b46b887a0700b3cd4d0aa8651}{descricao}};}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_peca_a5343bfdf634a215317950d6749a317b3}{preco}};}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_peca_a27017ae74e5124d92baca33dad734241}{quantidade}};}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ std::vector<Veiculo*>\ \doxymbox{\hyperlink{class_peca_adf4000600f88378997e7685449d7b828}{veiculos}};}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ std::vector<OrdemDeServico*>\ \doxymbox{\hyperlink{class_peca_ab292707b5afb5223df5c5192aad0dc45}{servicos}};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_peca_a51f0a81a1dd38e73e3a8e87bd297532c}{setCodigo}}(std::string\ \doxymbox{\hyperlink{class_peca_a43487d75eba6e59c5934e2b02ac27e36}{codigo}});}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_peca_ac00b6369fc59c00814da3440a25b68aa}{setDescricao}}(std::string\ \doxymbox{\hyperlink{class_peca_ab3b8679b46b887a0700b3cd4d0aa8651}{descricao}});}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_peca_a94375d049bcfdec93787db01b898cac2}{setPreco}}(\textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_peca_a5343bfdf634a215317950d6749a317b3}{preco}});}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_peca_a2cb28508a130beed90ba452848105ca0}{getQuantidade}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_peca_abb2a2e1f57ba616fd9133eda9baade05}{setQuantidade}}(\textcolor{keywordtype}{int}\ newquantidade);}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_peca_aa4e0a8787398ccd634cfbacfec76fb92}{disponivel}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ std::vector<OrdemDeServico*>\ \doxymbox{\hyperlink{class_peca_a585afb222f3517b2c40d5ad12cda3aa1}{getServicos}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_peca_a523e05c6805ad0e176f7f2fecf28a552}{setServicos}}(\doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}}\ *\ ordemdeservico);}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,47 @@
+\doxysection{Mecanico.\+hpp}
+\hypertarget{_mecanico_8hpp_source}{}\label{_mecanico_8hpp_source}\index{include/Mecanico.hpp@{include/Mecanico.hpp}}
+\doxymbox{\hyperlink{_mecanico_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ MECANICO\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ MECANICO\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_status___ordem_8hpp}{Status\_Ordem.hpp}}"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}};}
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_servico}{Servico}};}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_mecanico_af6d309373a9cc30ec0218f1c24c34850}{Mecanico}}\ \{}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_mecanico_aa518a423fdf1f40c273c564e91d3d0ef}{id\_}};\ \textcolor{comment}{//ID\ único\ do\ mecânico.}}
+\DoxyCodeLine{00021\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_mecanico_aa31227cacb34f8f312ae95fd29e25cf6}{nome\_}};\ \textcolor{comment}{//Nome\ completo\ do\ mecânico.}}
+\DoxyCodeLine{00022\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_mecanico_a0f8e3fee64d83d5a00ec7601eccf2d1c}{especialidade\_}};\ \textcolor{comment}{//Especialidade\ do\ mecânico;\ pode\ ser\ alterada\ posteriormente.}}
+\DoxyCodeLine{00023\ \ \ \ \ std::vector<OrdemDeServico*>\ \doxymbox{\hyperlink{class_mecanico_a569e49b2669a37baa65ef37c63d823ec}{ordens\_}};\ \textcolor{comment}{//Lista\ de\ ordens\ de\ serviço\ atribuídas\ ao\ mecânico.}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \ \ \doxymbox{\hyperlink{class_mecanico_af6d309373a9cc30ec0218f1c24c34850}{Mecanico}}(\textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ std::string\&\ nome,\ \textcolor{keyword}{const}\ std::string\&\ especialidade);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_mecanico_a4f5d0fcee35826b55a59216f1564f54a}{getId}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_mecanico_aeacdf02d07ddd8b918393fd3fdba7af1}{getNome}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00041\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_mecanico_a709ec7343c8e43a6b8d7cde6e982fdce}{getEspecialidade}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_mecanico_a8b12547c12b11d43d4b983ba6b507c84}{alterarEspecialidade}}(\textcolor{keyword}{const}\ std::string\&\ especialidade);}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00050\ \ \ \ \ std::vector<OrdemDeServico*>\ \doxymbox{\hyperlink{class_mecanico_a24d1370d57fb34c38ad813093deeb8f1}{consultarOrdensAtribuidas}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_mecanico_ac857030001be423ebbac1de229331a0f}{assumirOrdem}}(\doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}}*\ ordem);}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_mecanico_a24a321a01d9c249de799d62e1dba5a9f}{registrarDiagnostico}}(\doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}}*\ ordem,\ \textcolor{keyword}{const}\ std::string\&\ diagnostico);}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_mecanico_a99a771a7ca7d2ae0bfa281ea136cdf7e}{registrarServicoRealizado}}(\doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}}*\ ordem,\ \doxymbox{\hyperlink{class_servico}{Servico}}*\ servico);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_mecanico_a5553c3dc3c01b893210dfd05d6a84c47}{atualizarAndamento}}(\doxymbox{\hyperlink{class_ordem_de_servico}{OrdemDeServico}}*\ ordem,\ \doxymbox{\hyperlink{_status___ordem_8hpp_a3cb43ce92d24af71cace32e32c982430}{StatusOrdem}}\ novoStatus);}
+\DoxyCodeLine{00085\ \};}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
