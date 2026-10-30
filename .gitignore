@@ -1,1 +1,9 @@
 .DS_Store
+
+# Documentação Doxygen
+html/
+latex/
+
+# Diretório de build e artefatos de teste
+build/
+*.log
