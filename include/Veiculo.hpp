@@ -58,6 +58,15 @@ public:
      * @param quilometragem Nova quilometragem do veículo.
      */
     void registrarQuilometragem(int quilometragem);
+    
+    /**
+    * @brief Adiciona uma ordem de serviço ao veículo.
+    *
+     * Armazena o ponteiro para a ordem de serviço no vetor
+     * de ordens relacionadas ao veículo.
+     * @param ordem Ponteiro para a ordem de serviço a ser adicionada.
+     */
+    void adicionarOrdemServico(OrdemDeServico* ordem);
 
     /**
      * @brief Consulta as ordens de serviço relacionadas ao veículo.
