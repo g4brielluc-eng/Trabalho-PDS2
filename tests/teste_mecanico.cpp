@@ -64,6 +64,8 @@ TEST_CASE("Mecanico: Registrar diagnostico em uma ordem atribuida ao mecanico na
 
    std::string diagnostico = "Pastilha de freio desgastada";
    CHECK_NOTHROW(m.registrarDiagnostico(&ordem, diagnostico));
+
+   CHECK(ordem.getDiagnostico() == diagnostico);
 }
 
 TEST_CASE("Mecanico: Registrar diagnostico em uma ordem nao atribuida ao mecanico lanca") {
@@ -99,7 +101,16 @@ TEST_CASE("Mecanico: Registrar servico realizado em uma ordem nao atribuida lanc
     CHECK(ordem.calcularValorTotal() == doctest::Approx(0.0));
 }
 
-TEST_CASE("Mecanico: Atualizar o andamento da ordem atribuida ao mecanico nao lanca") {
+TEST_CASE("Mecanico: Registrar servico nulo em uma ordem atribuida ao mecanico lanca") {
+    Mecanico m(123456, "Rickelve", "Freios");
+    Veiculo v("FIAT", "Palio", 2010, "ABC1234", 150000);
+    OrdemDeServico ordem(&v, "06/10/2026");
+    m.assumirOrdem(&ordem);
+
+    CHECK_THROWS_AS(m.registrarServicoRealizado(&ordem, nullptr), std::invalid_argument); 
+}
+
+TEST_CASE("Mecanico: Atualizar o andamento da ordem atribuida ao mecanico nao lanca ") {
     Mecanico m(123456, "Rickelve", "Freios");
     Veiculo v("FIAT", "Palio", 2010, "ABC1234", 150000);
     OrdemDeServico ordem(&v, "06/10/2026");
@@ -107,6 +118,8 @@ TEST_CASE("Mecanico: Atualizar o andamento da ordem atribuida ao mecanico nao la
     StatusOrdem novoStatus = StatusOrdem::EM_DIAGNOSTICO;
  
     CHECK_NOTHROW(m.atualizarAndamento(&ordem, novoStatus));
+
+    CHECK(ordem.getStatus() == StatusOrdem::EM_DIAGNOSTICO);
 }
 
 TEST_CASE("Mecanico: Atualizar o andamento da ordem atribuida ao mecanico para FINALIZADA lanca") {
