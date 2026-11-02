@@ -5,10 +5,12 @@
 #include <vector>
 
         Peca::Peca( std::string codigo,float preco,int quantidade): codigo(codigo) ,preco(preco) 
-        ,quantidade(quantidade),descricao("Peça sem descrição"), disponivel(true){}
+        ,quantidade(quantidade){
+            this->descricao = "Peça sem descrição"; 
+        }
 
         void Peca::setCodigo(std::string codigo){
-            this -> nome = codigo;
+            this -> codigo = codigo;
         }
 
        std::string Peca::getCodigo() const{

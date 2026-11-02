@@ -38,7 +38,7 @@ class Peca{
 
     public:
 
-        Peca( std::string codigo,float preco,int quantidade){}
+        Peca( std::string codigo,float preco,int quantidade);
 
 
         /**

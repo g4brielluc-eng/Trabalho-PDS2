@@ -3,7 +3,6 @@
 #include "Peca.hpp"
 #include "Veiculo.hpp"
 #include "OrdemDeServico.hpp"
-#include "Agendamento.hpp"
 #include <stdexcept>
 
 TEST_CASE("Peça: Cadastrar uma peça") {
@@ -55,10 +54,3 @@ TEST_CASE("Peça: Alterar dados"){
 
 }
 
-TEST_CASE("Peça: Inserir e alterar descrição"){
-    Peca p("0001",12.50,100);
-    p.setDescricao
-    SUBCASE("verificar primeira descrição"){
-
-    }
-}
