@@ -37,24 +37,31 @@ class Peca{
         std::vector<OrdemDeServico*> servicos;
 
     public:
+
+        Peca( std::string codigo,float preco,int quantidade){}
+
+
         /**
          * @brief Define o código da peça.
          * @param codigo Novo código da peça.
          */
         void setCodigo(std::string codigo);
 
+        std::string getCodigo() const;
         /**
          * @brief Define a descrição da peça.
          * @param descricao Nova descrição da peça.
          */
         void setDescricao(std::string descricao);
 
+        std::string getDescricao() const;
+
         /**
          * @brief Define o preço da peça.
          * @param preco Novo preço unitário da peça.
          */
         void setPreco(float preco);
-
+        float getPreco() const;
 
         /**
          * @brief Obtém a quantidade da peça em estoque.

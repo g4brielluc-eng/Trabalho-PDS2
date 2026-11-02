@@ -26,7 +26,7 @@ class Cliente{
 
     protected:
         /// Nome do cliente (não pode ser alterado após a construção).
-        const std::string nome
+        const std::string nome;
         /// CPF do cliente.
         /// Contato do cliente (telefone, e-mail, etc.).
         /// Endereço do cliente.
@@ -40,51 +40,25 @@ class Cliente{
         
 
     public:
-        /**
-         * @brief Construtor da classe Cliente.
-         * @param nome Nome do cliente.
-         * @param cpf CPF do cliente.
-         * @param contato Informação de contato do cliente.
-         * @param endereco Endereço do cliente.
-         */
-        Cliente(std::string nome,  std::string cpf, std::string contato, std::string endereco);
+        Cliente(std::string nome, std::string cpf, std::string contato, std::string endereco);
 
-        /**
-         * @brief Define o contato do cliente.
-         * @param contato Novo contato do cliente.
-         */
-        void setContato(int contato);
+        std::string getCpf();
+        std::string getEndereco();
+        std::string getNome();
 
-        /**
-         * @brief Obtém um veículo do cliente.
-         * @return Veículo do cliente.
-         */
-        Veiculo getVeiculos();
 
-        /**
-         * @brief Associa um veículo ao cliente.
-         * @param veiculo Veículo a ser associado.
-         */
-        void setVeiculos(Veiculo veiculo);
+        std::string getContato();
+        void setContato(std::string contato); 
 
-        /**
-         * @brief Obtém uma ordem de serviço do cliente.
-         * @return Ordem de serviço do cliente.
-         */
-        OrdemDeServico getServicos();
+        std::vector<Veiculo*>& getVeiculos();
+        void setVeiculos(Veiculo* veiculo);
 
-        /**
-         * @brief Associa uma ordem de serviço ao cliente.
-         * @param ordemdeservico Ordem de serviço a ser associada.
-         */
-        void setServicos(OrdemDeServico ordemdeservico);
+        std::vector<OrdemDeServico*>& getServicos();
+        void setServicos(OrdemDeServico* ordemdeservico);
 
-        /**
-         * @brief Associa um agendamento ao cliente.
-         * @param agendamento Agendamento a ser associado.
-         */
-        void setAgendamento (Agendamento);
+        void setAgendamento(Agendamento* agendamento);
 
+        ~Cliente();        }
 };
 
 

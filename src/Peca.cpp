@@ -4,19 +4,32 @@
 #include <string>
 #include <vector>
 
+        Peca::Peca( std::string codigo,float preco,int quantidade): codigo(codigo) ,preco(preco) 
+        ,quantidade(quantidade),descricao("Peça sem descrição"), disponivel(true){}
+
         void Peca::setCodigo(std::string codigo){
             this -> nome = codigo;
+        }
+
+       std::string Peca::getCodigo() const{
+            return codigo;
         }
 
         void Peca::setDescricao(std::string descricao){
             this -> descricao = descricao;
         }
 
+        std::string Peca::getDescricao() const{
+            return descricao;
+        }
        
         void Peca::setPreco(float preco){
             this -> preco = preco;
         }
 
+        float Peca::getPreco() const{
+            return preco;
+        }
 
     
         int Peca::getQuantidade() const{
