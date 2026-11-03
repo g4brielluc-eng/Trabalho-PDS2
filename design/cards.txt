@@ -121,7 +121,6 @@
     ],
     "collaborators": [
       "OrdemDeServico",
-      "Fornecedor"
     ]
   },
   {

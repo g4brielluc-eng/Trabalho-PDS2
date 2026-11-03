@@ -6,6 +6,7 @@
 #include "Agendamento.hpp"
 #include <stdexcept>
 
+
 TEST_CASE("Cliente: Verificar dados pessoais") {
     Cliente c("Carlos Silva", "123.456.789-00", "11987654321", "Rua das Flores, 100");
 
@@ -57,6 +58,7 @@ TEST_CASE("Cliente: Associar e consultar ordens de servico") {
     REQUIRE(servicos.size() == 1);
     CHECK(servicos[0] == &ordem);
 }
+
 TEST_CASE("Cliente: Associar agendamento") {
     Cliente c("Carlos Silva", "123.456.789-00", "11987654321", "Rua das Flores, 100");
   

@@ -51,22 +51,4 @@ void Cliente::setAgendamento(Agendamento* agendamento){
     this->agendamentos.push_back(agendamento);
 }
 
-Cliente::~Cliente() {
-    
-    for (Veiculo* veiculo : veiculos) {
-        delete veiculo;
-    }
-    veiculos.clear();
-
-    
-    for (OrdemDeServico* servico : servicos) {
-        delete servico;
-    }
-    servicos.clear();
-
-    
-    for (Agendamento* agendamento : agendamentos) {
-        delete agendamento;
-    }
-    agendamentos.clear();
-}
+Cliente::~Cliente() {}

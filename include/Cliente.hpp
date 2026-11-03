@@ -58,7 +58,7 @@ class Cliente{
 
         void setAgendamento(Agendamento* agendamento);
 
-        ~Cliente();        }
+        ~Cliente();        
 };
 
 
