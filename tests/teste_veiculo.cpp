@@ -101,8 +101,6 @@ TEST_CASE("Adicionar ordem de servico ao veiculo") {
     Veiculo v("FIAT", "Toro", 2025, "ABC1234", 80000);
     OrdemDeServico ordem(&v, "20/10/2026");
 
-    v.adicionarOrdemServico(&ordem);
-
     const auto& ordens = v.consultarOrdensServico();
 
     REQUIRE(ordens.size() == 1);
@@ -124,8 +122,6 @@ TEST_CASE("Impedir ordem de servico duplicada") {
     Veiculo v("FIAT", "Toro", 2025, "ABC1234", 80000);
     OrdemDeServico ordem(&v, "20/10/2026");
 
-    v.adicionarOrdemServico(&ordem);
-
     CHECK_THROWS_AS(
         v.adicionarOrdemServico(&ordem),
         std::logic_error
@@ -136,11 +132,9 @@ TEST_CASE("Impedir ordem de servico duplicada") {
 
 TEST_CASE("Consultar ordens de servico") {
     Veiculo v("FIAT", "Toro", 2025, "ABC1234", 80000);
+
     OrdemDeServico ordem1(&v, "20/10/2026");
     OrdemDeServico ordem2(&v, "21/10/2026");
-
-    v.adicionarOrdemServico(&ordem1);
-    v.adicionarOrdemServico(&ordem2);
 
     const auto& ordens = v.consultarOrdensServico();
 
