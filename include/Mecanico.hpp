@@ -66,7 +66,8 @@ public:
     /**
      * @brief Registra um serviço realizado em uma ordem.
      * @param ordem Ordem atribuída ao mecânico.
-     * @param servico Serviço executado pelo mecânico.
+     * @param servico Serviço executado pelo mecânico (nao pode ser nulo).
+     * @throws std::invalid_argument se o servico for nulo. 
      */
     void registrarServicoRealizado(OrdemDeServico* ordem, Servico* servico);
 

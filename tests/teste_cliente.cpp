@@ -58,6 +58,5 @@ TEST_CASE("Cliente: Associar e consultar ordens de servico") {
     CHECK(servicos[0] == &ordem);
 }
 TEST_CASE("Cliente: Associar agendamento") {
-    Cliente c("Carlos Silva", "123.456.789-00", "11987654321", "Rua das Flores, 100");
-  
+    Cliente c("Carlos Silva", "123.456.789-00", "11987654321", "Rua das Flores, 100"); 
 }

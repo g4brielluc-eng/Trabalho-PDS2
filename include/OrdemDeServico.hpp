@@ -53,6 +53,14 @@ private:
     std::vector<Peca*> pecas;
 
 public:
+    StatusOrdem getStatus() const;
+    const std::string& getDiagnostico() const;
+    const std::string& getDataEntrada() const;
+    const std::string& getDataSaida() const;
+    Veiculo* getVeiculo() const;
+    Mecanico* getMecanico() const;
+    const std::vector<Servico*>& getServicos() const;
+    const std::vector<Peca*>& getPecas() const;
 
     /**
      * @brief Construtor da classe OrdemDeServico.

@@ -1,6 +1,9 @@
 
 
 #include "Cliente.hpp"
+#include "Veiculo.hpp"
+#include "OrdemDeServico.hpp"
+#include "Agendamento.hpp"
 #include <iostream>
 #include <string>
 #include <vector>

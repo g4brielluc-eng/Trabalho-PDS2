@@ -1,4 +1,4 @@
-
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 #include "Agendamento.hpp"
 #include "Cliente.hpp"
