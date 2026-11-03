@@ -8,9 +8,11 @@
 #include "Mecanico.hpp"
 
 OrdemDeServico::OrdemDeServico(Veiculo* veiculo, const std::string& dataEntrada)
-    : status(StatusOrdem::ABERTA), dataEntrada(dataEntrada), veiculo(nullptr),
+    : status(StatusOrdem::ABERTA),
+      dataEntrada(dataEntrada),
+      veiculo(nullptr),
       mecanico(nullptr) {
-        associarVeiculo(veiculo);
+    associarVeiculo(veiculo);
 }
 
 void OrdemDeServico::associarVeiculo(Veiculo* veiculo) {
