@@ -1,4 +1,6 @@
 #include "Veiculo.hpp"
+#include "OrdemDeServico.hpp"
+#include <iostream>
 #include <stdexcept>
 #include <cctype>
 #include <algorithm>
@@ -70,17 +72,63 @@ const std::vector<OrdemDeServico*>& Veiculo::consultarOrdensServico() const {
     return ordensServico;
 }
 
+void Veiculo::consultarHistoricoManutencoes() const {
+    if (ordensServico.empty()) {
+        std::cout << "Nenhuma ordem de servico registrada para este veiculo."
+                  << std::endl;
+        return;
+    }
 
+    for (const OrdemDeServico* ordem : ordensServico) {
+        std::cout << std::endl << "--- Ordem de Servico ---" << std::endl;
 
+        std::cout << "Data de entrada: "
+                  << ordem->getDataEntrada() << std::endl;
 
+        if (ordem->getDataSaida().empty()) {
+            std::cout << "Data de saida: Ainda nao finalizada" << std::endl;
+        } else {
+            std::cout << "Data de saida: "
+                      << ordem->getDataSaida() << std::endl;
+        }
 
-// TODO: Implementar a consulta do histórico de manutenções
-// após a disponibilização de um método público em OrdemDeServico
-// que permita acessar e exibir os dados de cada ordem.
+        std::cout << "Diagnostico: "
+                  << ordem->getDiagnostico() << std::endl;
 
+        std::cout << "Status: ";
 
+        switch (ordem->getStatus()) {
+            case StatusOrdem::ABERTA:
+                std::cout << "Aberta";
+                break;
 
+            case StatusOrdem::EM_DIAGNOSTICO:
+                std::cout << "Em diagnostico";
+                break;
 
+            case StatusOrdem::EM_EXECUCAO:
+                std::cout << "Em execucao";
+                break;
+
+            case StatusOrdem::AGUARDANDO_PECA:
+                std::cout << "Aguardando peca";
+                break;
+
+            case StatusOrdem::AGUARDANDO_RETIRADA:
+                std::cout << "Aguardando retirada";
+                break;
+
+            case StatusOrdem::FINALIZADA:
+                std::cout << "Finalizada";
+                break;
+        }
+
+        std::cout << std::endl;
+
+        std::cout << "Valor total: R$ "
+                  << ordem->calcularValorTotal() << std::endl;
+    }
+}
 
 const std::string& Veiculo::getMarca() const {
     return marca;

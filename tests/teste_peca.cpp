@@ -41,7 +41,7 @@ TEST_CASE("Peça: Alterar dados"){
     }
 
     SUBCASE("verificar preço") {    
-        CHECK(p.getPreco() == 2.35);
+        CHECK(p.getPreco() ==  doctest::Approx(2.35));
     }
 
     SUBCASE("verificar quantidade") {
