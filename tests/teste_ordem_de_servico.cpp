@@ -4,6 +4,7 @@
 #include "Veiculo.hpp"
 #include "Mecanico.hpp"
 #include "Servico.hpp"
+#include "Peca.hpp"
 #include <stdexcept>
 
 TEST_CASE("OrdemDeServico: Criar ordem de servico") {
@@ -125,14 +126,21 @@ TEST_CASE("OrdemDeServico: Nao finalizar ordem que nao aguarda retirada") {
         std::logic_error
     );
 }
-TEST_CASE("OrdemDeServico: Adicionar peca") {
+TEST_CASE("OrdemDeServico: Adicionar peca nula lanca excecao") {
     Veiculo v("FIAT", "Palio", 2010, "ABC1234", 150000);
     OrdemDeServico ordem(&v, "06/10/2026");
-
     Peca* peca = nullptr;
 
-    ordem.adicionarPeca(peca);
+    CHECK_THROWS_AS(ordem.adicionarPeca(peca), std::invalid_argument);
+}
+
+TEST_CASE("OrdemDeServico: Adicionar peca valida") {
+    Veiculo v("FIAT", "Palio", 2010, "ABC1234", 150000);
+    OrdemDeServico ordem(&v, "06/10/2026");
+    Peca peca("Filtro de óleo", 50.00, 1);
+
+    ordem.adicionarPeca(&peca);
 
     REQUIRE(ordem.getPecas().size() == 1);
-    CHECK(ordem.getPecas()[0] == nullptr);
+    CHECK(ordem.getPecas()[0] == &peca);
 }
