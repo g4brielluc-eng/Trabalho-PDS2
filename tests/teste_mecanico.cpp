@@ -1,3 +1,4 @@
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h" 
 #include "Mecanico.hpp"
 #include "Veiculo.hpp"
@@ -119,7 +120,7 @@ TEST_CASE("Mecanico: Atualizar o andamento da ordem atribuida ao mecanico nao la
  
     CHECK_NOTHROW(m.atualizarAndamento(&ordem, novoStatus));
 
-    CHECK(ordem.getStatus() == StatusOrdem::EM_DIAGNOSTICO);
+   CHECK(ordem.getStatus() == StatusOrdem::EM_DIAGNOSTICO);
 }
 
 TEST_CASE("Mecanico: Atualizar o andamento da ordem atribuida ao mecanico para FINALIZADA lanca") {

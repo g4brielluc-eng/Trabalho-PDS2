@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-        Peca::Peca( std::string codigo,float preco,int quantidade): codigo(codigo) ,preco(preco) 
-        ,quantidade(quantidade){
+        Peca::Peca( std::string codigo,float preco,int quantidade)
+        : codigo(codigo), preco(preco), quantidade(quantidade){
             this->descricao = "Peça sem descrição"; 
         }
 
