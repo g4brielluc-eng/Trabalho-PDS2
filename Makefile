@@ -11,6 +11,10 @@ SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 TEST_SRCS := $(wildcard $(TEST_DIR)/teste_*.cpp)
 
+# NOVO: Variáveis para isolar o motor de testes
+MAIN_TEST_SRC := $(TEST_DIR)/main_tests.cpp
+MAIN_TEST_OBJ := $(OBJ_DIR)/main_tests.o
+
 .PHONY: all objs test coverage clean
 
 all: test
@@ -18,23 +22,23 @@ all: test
 $(OBJ_DIR) $(BUILD_DIR):
 	mkdir -p $@
 
-# Compila cada .cpp de src/ isoladamente. O "-" na frente faz o make
-# ignorar erro de UMA classe e seguir compilando as outras (rode
-# "make objs" sozinho pra ver so os erros de compilacao de cada uma).
+# Compila cada .cpp de src/ isoladamente.
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	-$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
+# NOVO: Regra exclusiva para compilar o main_tests apenas uma vez
+$(MAIN_TEST_OBJ): $(MAIN_TEST_SRC) | $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
 objs: $(OBJS)
 
-# Linka cada teste so com os .o que compilaram com sucesso ate agora.
-# Se faltar alguma classe colaboradora ainda nao implementada, o erro
-# de link aparece so para aquele teste, sem travar os demais.
-test: objs | $(BUILD_DIR)
+# MODIFICADO: Agora o target test depende do MAIN_TEST_OBJ e linka ele com cada teste
+test: objs $(MAIN_TEST_OBJ) | $(BUILD_DIR)
 	@status=0; \
 	for t in $(TEST_SRCS); do \
 		name=$$(basename $$t .cpp); \
-		avail_objs=$$(ls $(OBJ_DIR)/*.o 2>/dev/null); \
-		if $(CXX) $(CXXFLAGS) $(INCLUDES) $$t $$avail_objs -o $(BUILD_DIR)/$$name 2>$(BUILD_DIR)/$$name.log; then \
+		avail_objs=$$(ls $(OBJ_DIR)/*.o 2>/dev/null | grep -v "main_tests.o"); \
+		if $(CXX) $(CXXFLAGS) $(INCLUDES) $$t $(MAIN_TEST_OBJ) $$avail_objs -o $(BUILD_DIR)/$$name 2>$(BUILD_DIR)/$$name.log; then \
 			echo "=== $$name: PASSOU na compilacao/link, rodando ==="; \
 			./$(BUILD_DIR)/$$name || status=1; \
 		else \

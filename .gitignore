@@ -7,3 +7,7 @@ latex/
 # Diretório de build e artefatos de teste
 build/
 *.log
+
+# Arquivos de cobertura de teste
+*.gcda
+*.gcno
