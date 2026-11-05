@@ -1,8 +1,10 @@
 #include "Peca.hpp"
-#include <iostream>
 
+#include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>    
+#include <sstream>     
 
 std::vector<Peca*> Peca::listaPecas;
 
@@ -121,7 +123,7 @@ std::vector<Peca*> Peca::listaPecas;
 
 
         void Peca::setCodigo(std::string codigo){
-                Peca* teste = Peca::pesquisarPorCodigo(codigo)
+                Peca* teste = Peca::pesquisarPorCodigo(codigo);
                 if (teste != nullptr && teste != this)
                         throw std::invalid_argument("Código já utilizado");            
                 else

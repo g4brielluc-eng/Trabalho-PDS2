@@ -123,6 +123,14 @@ X - Voltar
 #include <cstdlib>
 
 #include "Agendamento.hpp"
+#include "Peca.hpp"
+#include "Cliente.hpp"
+#include "Veiculo.hpp"
+#include "OrdemDeServico.hpp"
+#include "Mecanico.hpp"
+#include "Status_Ordem.hpp"
+#include "Servico.hpp"
+
 
 // Função para limpar a tela do console
 void limparTela() {
@@ -137,11 +145,7 @@ void limparTela() {
 void pausar() {
     std::cout << std::endl << "Pressione Enter para continuar...";
     std::cin.get();  
-    if (data == "X" || data == "x") {
-                    std::cout << "Operacao cancelada" << std::endl;
-                    pausar();
-                    break; // Sai do case '1' e volta ao menu de agendamentos
-    }  
+    
 }
 
 
@@ -285,12 +289,12 @@ void pecas() {
                 limparTela(); //Utilizar essa função sempre que abrir um case novo 
                 
                 std::cout << "-------------- ATUALIZAR PREÇO --------------" << std::endl;
-
+                Peca * atualizando = nullptr;
                 do{
                 std::cout << "Digite o código da peça que deseja alterar o preço "<< std::endl;
                 std::string cod;
                 std::getline(std::cin, cod);
-                Peca * atualizando  = Peca::pesquisarPorCodigo(cod);
+                 atualizando  = Peca::pesquisarPorCodigo(cod);
                 if(atualizando == nullptr){
                     std::cout << "Não existe peça com esse código." << std::endl;
                     continue;
@@ -429,7 +433,7 @@ void pecas() {
 }
 
 int main() {
-    agendamento();
+
     pecas();
     return 0;
 }
