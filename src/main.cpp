@@ -144,16 +144,6 @@ void pausar() {
     }  
 }
 
-void pausar(char letra) {
-    std::cout << std::endl << "Pressione Enter para continuar...";
-    std::cin.get();  
-    if (letra == "X" || letra == "x") {
-        std::cout << "Operacao cancelada" << std::endl;
-        pausar();
-        return 1; // Sai do case '1' e volta ao menu de agendamentos
-    }
-    return 0;  
-}
 
 void agendamento() {
 
@@ -435,7 +425,7 @@ void pecas() {
                 break;
             }
 
-    } while(!pausar(opcao));
+   } while(opcao != 'X' && opcao != 'x');
 }
 
 int main() {
