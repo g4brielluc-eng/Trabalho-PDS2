@@ -67,6 +67,7 @@ MENU PRINCIPAL
 
 Escolha uma opcao:
 
+SUBMENUS
 
 AGENDAMENTOS
 
@@ -79,7 +80,7 @@ AGENDAMENTOS
 X - Voltar
 
 
-CLIENTES
+CLIENTES -- Rickelve
 
 1 - Cadastrar cliente
 2 - Consultar agendamentos do cliente
@@ -90,7 +91,7 @@ CLIENTES
 X - Voltar
 
 
-MECANICOS
+MECANICOS -- Rickelve
 
 1 - Alterar especialidade
 2 - Atualizar status
@@ -152,3 +153,139 @@ VEICULOS
 7 - Registrar quilometragem
 X - Voltar
 */
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <stdexcept>
+#include <cstdlib>
+
+#include "Agendamento.hpp"
+
+// Função para limpar a tela do console
+void limparTela() {
+    #ifdef _WIN32
+        std::system("cls");
+    #else
+        std::system("clear");
+    #endif
+}
+
+// Função para pausar a execução até que o usuário pressione Enter
+void pausar() {
+    std::cout << std::endl << "Pressione Enter para continuar...";
+    std::cin.get();    
+}
+void agendamento() {
+
+    char opcao;
+    
+    do {
+
+        limparTela(); //Utilizar essa função sempre que abrir o do {}
+
+        std::cout << "-------------- AGENDAMENTOS --------------" << std::endl;
+        std::cout << "1- Verificar disponibilidade" << std::endl;
+        std::cout << "2- Criar agendamento" << std::endl;
+        std::cout << "3- Alterar data e horario" << std::endl;
+        std::cout << "4- Confirmar agendamento" << std::endl;
+        std::cout << "5- Cancelar agendamento" << std::endl;
+        std::cout << "6- Consultar agendamentos" << std::endl;
+        std::cout << "X- Voltar" << std::endl;
+
+        std::cout << std::endl << "Digite uma opcao:" << std::endl;
+
+        std::cin >> opcao;
+        std::cin.ignore(5000, '\n'); // Limpa o buffer de entrada 
+        
+        switch (opcao) {
+            case '1': { 
+                limparTela(); //Utilizar essa função sempre que abrir um case novo 
+                std::cout << "Verificando disponibilidade" << std::endl;
+
+                std::cout << "Digite a data (dd/mm/aaaa) ou digite 'X' para voltar: "<< std::endl;
+                std::string data;
+                std::getline(std::cin, data);
+
+                if (data == "X" || data == "x") {
+                    std::cout << "Operacao cancelada" << std::endl;
+                    pausar();
+                    break; // Sai do case '1' e volta ao menu de agendamentos
+                }
+
+                std::cout << "Digite o horario (hh:mm) ou digite 'X' para voltar: " << std::endl;
+                std::string horario;
+                std::getline(std::cin, horario);  
+
+                if (horario == "X" || horario == "x") {
+                    std::cout << "Operacao cancelada" << std::endl;
+                    pausar(); //Usar essa função sempre antes do break
+                    break; 
+                }
+
+                try {
+                    bool disponivel = Agendamento::verificarDisponibilidade(data, horario);
+                    if (disponivel) {
+                        std::cout << "O horario " << horario << " do dia " << data << " esta disponivel." << std::endl;
+                    } else {
+                        std::cout << "O horario " << horario << " do dia " << data << " nao esta disponivel." << std::endl;
+                    }
+                } catch (const std::invalid_argument& e) {
+                    std::cout << "Erro: " << e.what() << std::endl;
+                }
+                
+                pausar();
+                break;
+            } 
+
+            case '2':
+                limparTela();
+                std::cout << "Criando agendamento" << std::endl;
+                pausar();
+                break;
+
+            case '3':
+                limparTela();
+                std::cout << "Alterando data e horario" << std::endl;
+                pausar();
+                break;
+
+            case '4':
+                limparTela();
+                std::cout << "Confirmando agendamento" << std::endl;
+                pausar();
+                break;
+
+            case '5':
+                limparTela();
+                std::cout << "Cancelando agendamento" << std::endl;
+                pausar();
+                break;
+
+            case '6':
+                limparTela();
+                std::cout << "Consultando agendamentos" << std::endl;
+                pausar();
+                break;
+
+            case 'X':
+            case 'x':
+                limparTela();
+                std::cout << "Voltando ao menu principal..." << std::endl;
+                break;
+
+            default:
+                limparTela();
+                std::cout << "Opcao invalida. Tente novamente." << std::endl;
+                pausar();
+                break;
+            }
+
+    } while(opcao != 'X' && opcao != 'x');
+}
+
+int main() {
+    agendamento();
+    return 0;
+}
+    

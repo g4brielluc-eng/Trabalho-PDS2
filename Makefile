@@ -15,7 +15,7 @@ TEST_SRCS := $(wildcard $(TEST_DIR)/teste_*.cpp)
 MAIN_TEST_SRC := $(TEST_DIR)/main_tests.cpp
 MAIN_TEST_OBJ := $(OBJ_DIR)/main_tests.o
 
-.PHONY: all objs test coverage clean
+.PHONY: all objs test coverage clean run
 
 all: test
 
@@ -37,7 +37,7 @@ test: objs $(MAIN_TEST_OBJ) | $(BUILD_DIR)
 	@status=0; \
 	for t in $(TEST_SRCS); do \
 		name=$$(basename $$t .cpp); \
-		avail_objs=$$(ls $(OBJ_DIR)/*.o 2>/dev/null | grep -v "main_tests.o"); \
+		avail_objs=$$(ls $(OBJ_DIR)/*.o 2>/dev/null | grep -v "main_tests.o" | grep -v "main.o"); \
 		if $(CXX) $(CXXFLAGS) $(INCLUDES) $$t $(MAIN_TEST_OBJ) $$avail_objs -o $(BUILD_DIR)/$$name 2>$(BUILD_DIR)/$$name.log; then \
 			echo "=== $$name: PASSOU na compilacao/link, rodando ==="; \
 			./$(BUILD_DIR)/$$name || status=1; \
@@ -49,12 +49,17 @@ test: objs $(MAIN_TEST_OBJ) | $(BUILD_DIR)
 
 # Gera relatorio de cobertura (requer gcovr: pip install gcovr)
 coverage: test
-	gcovr --root . --filter 'src/' --filter 'include/' --print-summary -o $(BUILD_DIR)/coverage.txt
-	gcovr --root . --filter 'src/' --filter 'include/' --html --html-details -o $(BUILD_DIR)/coverage.html
+	gcovr --root . --filter 'src/' --filter 'include/' -e 'src/main.cpp' --print-summary -o $(BUILD_DIR)/coverage.txt
+	gcovr --root . --filter 'src/' --filter 'include/' -e 'src/main.cpp' --html --html-details -o $(BUILD_DIR)/coverage.html
 	@echo "Resumo em $(BUILD_DIR)/coverage.txt, relatorio em $(BUILD_DIR)/coverage.html"
+
+# NOVO: Compila a aplicação final e executa o menu
+run: objs | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) -o $(BUILD_DIR)/oficina
+	./$(BUILD_DIR)/oficina
 
 clean:
 	rm -rf $(OBJ_DIR)
-	rm -f $(BUILD_DIR)/teste_* $(BUILD_DIR)/*.log $(BUILD_DIR)/coverage.*
+	rm -f $(BUILD_DIR)/teste_* $(BUILD_DIR)/*.log $(BUILD_DIR)/coverage.* $(BUILD_DIR)/oficina
 	find . -name "*.gcda" -delete
 	find . -name "*.gcno" -delete
