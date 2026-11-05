@@ -115,6 +115,7 @@ VEICULOS
 X - Voltar
 */
 
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -135,8 +136,25 @@ void limparTela() {
 // Função para pausar a execução até que o usuário pressione Enter
 void pausar() {
     std::cout << std::endl << "Pressione Enter para continuar...";
-    std::cin.get();    
+    std::cin.get();  
+    if (data == "X" || data == "x") {
+                    std::cout << "Operacao cancelada" << std::endl;
+                    pausar();
+                    break; // Sai do case '1' e volta ao menu de agendamentos
+    }  
 }
+
+void pausar(char letra) {
+    std::cout << std::endl << "Pressione Enter para continuar...";
+    std::cin.get();  
+    if (letra == "X" || letra == "x") {
+        std::cout << "Operacao cancelada" << std::endl;
+        pausar();
+        return 1; // Sai do case '1' e volta ao menu de agendamentos
+    }
+    return 0;  
+}
+
 void agendamento() {
 
     char opcao;
@@ -245,8 +263,184 @@ void agendamento() {
     } while(opcao != 'X' && opcao != 'x');
 }
 
+
+
+//-------------- PEÇAS  --------------
+
+void pecas() {
+
+    Peca::carregarDoArquivo("estoque.txt");
+    char opcao;
+    
+    do {
+
+        limparTela(); //Utilizar essa função sempre que abrir o do {}
+
+        std::cout << "-------------- PEÇAS --------------" << std::endl;
+        std::cout << "1 - Atualizar preço" << std::endl;
+        std::cout << "2 - Atualizar quantidade" << std::endl;
+        std::cout << "3 - Cadastra peça" << std::endl;
+        std::cout << "4 - Consultar informações sobre peça" << std::endl;
+        std::cout << "5 - Listar peças" << std::endl;
+        std::cout << "6 - Listar peças em falta" << std::endl;
+        std::cout << "X- Voltar" << std::endl;
+
+        std::cout << std::endl << "Digite uma opcao:" << std::endl;
+
+        std::cin >> opcao;
+        std::cin.ignore(5000, '\n'); // Limpa o buffer de entrada 
+        
+        switch (opcao) {
+            case '1': { 
+                limparTela(); //Utilizar essa função sempre que abrir um case novo 
+                
+                std::cout << "-------------- ATUALIZAR PREÇO --------------" << std::endl;
+
+                do{
+                std::cout << "Digite o código da peça que deseja alterar o preço "<< std::endl;
+                std::string cod;
+                std::getline(std::cin, cod);
+                Peca * atualizando  = Peca::pesquisarPorCodigo(cod);
+                if(atualizando == nullptr){
+                    std::cout << "Não existe peça com esse código." << std::endl;
+                    continue;
+                }
+                }while(atualizando == nullptr);
+                
+                std::cout << atualizando->getDescricao() << std::endl;
+                std::cout << "Digite o novo preço da peça " << atualizando->getCodigo() << ":" << std::endl;
+                float a;
+                std::cin >>  a;
+                try{
+                    atualizando->setPreco(a);
+                    std::cout << "Preço atualizado com sucesso, a peça " << atualizando->getCodigo() << " custa R$" << atualizando->getPreco() << std::endl;
+                } catch (const std::invalid_argument& e) {
+                    std::cout << "Erro capturado: " << e.what() << std::endl;
+                }
+                break;
+            }
+
+            case '2':{
+                limparTela();
+                std::cout << "-------------- ATUALIZAR QUANTIDADE --------------" << std::endl;
+                 Peca * atualizando = nullptr;
+                do{
+                    std::cout << "Digite o código da peça que deseja alterar o quantidade "<< std::endl;
+                    std::string cod;
+                    std::getline(std::cin, cod);
+                    atualizando  = Peca::pesquisarPorCodigo(cod);
+                    if(atualizando == nullptr){
+                        std::cout << "Não existe peça com esse código." << std::endl;
+                        continue;
+                    }
+                }while(atualizando == nullptr);
+                
+                std::cout << atualizando->getDescricao() << std::endl;
+                std::cout << "Digite a nova quantidade de peças " << atualizando->getCodigo() << ":" << std::endl;
+                float a;
+                std::cin >> a;
+                    try{
+                    atualizando->setQuantidade(a);
+                    std::cout << "Quantidade atualizada com sucesso, a peça " << atualizando->getCodigo() << " possui " << atualizando->getPreco() << " unidades. " <<std::endl;
+                } catch (const std::invalid_argument& e) {
+                    std::cout << "Erro capturado: " << e.what() << std::endl;
+                }
+                break;
+            }
+            case '3': { 
+                limparTela();
+                std::cout << "-------------- CADASTRAR PEÇA --------------" << std::endl;
+                
+                char continuar = 's';
+                while (continuar == 's' || continuar == 'S') {
+                    std::string cod;
+                    float prec;
+                    int quantidad;
+                    std::cout << "\nDigite o código da peça que deseja cadastrar: " << std::endl;
+                    std::cin.ignore(); 
+                    std::getline(std::cin, cod);
+                    std::cout << "Digite o preço da peça: " << std::endl;
+                    std::cin >> prec;
+                    std::cout << "Digite quantas unidades temos em estoque: " << std::endl;
+                    std::cin >> quantidad;
+                    try {
+                        Peca* novaPeca = new Peca(cod, prec, quantidad);
+                        std::cout << "Peça cadastrada com sucesso! Deseja adicionar descrição? (S/N): " << std::endl;
+                        char l;
+                        std::cin >> l;
+                        if (l == 's' || l == 'S') {
+                            std::string descric;
+                            std::cout << "Descreva a peça: " << std::endl;
+                            std::cin.ignore(); 
+                            std::getline(std::cin, descric);
+                            novaPeca->setDescricao(descric);
+                        }
+                        std::cout << "Peça salva na memória com sucesso!\n";
+                    } 
+                    catch (const std::invalid_argument& e) {
+                        std::cout << "Erro capturado: " << e.what() << std::endl;
+                    }
+
+                    std::cout << "\nDeseja cadastrar outra peça? (S/N): ";
+                    std::cin >> continuar;
+                }
+                
+                break; 
+            }
+                            
+
+            case '4':{
+                limparTela();
+                std::cout << "-------------- CONSULTAR INFORMAÇÕES DE PEÇA --------------" << std::endl;
+                Peca * consulta = nullptr;
+                do{
+                std::cout << "Digite o código da peça que deseja consultar "<< std::endl;
+                std::string cod;
+                std::getline(std::cin, cod);
+                consulta  = Peca::pesquisarPorCodigo(cod);
+                if(consulta == nullptr){
+                    std::cout << "Não existe peça com esse código." << std::endl;
+                    continue;
+                }
+                }while(consulta == nullptr);
+                std::cout << "Peça encontrada. "<< std::endl;
+                std::cout << "Descrição: " << consulta->getDescricao() << std::endl;
+                std::cout << "Código: " << consulta->getCodigo() << std::endl;
+                std::cout << "Preço: " << consulta->getPreco() << std::endl;
+                std::cout << "Quantidade: " << consulta->getQuantidade() << std::endl;
+                
+                break;
+            }
+            case '5':{
+                limparTela();
+                Peca::listarTodas();
+                break;
+            }
+            case '6':{
+                limparTela();
+                Peca::listarTodas(true);
+                break;
+            }
+            case 'X':
+            case 'x':
+                limparTela();
+                Peca::salvarNoArquivo("estoque.txt"); 
+                std::cout << "\nAlterações salvas com sucesso! Voltando ao menu principal..." << std::endl;
+                return;
+
+            default:
+                limparTela();
+                std::cout << "Opcao invalida. Tente novamente." << std::endl;
+                pausar();
+                break;
+            }
+
+    } while(!pausar(opcao));
+}
+
 int main() {
     agendamento();
+    pecas();
     return 0;
 }
     

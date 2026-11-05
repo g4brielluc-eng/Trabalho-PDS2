@@ -35,11 +35,20 @@ class Peca{
         std::vector<Veiculo*> veiculos;
         /// Lista de ordens de serviço que utilizam a peça.
         std::vector<OrdemDeServico*> servicos;
+        static std::vector<Peca*> listaPecas;
 
     public:
 
         Peca(std::string codigo,float preco,int quantidade);
 
+
+        static void listarTodas(bool apenasEmFalta = false);
+        static Peca* pesquisarPorCodigo(const std::string& codigoBuscado);
+
+
+        static void salvarNoArquivo(const std::string& nomeArquivo);
+        static void carregarDoArquivo(const std::string& nomeArquivo);
+        
 
         /**
          * @brief Define o código da peça.
