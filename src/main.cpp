@@ -121,6 +121,10 @@ X - Voltar
 #include <vector>
 #include <stdexcept>
 #include <cstdlib>
+#include <memory>
+#include <algorithm>
+#include <fstream>
+#include <sstream>
 
 #include "Agendamento.hpp"
 #include "Peca.hpp"
@@ -128,9 +132,8 @@ X - Voltar
 #include "Veiculo.hpp"
 #include "OrdemDeServico.hpp"
 #include "Mecanico.hpp"
-#include "Status_Ordem.hpp"
+#include "Status_Ordem.hpp" 
 #include "Servico.hpp"
-
 
 // Função para limpar a tela do console
 void limparTela() {
@@ -149,9 +152,9 @@ void pausar() {
 }
 
 
-void agendamento() {
+void agendamentos() {
 
-    char opcao;
+    char opcao = ' ';
     
     do {
 
@@ -258,12 +261,11 @@ void agendamento() {
 }
 
 
-
 //-------------- PEÇAS  --------------
 
 void pecas() {
     Peca::carregarDoArquivo("estoque.txt");
-    char opcao;
+    char opcao = ' ';
     
     do {
         limparTela(); // Utilizar essa função sempre que abrir o do {}
@@ -310,10 +312,8 @@ void pecas() {
                 std::cout << "Descrição: " << atualizando->getDescricao() << std::endl;
                 std::cout << "Digite o novo preço da peça " << atualizando->getCodigo() << ":" << std::endl;
                 float a;
-                std::cin >> a;
-                std::cin.ignore(5000, '\n');
-
-                try {
+                std::cin >>  a; 
+                try{
                     atualizando->setPreco(a);
                     std::cout << "Preço atualizado com sucesso, a peça " << atualizando->getCodigo() << " custa R$" << atualizando->getPreco() << std::endl;
                 } catch (const std::invalid_argument& e) {
@@ -381,9 +381,7 @@ void pecas() {
                     std::cin >> prec;
 
                     std::cout << "Digite quantas unidades temos em estoque: " << std::endl;
-                    std::cin >> quantidad;
-                    std::cin.ignore(5000, '\n');
-
+                    std::cin >> quantidad; 
                     try {
                         Peca* novaPeca = new Peca(cod, prec, quantidad);
                         std::cout << "Peça cadastrada com sucesso! Deseja adicionar descrição? (S/N): " << std::endl;
@@ -479,9 +477,493 @@ void pecas() {
     } while (true);
 }
 
-int main() {
+bool testarVolta(const std::string& str) {
+    if (str == "0") {
+        std::cout << "Operacao cancelada" << std::endl;
+        pausar();
+        return true; // Sai da função e volta ao menu anterior
+    }
+    return false; // Continua a execução normal
+}
 
-    pecas();
+bool converterParaId(const std::string& entrada, int& idDestino) {
+
+    try {
+        idDestino = std::stoi(entrada);
+        return true; 
+    } catch (...) {
+        std::cout << "Erro: O ID deve ser um numero valido." << std::endl;
+        pausar();
+        return false; 
+    }
+}
+
+bool verificarID(int& id) {
+     while (!(std::cin >> id)) {
+                    std::cin.clear(); // Tira o cin do estado de erro
+                    std::cin.ignore(5000, '\n'); // Joga a letra errada fora
+                    std::cout << "Entrada invalida! Digite apenas numeros";
+                }
+                std::cin.ignore(5000, '\n'); // Limpa o \n para os próximos getlines
+
+                if(id == 0) {
+                    return true;
+                }
+                return false;
+}
+
+std::string converterStatusParaString(StatusOrdem status) {
+    switch (status) {
+        case StatusOrdem::ABERTA: return "ABERTA";
+        case StatusOrdem::EM_DIAGNOSTICO: return "EM DIAGNOSTICO";
+        case StatusOrdem::EM_EXECUCAO: return "EM EXECUCAO";
+        case StatusOrdem::AGUARDANDO_PECA: return "AGUARDANDO PECA";
+        case StatusOrdem::AGUARDANDO_RETIRADA: return "AGUARDANDO RETIRADA";
+        case StatusOrdem::FINALIZADA: return "FINALIZADA";
+        default: return "STATUS DESCONHECIDO";
+    }
+}
+
+void mecanicos(std::vector<std::shared_ptr<Mecanico>>& listaDeMecanicos) {
+    char opcao = ' ';
+
+    Mecanico::carregarMecanicosDoArquivo(listaDeMecanicos, "mecanicos.txt");
+
+
+    do {
+        limparTela();
+
+        std::cout << "-------------- MECANICOS --------------" << std::endl;
+        std::cout << "1- Cadastrar mecanico" << std::endl;
+        std::cout << "2- Consultar mecanico" << std::endl;
+        std::cout << "3- Alterar especialidade" << std::endl;
+        std::cout << "4- Registrar diagnostico" << std::endl;
+        std::cout << "5- Atualizar status" << std::endl;
+        std::cout << "6- Consultar ordens atribuidas" << std::endl;
+        std::cout << "7- Listar mecanicos" << std::endl;
+        std::cout << "0- Voltar" << std::endl;
+
+        std::cout << std::endl << "Digite uma opcao:" << std::endl;
+
+        std::cin >> opcao;
+        std::cin.ignore(5000, '\n'); 
+
+
+        switch (opcao) {
+            case '1': {
+                limparTela();
+                std::cout << "-------------- CADASTRAR MECANICO --------------" << std::endl;
+
+                std::cout << "Digite o ID do mecanico ou digite '0' para voltar: " << std::endl;
+                int id = 0; 
+                if(verificarID(id)) {
+                    std::cout << "Operacao cancelada." << std::endl;
+                    pausar();
+                    break; 
+                }
+
+                try {
+                    if (id <= 0) {
+                        throw std::invalid_argument("O ID do mecanico deve ser um numero positivo.");
+                    }
+                } catch (const std::invalid_argument& e) {
+                    std::cout << "Erro: " << e.what() << std::endl;
+                    pausar();
+                    break; 
+                }
+
+                auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico>& m) {
+                 return m->getId() == id;
+                });
+
+                if (it != listaDeMecanicos.end()) {
+                std::cout << "Erro: Ja existe um mecanico cadastrado com o ID " << id << "." << std::endl;
+                pausar();
+                break;
+                }
+                                
+                std::cout << "Digite o nome do mecanico ou '0' para voltar: " << std::endl; 
+                std::string nome;
+                std::getline(std::cin, nome);
+
+                if(testarVolta(nome)) {
+                    break;
+                }
+
+                try {
+                    if (nome == "") {
+                        throw std::invalid_argument("O nome do mecanico nao pode ser vazio.");
+                    }
+                } catch (const std::invalid_argument& e) {
+                    std::cout << "Erro: " << e.what() << std::endl;
+                    pausar();
+                    break; 
+                }
+
+                std::cout << "Digite a especialidade do mecanico ou '0' para voltar: " << std::endl;
+                std::string especialidade;
+                std::getline(std::cin, especialidade);
+
+                if(testarVolta(especialidade)) {
+                    break;
+                }
+
+                try {
+                    if (especialidade == "") {
+                        throw std::invalid_argument("A especialidade do mecanico nao pode ser vazia.");
+                    }
+                } catch (const std::invalid_argument& e) {
+                    std::cout << "Erro: " << e.what() << std::endl;
+                    pausar();
+                    break; 
+                }
+
+                std::shared_ptr<Mecanico> new_mecanico = std::make_shared<Mecanico>(id, nome, especialidade);
+
+                listaDeMecanicos.push_back(new_mecanico);
+
+                std::cout << "Mecanico cadastrado com sucesso!" << std::endl;
+
+                pausar();
+                break;
+            }
+            case '2': {
+                limparTela();
+                std::cout << "-------------- CONSULTAR MECANICO --------------" << std::endl;
+                if(listaDeMecanicos.empty()) {
+                    std::cout << "Nenhum mecanico cadastrado." << std::endl;
+                    pausar();
+                    break;
+                }
+
+                std::cout << "Digite o ID do mecanico que deseja consultar ou digite '0' para voltar: " << std::endl;
+                int id = 0;
+                if(verificarID(id)) {
+                    std::cout << "Operacao cancelada." << std::endl;
+                    pausar();
+                    break; 
+                }
+
+                auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico>& m) {
+                    return m->getId() == id;
+                });
+
+                if(it == listaDeMecanicos.end()) {
+                    std::cout << "Mecanico nao encontrado." << std::endl;
+                    pausar();
+                    break;
+                }
+
+                std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
+
+                pausar();
+                break;
+}
+            case '3': {
+                limparTela();
+                std::cout << "-------------- ALTERAR ESPECIALIDADE --------------" << std::endl;
+
+                if(listaDeMecanicos.empty()) {
+                    std::cout << "Nenhum mecanico cadastrado." << std::endl;
+                    pausar();
+                    break;
+                }
+
+                std::cout << "Digite o ID do mecanico que deseja alterar a especialidade ou digite '0' para voltar: " << std::endl;
+                int id = 0;
+                if(verificarID(id)) {
+                    std::cout << "Operacao cancelada." << std::endl;
+                    pausar();
+                    break; 
+                }
+
+                auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico>& m) {
+                    return m->getId() == id;
+                });
+
+                if(it == listaDeMecanicos.end()) {
+                    std::cout << "Mecanico nao encontrado." << std::endl;
+                    pausar();
+                    break;
+                }
+
+                std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
+                
+
+                std::cout << "Digite a nova especialidade do mecanico ou '0' para voltar: " << std::endl;
+                std::string novaEspecialidade;
+                std::getline(std::cin, novaEspecialidade);
+                if(testarVolta(novaEspecialidade)) {
+                    break;
+                }
+
+                if(novaEspecialidade.empty()) {
+                    std::cout << "Especialidade nao pode ser vazia." << std::endl;
+                    pausar();
+                    break;
+                }
+
+                it->get()->alterarEspecialidade(novaEspecialidade);
+                std::cout << "Especialidade alterada com sucesso!" << std::endl;
+                std::cout << "Novo registro: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
+
+                pausar();
+                break;
+            }
+            case '4': {
+                limparTela();
+                std::cout << "-------------- REGISTRAR DIAGNOSTICO --------------" << std::endl;
+
+                if (listaDeMecanicos.empty()) {
+                    std::cout << "Nenhum mecanico cadastrado." << std::endl;        
+                    pausar();
+                    break;
+                }
+
+                std::cout << "Digite o ID do mecanico ou '0' para voltar: " << std::endl;
+                int id = 0;
+                if(verificarID(id)) {
+                    std::cout << "Operacao cancelada." << std::endl;
+                    pausar();
+                    break; 
+                }
+
+                auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico>& m) {
+                    return m->getId() == id;
+                });
+
+                if (it == listaDeMecanicos.end()) {
+                    std::cout << "Mecanico nao encontrado." << std::endl;
+                    pausar();
+                    break;
+                }
+
+                auto ordens = (*it)->consultarOrdensAtribuidas();
+                
+                if (ordens.empty()) {
+                    std::cout << "Este mecanico nao possui ordens atribuidas para diagnosticar." << std::endl;
+                    pausar();
+                    break;
+                }
+
+                std::cout << "\nOrdens atribuidas ao mecanico " << (*it)->getNome() << ":\n";
+                // Lista as ordens na tela começando do número 1 para facilitar para o usuário
+                for (size_t i = 0; i < ordens.size(); ++i) {
+                    std::cout << "[" << i + 1 << "] Ordem com " << ordens[i]->getServicos().size() << " servico(s)" << " atribuida ao veiculo de placa " << ordens[i]->getVeiculo()->getPlaca() << std::endl; 
+                }
+
+                std::cout << "\nDigite o numero entre colchetes [ ] da ordem que deseja diagnosticar (ou 0 para cancelar): ";
+                int escolha;
+                std::cin >> escolha;
+                std::cin.clear();
+                std::cin.ignore(5000, '\n');
+
+                if (escolha == 0) {
+                    std::cout << "Operacao cancelada." << std::endl;
+                    pausar();
+                    break;
+                }
+
+                size_t indiceVetor = escolha - 1; // Converte a escolha de volta para o índice padrao do vetor
+
+                if (indiceVetor >= ordens.size()) {
+                    std::cout << "Opcao invalida!" << std::endl;
+                    pausar();
+                    break;
+                }
+
+                std::cout << "Digite o diagnostico tecnico:\n";
+                std::string diagnostico;
+                std::getline(std::cin, diagnostico);
+
+                try {
+                    (*it)->registrarDiagnostico(ordens[indiceVetor], diagnostico);
+                    std::cout << "Diagnostico registrado com sucesso!" << std::endl;
+                } catch (const std::exception& e) {
+                    std::cout << "Erro ao registrar: " << e.what() << std::endl;
+                }
+
+                pausar();
+                break;
+            }
+            case '5': {
+                limparTela();
+                std::cout << "-------------- ATUALIZAR STATUS --------------" << std::endl;
+                
+                if (listaDeMecanicos.empty()) {
+                    std::cout << "Nenhum mecanico cadastrado." << std::endl;        
+                    pausar();
+                    break;
+                }
+                
+                std::cout << "Digite o ID do mecanico que deseja acessar a ordem de servico para alterar seu Status ou digite '0' para voltar: " << std::endl;
+                int id = 0;
+                if(verificarID(id)) {
+                    std::cout << "Operacao cancelada." << std::endl;
+                    pausar();
+                    break; 
+                }
+
+                auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico>& m) {
+                    return m->getId() == id;
+                });
+
+                if(it == listaDeMecanicos.end()) {
+                    std::cout << "Mecanico nao encontrado." << std::endl;
+                    pausar();
+                    break;
+                }
+
+                std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
+
+                auto ordens = (*it)->consultarOrdensAtribuidas();
+
+                if(ordens.empty()) {
+                    std::cout << "Este mecanico nao possui ordens atribuidas para atualizar o Status." << std::endl;
+                    pausar();
+                    break;
+                }
+
+                std::cout << "\nOrdens atribuidas ao mecanico " << (*it)->getNome() << ":\n";
+                // Lista as ordens na tela começando do número 1 para facilitar para o usuário
+                for (size_t i = 0; i < ordens.size(); ++i) {
+                    std::cout << "[" << i + 1 << "] Ordem com " << ordens[i]->getServicos().size() << " servico(s)" << " atribuida ao veiculo de placa " << ordens[i]->getVeiculo()->getPlaca() << " com o atual Status: " << converterStatusParaString(ordens[i]->getStatus()) << std::endl;
+                }
+
+                std::cout << "\nDigite o numero entre colchetes [ ] da ordem que deseja alterar o Status (ou 0 para cancelar): ";
+                int escolha;
+                std::cin >> escolha;
+                std::cin.clear();
+                std::cin.ignore(5000, '\n');
+
+                if (escolha == 0) {
+                    std::cout << "Operacao cancelada." << std::endl;
+                    pausar();
+                    break;
+                }
+
+                size_t indiceVetor = escolha - 1; // Converte a escolha de volta para o índice padrão do vetor
+
+                if (indiceVetor >= ordens.size()) {
+                    std::cout << "Opcao invalida!" << std::endl;
+                    pausar();
+                    break;
+                }
+
+                std::cout << "Digite o novo Status da ordem (0 - ABERTA, 1 - EM DIAGNOSTICO, 2 - EM EXECUCAO, 3 - AGUARDANDO PECA, 4 - AGUARDANDO RETIRADA, 5 - FINALIZADA): ";
+                int novoStatus;
+                if (!(std::cin >> novoStatus) || novoStatus < 0 || novoStatus > 5) {
+                     std::cin.clear();
+                     std::cin.ignore(5000, '\n');
+                     std::cout << "Status invalido." << std::endl;
+                     pausar();
+                     break;
+                    }
+                    std::cin.ignore(5000, '\n');
+
+                try {
+                    (*it)->atualizarAndamento(ordens[indiceVetor], static_cast<StatusOrdem>(novoStatus));
+                    std::cout << "Status atualizado com sucesso!" << std::endl;
+                } catch (const std::exception& e) {
+                    std::cout << "Erro ao atualizar status: " << e.what() << std::endl;
+                }
+
+                pausar();  
+                break;
+            }
+            case '6': { 
+                limparTela();
+                std::cout << "-------------- CONSULTAR ORDEM ATRIBUIDA --------------" << std::endl;
+                
+                if(listaDeMecanicos.empty()) {
+                    std::cout << "Nenhum mecanico cadastrado." << std::endl;
+                    pausar();
+                    break;
+                }
+                std::cout << "Digite o ID do mecanico que deseja consultar suas ordens atribuidas ou digite '0' para voltar: " << std::endl;
+                int id = 0;
+                if(verificarID(id)) {
+                    std::cout << "Operacao cancelada." << std::endl;
+                    pausar();
+                    break; 
+                }
+
+                auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico>& m) {
+                    return m->getId() == id;
+                });
+
+                if(it == listaDeMecanicos.end()) {
+                    std::cout << "Mecanico nao encontrado." << std::endl;
+                    pausar();
+                    break;
+                }
+
+                std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
+                std::vector<OrdemDeServico*> ordens = it->get()->consultarOrdensAtribuidas();
+                
+                if(ordens.empty()) {
+                    std::cout << "Nenhuma ordem atribuida a este mecanico." << std::endl;
+                } else {
+                    for(const auto& ordem : ordens) {
+                        std::cout << "Status da Ordem: " << converterStatusParaString(ordem->getStatus())
+                                  << " | Quantidade de servicos: " << ordem->getServicos().size()
+                                  << " | Veiculo de placa: " << ordem->getVeiculo()->getPlaca()  
+                                  << " | Diagnostico: "
+                                  << (ordem->getDiagnostico().empty()
+                                      ? "Nenhum diagnostico registrado."
+                                      : ordem->getDiagnostico())
+                                  << std::endl;
+                    }
+                }
+
+                pausar();
+                break;
+            } 
+            case '7': {
+                limparTela();
+                std::cout << "-------------- LISTAR MECANICOS --------------" << std::endl;
+                
+                if (listaDeMecanicos.empty()) {
+                    std::cout << "Nenhum mecanico cadastrado no sistema." << std::endl;
+                } else {
+                    for (const auto& mecanico : listaDeMecanicos) {
+                        std::cout << "ID: " << mecanico->getId() 
+                                  << " | Nome: " << mecanico->getNome() 
+                                  << " | Especialidade: " << mecanico->getEspecialidade() << std::endl;
+                    }
+                }
+                
+                pausar();
+                break;
+            }
+            case '0': {
+                limparTela();
+                try {
+                    Mecanico::salvarMecanicosNoArquivo(listaDeMecanicos, "mecanicos.txt");
+                    std::cout << "Dados salvos com sucesso!" << std::endl;
+                } 
+                catch (const std::exception& e) {
+                    std::cout << e.what() << std::endl;
+                    std::cout << "Por favor, verifique se o arquivo nao esta aberto em outro programa." << std::endl;
+                }
+                std::cout << "Voltando ao menu principal..." << std::endl;
+                pausar();
+                break;
+            }
+                
+            default:
+                limparTela();
+                std::cout << "Opcao invalida. Tente novamente." << std::endl;
+                pausar();
+                break;
+        }
+    } while(opcao != '0');
+}
+
+int main() {
+    
+    std::vector<std::shared_ptr<Mecanico>> listaDeMecanicos;
+    mecanicos(listaDeMecanicos);
     return 0;
 }
     
