@@ -135,6 +135,10 @@ X - Voltar
 #include "Status_Ordem.hpp" 
 #include "Servico.hpp"
 
+std::vector<std::shared_ptr<Agendamento>> armazenamentoAgendamentos; // Armazena os agendamentos criados
+std::vector<std::shared_ptr<Veiculo>> armazenamentoVeiculos;         // Armazena os veiculos criados
+
+
 // Função para limpar a tela do console
 void limparTela() {
     #ifdef _WIN32
@@ -151,14 +155,163 @@ void pausar() {
     
 }
 
+// Funcao para salvar os agendamentos em um arquivo
+void salvarAgendamentos()
+{
+    std::ofstream arquivo("agendamentos.txt");
 
-void agendamentos() {
+    if (!arquivo.is_open())
+    {
+        std::cout << "Erro ao salvar agendamentos." << std::endl;
+        return;
+    }
 
-    char opcao = ' ';
-    
-    do {
+    for (const auto &agendamento : armazenamentoAgendamentos)
+    {
+        arquivo << agendamento->getData() << ";"
+                << agendamento->getHorario() << ";";
 
-        limparTela(); //Utilizar essa função sempre que abrir o do {}
+        switch (agendamento->getStatus())
+        {
+        case Agendamento::Status::PENDENTE:
+            arquivo << "PENDENTE";
+            break;
+
+        case Agendamento::Status::CONFIRMADO:
+            arquivo << "CONFIRMADO";
+            break;
+
+        case Agendamento::Status::CANCELADO:
+            arquivo << "CANCELADO";
+            break;
+        }
+
+        arquivo << std::endl;
+    }
+
+    arquivo.close();
+}
+
+// Funcao para carregar os agendamentos de um arquivo
+void carregarAgendamentos()
+{
+    std::ifstream arquivo("agendamentos.txt");
+
+    if (!arquivo.is_open())
+    {
+        return;
+    }
+
+    std::string data, horario, status;
+
+    while (std::getline(arquivo, data, ';') &&
+           std::getline(arquivo, horario, ';') &&
+           std::getline(arquivo, status))
+    {
+        try
+        {
+            std::shared_ptr<Agendamento> novoAgendamento =
+                std::make_shared<Agendamento>(data, horario);
+
+            novoAgendamento->registrarAgendamento();
+
+            if (status == "CONFIRMADO")
+            {
+                novoAgendamento->confirmar();
+            }
+            else if (status == "CANCELADO")
+            {
+                novoAgendamento->cancelar();
+            }
+
+            armazenamentoAgendamentos.push_back(novoAgendamento);
+        }
+        catch (const std::exception &e)
+        {
+            std::cout << "Erro ao carregar agendamento: "
+                      << e.what() << std::endl;
+        }
+    }
+
+    arquivo.close();
+}
+
+// Funcao para salvar os veiculos em um arquivo
+void salvarVeiculos()
+{
+    std::ofstream arquivo("veiculos.txt");
+
+    if (!arquivo.is_open())
+    {
+        std::cout << "Erro ao salvar os veiculos." << std::endl;
+        return;
+    }
+
+    for (const auto &veiculo : armazenamentoVeiculos)
+    {
+        arquivo << veiculo->getMarca() << ";"
+                << veiculo->getModelo() << ";"
+                << veiculo->getAno() << ";"
+                << veiculo->getPlaca() << ";"
+                << veiculo->getQuilometragem() << std::endl;
+    }
+
+    arquivo.close();
+}
+
+
+// Funcao para carregar os veiculos de um arquivo
+void carregarVeiculos()
+{
+    std::ifstream arquivo("veiculos.txt");
+
+    if (!arquivo.is_open())
+    {
+        return;
+    }
+
+    std::string marca, modelo, placa;
+    std::string anoTexto, quilometragemTexto;
+
+    while (std::getline(arquivo, marca, ';'))
+    {
+        std::getline(arquivo, modelo, ';');
+        std::getline(arquivo, anoTexto, ';');
+        std::getline(arquivo, placa, ';');
+        std::getline(arquivo, quilometragemTexto);
+
+        try
+        {
+            int ano = std::stoi(anoTexto);
+            int quilometragem = std::stoi(quilometragemTexto);
+
+            std::shared_ptr<Veiculo> novoVeiculo =
+                std::make_shared<Veiculo>(
+                    marca, modelo, ano, placa, quilometragem);
+
+            armazenamentoVeiculos.push_back(novoVeiculo);
+        }
+        catch (const std::exception &e)
+        {
+            std::cout << "Erro ao carregar veiculo: "
+                      << e.what() << std::endl;
+        }
+    }
+
+    arquivo.close();
+}
+
+//============================================= AGENDAMENTOS =============================================
+
+void agendamento()
+{
+
+    char opcao;
+
+    do
+    {
+
+        limparTela(); // Utilizar essa função sempre que abrir o do {}
 
         std::cout << "-------------- AGENDAMENTOS --------------" << std::endl;
         std::cout << "1- Verificar disponibilidade" << std::endl;
@@ -169,97 +322,627 @@ void agendamentos() {
         std::cout << "6- Consultar agendamentos" << std::endl;
         std::cout << "X- Voltar" << std::endl;
 
-        std::cout << std::endl << "Digite uma opcao:" << std::endl;
+        std::cout << std::endl
+                  << "Digite uma opcao:" << std::endl;
 
         std::cin >> opcao;
-        std::cin.ignore(5000, '\n'); // Limpa o buffer de entrada 
-        
-        switch (opcao) {
-            case '1': { 
-                limparTela(); //Utilizar essa função sempre que abrir um case novo 
-                std::cout << "Verificando disponibilidade" << std::endl;
+        std::cin.ignore(5000, '\n'); // Limpa o buffer de entrada
 
-                std::cout << "Digite a data (dd/mm/aaaa) ou digite 'X' para voltar: "<< std::endl;
-                std::string data;
-                std::getline(std::cin, data);
+        switch (opcao)
+        {
+        case '1':
+        {
+            limparTela(); // Utilizar essa função sempre que abrir um case novo
+            std::cout << "Verificando disponibilidade" << std::endl;
 
-                if (data == "X" || data == "x") {
-                    std::cout << "Operacao cancelada" << std::endl;
-                    pausar();
-                    break; // Sai do case '1' e volta ao menu de agendamentos
+            std::cout << "Digite a data (dd/mm/aaaa) ou digite 'X' para voltar: " << std::endl;
+            std::string data;
+            std::getline(std::cin, data);
+
+            if (data == "X" || data == "x")
+            {
+                std::cout << "Operacao cancelada" << std::endl;
+                pausar();
+                break; // Sai do case '1' e volta ao menu de agendamentos
+            }
+
+            std::cout << "Digite o horario (hh:mm) ou digite 'X' para voltar: " << std::endl;
+            std::string horario;
+            std::getline(std::cin, horario);
+
+            if (horario == "X" || horario == "x")
+            {
+                std::cout << "Operacao cancelada" << std::endl;
+                pausar(); // Usar essa função sempre antes do break
+                break;
+            }
+
+            try
+            {
+                bool disponivel = Agendamento::verificarDisponibilidade(data, horario);
+                if (disponivel)
+                {
+                    std::cout << "O horario " << horario << " do dia " << data << " esta disponivel." << std::endl;
                 }
-
-                std::cout << "Digite o horario (hh:mm) ou digite 'X' para voltar: " << std::endl;
-                std::string horario;
-                std::getline(std::cin, horario);  
-
-                if (horario == "X" || horario == "x") {
-                    std::cout << "Operacao cancelada" << std::endl;
-                    pausar(); //Usar essa função sempre antes do break
-                    break; 
+                else
+                {
+                    std::cout << "O horario " << horario << " do dia " << data << " nao esta disponivel." << std::endl;
                 }
+            }
+            catch (const std::invalid_argument &e)
+            {
+                std::cout << "Erro: " << e.what() << std::endl;
+            }
 
-                try {
-                    bool disponivel = Agendamento::verificarDisponibilidade(data, horario);
-                    if (disponivel) {
-                        std::cout << "O horario " << horario << " do dia " << data << " esta disponivel." << std::endl;
-                    } else {
-                        std::cout << "O horario " << horario << " do dia " << data << " nao esta disponivel." << std::endl;
-                    }
-                } catch (const std::invalid_argument& e) {
-                    std::cout << "Erro: " << e.what() << std::endl;
-                }
-                
-                pausar();
-                break;
-            } 
+            pausar();
+            break;
+        }
 
-            case '2':
-                limparTela();
-                std::cout << "Criando agendamento" << std::endl;
-                pausar();
-                break;
+        case '2':
+        case 2:
+        {
+            std::string data, horario;
 
-            case '3':
-                limparTela();
-                std::cout << "Alterando data e horario" << std::endl;
-                pausar();
-                break;
+            limparTela();
 
-            case '4':
-                limparTela();
-                std::cout << "Confirmando agendamento" << std::endl;
-                pausar();
-                break;
+            std::cout << "Digite a data do agendamento: ";
+            std::getline(std::cin, data);
 
-            case '5':
-                limparTela();
-                std::cout << "Cancelando agendamento" << std::endl;
-                pausar();
-                break;
+            std::cout << "Digite o horario do agendamento: ";
+            std::getline(std::cin, horario);
 
-            case '6':
-                limparTela();
-                std::cout << "Consultando agendamentos" << std::endl;
-                pausar();
-                break;
+            try
+            {
+                std::shared_ptr<Agendamento> novoAgendamento =
+                    std::make_shared<Agendamento>(data, horario);
 
-            case 'X':
-            case 'x':
-                limparTela();
-                std::cout << "Voltando ao menu principal..." << std::endl;
-                break;
+                novoAgendamento->registrarAgendamento();
 
-            default:
-                limparTela();
-                std::cout << "Opcao invalida. Tente novamente." << std::endl;
+                armazenamentoAgendamentos.push_back(novoAgendamento);
+
+                std::cout << std::endl
+                          << "Agendamento criado com sucesso!" << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << std::endl
+                          << "Erro: " << e.what() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '3':
+        {
+            const auto &lista = Agendamento::consultarAgendamentos();
+
+            limparTela();
+
+            if (lista.empty())
+            {
+                std::cout << "Nenhum agendamento cadastrado." << std::endl;
                 pausar();
                 break;
             }
 
-    } while(opcao != 'X' && opcao != 'x');
+            std::cout << "AGENDAMENTOS CADASTRADOS" << std::endl;
+
+            for (int i = 0; i < lista.size(); i++)
+            {
+                std::cout << i + 1 << " - Data: " << lista[i]->getData()
+                          << " | Horario: " << lista[i]->getHorario() << std::endl;
+            }
+
+            int indice;
+
+            std::cout << std::endl
+                      << "Digite o numero do agendamento: ";
+            std::cin >> indice;
+            std::cin.ignore(5000, '\n');
+
+            try
+            {
+                if (indice < 1 || indice > lista.size())
+                {
+                    throw std::invalid_argument("Numero de agendamento invalido.");
+                }
+
+                std::string novaData, novoHorario;
+
+                std::cout << "Digite a nova data: ";
+                std::getline(std::cin, novaData);
+
+                std::cout << "Digite o novo horario: ";
+                std::getline(std::cin, novoHorario);
+
+                lista[indice - 1]->alterarDataHorario(novaData, novoHorario);
+
+                std::cout << std::endl
+                          << "Agendamento alterado com sucesso!" << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << std::endl
+                          << "Erro: " << e.what() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+        case '4':
+        {
+            limparTela();
+
+            std::cout << "=== CONFIRMAR AGENDAMENTO ===" << std::endl;
+
+            const std::vector<Agendamento *> &agendamentos =
+                Agendamento::consultarAgendamentos();
+
+            if (agendamentos.empty())
+            {
+                std::cout << "Nao ha agendamentos cadastrados." << std::endl;
+                pausar();
+                break;
+            }
+
+            // Exibe os agendamentos cadastrados
+            for (int i = 0; i < agendamentos.size(); i++)
+            {
+                std::cout << i + 1 << " - Data: "
+                          << agendamentos[i]->getData()
+                          << " | Horario: "
+                          << agendamentos[i]->getHorario()
+                          << std::endl;
+            }
+
+            int indice;
+
+            std::cout << "\nDigite o numero do agendamento que deseja confirmar: ";
+            std::cin >> indice;
+            std::cin.ignore(5000, '\n');
+
+            // Verifica se o numero informado e valido
+            if (indice < 1 || indice > agendamentos.size())
+            {
+                std::cout << "Agendamento invalido." << std::endl;
+                pausar();
+                break;
+            }
+
+            try
+            {
+                agendamentos[indice - 1]->confirmar();
+
+                std::cout << "\nAgendamento confirmado com sucesso!" << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "\nErro ao confirmar agendamento: "
+                          << e.what() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '5':
+        {
+            limparTela();
+
+            std::cout << "=== CANCELAR AGENDAMENTO ===" << std::endl;
+
+            const std::vector<Agendamento *> &agendamentos =
+                Agendamento::consultarAgendamentos();
+
+            if (agendamentos.empty())
+            {
+                std::cout << "Nao ha agendamentos cadastrados." << std::endl;
+                pausar();
+                break;
+            }
+
+            // Exibe os agendamentos cadastrados
+            for (int i = 0; i < agendamentos.size(); i++)
+            {
+                std::cout << i + 1 << " - Data: "
+                          << agendamentos[i]->getData()
+                          << " | Horario: "
+                          << agendamentos[i]->getHorario()
+                          << std::endl;
+            }
+
+            int indice;
+
+            std::cout << "\nDigite o numero do agendamento que deseja cancelar: ";
+            std::cin >> indice;
+            std::cin.ignore(5000, '\n');
+
+            // Verifica se o numero informado e valido
+            if (indice < 1 || indice > agendamentos.size())
+            {
+                std::cout << "Agendamento invalido." << std::endl;
+                pausar();
+                break;
+            }
+
+            try
+            {
+                agendamentos[indice - 1]->cancelar();
+
+                std::cout << "\nAgendamento cancelado com sucesso!" << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "\nErro ao cancelar agendamento: "
+                          << e.what() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+        case '6':
+        {
+            limparTela();
+
+            std::cout << "=== CONSULTAR AGENDAMENTOS ===" << std::endl;
+
+            const std::vector<Agendamento *> &agendamentos =
+                Agendamento::consultarAgendamentos();
+
+            if (agendamentos.empty())
+            {
+                std::cout << "Nao ha agendamentos cadastrados." << std::endl;
+            }
+            else
+            {
+                for (size_t i = 0; i < agendamentos.size(); i++)
+                {
+
+                    std::cout << "\nAgendamento " << i + 1 << std::endl;
+                    std::cout << "Data: "
+                              << agendamentos[i]->getData() << std::endl;
+
+                    std::cout << "Horario: "
+                              << agendamentos[i]->getHorario() << std::endl;
+
+                    std::cout << "Status: ";
+
+                    switch (agendamentos[i]->getStatus())
+                    {
+                    case Agendamento::Status::PENDENTE:
+                        std::cout << "Pendente";
+                        break;
+
+                    case Agendamento::Status::CONFIRMADO:
+                        std::cout << "Confirmado";
+                        break;
+
+                    case Agendamento::Status::CANCELADO:
+                        std::cout << "Cancelado";
+                        break;
+                    }
+
+                    std::cout << std::endl;
+                    std::cout << "-----------------------------" << std::endl;
+                }
+            }
+
+            pausar();
+            break;
+        }
+
+        case 'X':
+        case 'x':
+            limparTela();
+            std::cout << "Voltando ao menu principal..." << std::endl;
+            break;
+
+        default:
+            limparTela();
+            std::cout << "Opcao invalida. Tente novamente." << std::endl;
+            pausar();
+            break;
+        }
+
+    } while (opcao != 'X' && opcao != 'x');
 }
 
+//================================================= VEÍCULOS =============================================
+
+void veiculos()
+{
+    char opcao;
+
+    do
+    {
+        limparTela();
+
+        std::cout << "-------------- VEICULOS --------------" << std::endl;
+        std::cout << "1 - Consultar veiculo" << std::endl;
+        std::cout << "2 - Cadastrar veiculo" << std::endl;
+        std::cout << "3 - Associar cliente ao veiculo" << std::endl;
+        std::cout << "4 - Atualizar placa" << std::endl;
+        std::cout << "5 - Registrar quilometragem" << std::endl;
+        std::cout << "6 - Consultar historico de manutencoes" << std::endl;
+        std::cout << "7 - Listar veiculos" << std::endl;
+        std::cout << "X - Voltar" << std::endl;
+
+        std::cout << std::endl
+                  << "Digite uma opcao: ";
+        std::cin >> opcao;
+        std::cin.ignore(5000, '\n');
+
+        switch (opcao)
+        {
+        case '1':
+        {
+            limparTela();
+
+            std::cout << "-------------- CONSULTAR VEICULO --------------" << std::endl;
+
+            if (armazenamentoVeiculos.empty())
+            {
+                std::cout << "Nenhum veiculo cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::string placa;
+            std::cout << "Digite a placa do veiculo: ";
+            std::getline(std::cin, placa);
+
+            bool encontrado = false;
+
+            for (const auto &veiculo : armazenamentoVeiculos)
+            {
+                if (veiculo->getPlaca() == placa)
+                {
+                    std::cout << "\nVeiculo encontrado!" << std::endl;
+                    std::cout << "Marca: " << veiculo->getMarca() << std::endl;
+                    std::cout << "Modelo: " << veiculo->getModelo() << std::endl;
+                    std::cout << "Ano: " << veiculo->getAno() << std::endl;
+                    std::cout << "Placa: " << veiculo->getPlaca() << std::endl;
+                    std::cout << "Quilometragem: " << veiculo->getQuilometragem() << " km" << std::endl;
+
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            if (!encontrado)
+            {
+                std::cout << "\nNenhum veiculo encontrado com essa placa." << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '2':
+        {
+            limparTela();
+
+            std::cout << "-------------- CADASTRAR VEICULO --------------" << std::endl;
+
+            std::string marca, modelo, placa;
+            int ano, quilometragem;
+
+            std::cout << "Digite a marca do veiculo: ";
+            std::getline(std::cin, marca);
+
+            std::cout << "Digite o modelo do veiculo: ";
+            std::getline(std::cin, modelo);
+
+            std::cout << "Digite o ano do veiculo: ";
+            std::cin >> ano;
+            std::cin.ignore(5000, '\n');
+
+            std::cout << "Digite a placa do veiculo: ";
+            std::getline(std::cin, placa);
+
+            std::cout << "Digite a quilometragem do veiculo: ";
+            std::cin >> quilometragem;
+            std::cin.ignore(5000, '\n');
+
+            try
+            {
+                std::shared_ptr<Veiculo> novoVeiculo =
+                    std::make_shared<Veiculo>(marca, modelo, ano, placa, quilometragem);
+
+                armazenamentoVeiculos.push_back(novoVeiculo);
+
+                std::cout << "\nVeiculo cadastrado com sucesso!" << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "\nErro ao cadastrar veiculo: " << e.what() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '3':
+        {
+            // Associar cliente ao veiculo
+            break;
+        }
+
+        case '4':
+        {
+            limparTela();
+
+            std::cout << "-------------- ATUALIZAR PLACA --------------" << std::endl;
+
+            if (armazenamentoVeiculos.empty())
+            {
+                std::cout << "Nenhum veiculo cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::string placaAtual;
+
+            std::cout << "Digite a placa atual do veiculo: ";
+            std::getline(std::cin, placaAtual);
+
+            Veiculo *veiculoEncontrado = nullptr;
+
+            for (const auto &veiculo : armazenamentoVeiculos)
+            {
+                if (veiculo->getPlaca() == placaAtual)
+                {
+                    veiculoEncontrado = veiculo.get();
+                    break;
+                }
+            }
+
+            if (veiculoEncontrado == nullptr)
+            {
+                std::cout << "\nVeiculo nao encontrado." << std::endl;
+            }
+            else
+            {
+                std::string novaPlaca;
+
+                std::cout << "Digite a nova placa: ";
+                std::getline(std::cin, novaPlaca);
+
+                try
+                {
+                    veiculoEncontrado->atualizarInformacoes(novaPlaca);
+
+                    std::cout << "\nPlaca atualizada com sucesso!" << std::endl;
+                }
+                catch (const std::exception &e)
+                {
+                    std::cout << "\nErro ao atualizar placa: " << e.what() << std::endl;
+                }
+            }
+
+            pausar();
+            break;
+        }
+
+        case '5':
+        {
+            limparTela();
+
+            std::cout << "-------------- REGISTRAR QUILOMETRAGEM --------------" << std::endl;
+
+            if (armazenamentoVeiculos.empty())
+            {
+                std::cout << "Nenhum veiculo cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::string placa;
+
+            std::cout << "Digite a placa do veiculo: ";
+            std::getline(std::cin, placa);
+
+            Veiculo *veiculoEncontrado = nullptr;
+
+            for (const auto &veiculo : armazenamentoVeiculos)
+            {
+                if (veiculo->getPlaca() == placa)
+                {
+                    veiculoEncontrado = veiculo.get();
+                    break;
+                }
+            }
+
+            if (veiculoEncontrado == nullptr)
+            {
+                std::cout << "\nVeiculo nao encontrado." << std::endl;
+            }
+            else
+            {
+                int novaQuilometragem;
+
+                std::cout << "Quilometragem atual: "
+                          << veiculoEncontrado->getQuilometragem() << " km" << std::endl;
+
+                std::cout << "Digite a nova quilometragem: ";
+                std::cin >> novaQuilometragem;
+                std::cin.ignore(5000, '\n');
+
+                try
+                {
+                    veiculoEncontrado->registrarQuilometragem(novaQuilometragem);
+
+                    std::cout << "\nQuilometragem atualizada com sucesso!" << std::endl;
+                }
+                catch (const std::exception &e)
+                {
+                    std::cout << "\nErro ao registrar quilometragem: "
+                              << e.what() << std::endl;
+                }
+            }
+
+            pausar();
+            break;
+        }
+
+        case '6':
+        {
+            // Consultar historico de manutencoes
+            break;
+        }
+
+        case '7':
+        {
+            limparTela();
+
+            std::cout << "-------------- LISTA DE VEICULOS --------------" << std::endl;
+
+            if (armazenamentoVeiculos.empty())
+            {
+                std::cout << "Nenhum veiculo cadastrado." << std::endl;
+            }
+            else
+            {
+                for (const auto &veiculo : armazenamentoVeiculos)
+                {
+                    std::cout << "\n----------------------------------------" << std::endl;
+                    std::cout << "Marca: " << veiculo->getMarca() << std::endl;
+                    std::cout << "Modelo: " << veiculo->getModelo() << std::endl;
+                    std::cout << "Ano: " << veiculo->getAno() << std::endl;
+                    std::cout << "Placa: " << veiculo->getPlaca() << std::endl;
+                    std::cout << "Quilometragem: "
+                              << veiculo->getQuilometragem() << " km" << std::endl;
+                }
+
+                std::cout << "\n----------------------------------------" << std::endl;
+                std::cout << "Total de veiculos: "
+                          << armazenamentoVeiculos.size() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case 'X':
+        case 'x':
+        {
+            limparTela();
+            std::cout << "Voltando ao menu principal..." << std::endl;
+            break;
+        }
+
+        default:
+        {
+            limparTela();
+            std::cout << "Opcao invalida. Tente novamente." << std::endl;
+            pausar();
+            break;
+        }
+        }
+
+    } while (opcao != 'X' && opcao != 'x');
+}
 
 //-------------- PEÇAS  --------------
 
@@ -963,7 +1646,16 @@ void mecanicos(std::vector<std::shared_ptr<Mecanico>>& listaDeMecanicos) {
 int main() {
     
     std::vector<std::shared_ptr<Mecanico>> listaDeMecanicos;
+    carregarAgendamentos();
+    carregarVeiculos();
+
+    agendamento();
+    pecas();
     mecanicos(listaDeMecanicos);
+    veiculos();
+
+    salvarAgendamentos();
+    salvarVeiculos();
+
     return 0;
 }
-    
