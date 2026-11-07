@@ -26,7 +26,7 @@ class Cliente{
 
     protected:
         /// Nome do cliente (não pode ser alterado após a construção).
-        const std::string nome;
+         std::string nome;
         /// CPF do cliente.
         /// Contato do cliente (telefone, e-mail, etc.).
         /// Endereço do cliente.
@@ -37,25 +37,29 @@ class Cliente{
         std::vector<OrdemDeServico*> servicos;
         /// Lista de agendamentos feitos pelo cliente.
         std::vector<Agendamento*> agendamentos;
-        
+        static std::vector<Cliente*> listaClientes;
 
     public:
         Cliente(std::string nome, std::string cpf, std::string contato, std::string endereco);
+        Cliente();
+
+        static void listarTodas();
+        static Cliente* pesquisarPorCpf(const std::string& cpfBuscado);
+     
+        static void salvarNoArquivo(const std::string& nomeArquivo);
+        static void carregarDoArquivo(const std::string& nomeArquivo);
 
         std::string getCpf();
         std::string getEndereco();
         std::string getNome();
-
-
         std::string getContato();
-        void setContato(std::string contato); 
 
+
+        void setContato(std::string contato); 
         std::vector<Veiculo*>& getVeiculos();
         void setVeiculos(Veiculo* veiculo);
-
         std::vector<OrdemDeServico*>& getServicos();
         void setServicos(OrdemDeServico* ordemdeservico);
-
         void setAgendamento(Agendamento* agendamento);
 
         ~Cliente();        
