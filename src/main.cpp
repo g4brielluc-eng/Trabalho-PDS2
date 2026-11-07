@@ -378,9 +378,8 @@ void agendamento()
             break;
         }
 
-        case '2':
-        case 2:
-        {
+        case '2':{
+            limparTela();
             std::string data, horario;
 
             limparTela();
@@ -428,13 +427,13 @@ void agendamento()
 
             std::cout << "AGENDAMENTOS CADASTRADOS" << std::endl;
 
-            for (int i = 0; i < lista.size(); i++)
+            for (size_t i = 0; i < lista.size(); i++)
             {
                 std::cout << i + 1 << " - Data: " << lista[i]->getData()
                           << " | Horario: " << lista[i]->getHorario() << std::endl;
             }
 
-            int indice;
+            size_t indice;
 
             std::cout << std::endl
                       << "Digite o numero do agendamento: ";
@@ -487,7 +486,7 @@ void agendamento()
             }
 
             // Exibe os agendamentos cadastrados
-            for (int i = 0; i < agendamentos.size(); i++)
+            for (size_t i = 0; i < agendamentos.size(); i++)
             {
                 std::cout << i + 1 << " - Data: "
                           << agendamentos[i]->getData()
@@ -496,7 +495,7 @@ void agendamento()
                           << std::endl;
             }
 
-            int indice;
+            size_t indice;
 
             std::cout << "\nDigite o numero do agendamento que deseja confirmar: ";
             std::cin >> indice;
@@ -543,7 +542,7 @@ void agendamento()
             }
 
             // Exibe os agendamentos cadastrados
-            for (int i = 0; i < agendamentos.size(); i++)
+            for (size_t i = 0; i < agendamentos.size(); i++)
             {
                 std::cout << i + 1 << " - Data: "
                           << agendamentos[i]->getData()
@@ -552,7 +551,7 @@ void agendamento()
                           << std::endl;
             }
 
-            int indice;
+            size_t indice;
 
             std::cout << "\nDigite o numero do agendamento que deseja cancelar: ";
             std::cin >> indice;
@@ -944,7 +943,7 @@ void veiculos()
     } while (opcao != 'X' && opcao != 'x');
 }
 
-//-------------- PEÇAS  --------------
+//------------------------------- PEÇAS  --------------------------------------
 
 void pecas() {
     Peca::carregarDoArquivo("estoque.txt");
@@ -978,7 +977,7 @@ void pecas() {
                     std::cout << "Digite o código da peça que deseja alterar o preço (ou 'X' para voltar): " << std::endl;
                     std::getline(std::cin, cod);
 
-                    if (cod == "X" || cod == "x") {
+                    if (cod == "0" || cod == "0") {
                         break; // Sai do do-while se o usuário quiser voltar
                     }
 
@@ -1017,7 +1016,7 @@ void pecas() {
                     std::cout << "Digite o código da peça que deseja alterar a quantidade (ou 'X' para voltar): " << std::endl;
                     std::getline(std::cin, cod);
 
-                    if (cod == "X" || cod == "x") {
+                    if (cod == "0" || cod == "0") {
                         break;
                     }
 
