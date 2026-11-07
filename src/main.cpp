@@ -1371,7 +1371,7 @@ void mecanicos(std::vector<std::shared_ptr<Mecanico>>& listaDeMecanicos) {
                 }
 
                 std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
-                
+
 
                 std::cout << "Digite a nova especialidade do mecanico ou '0' para voltar: " << std::endl;
                 std::string novaEspecialidade;

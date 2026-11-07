@@ -1,4 +1,5 @@
 12345,Coxim do motor Fusca,100,0
-124,jaffhqiueawhifuhav,789,70
+124,jaffhqiueawhifuhav,30,0
 5324,jaffhqiueawhifuhav,789,70
 16374,jfayuegyafie,89,9
+
