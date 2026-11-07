@@ -301,6 +301,139 @@ void carregarVeiculos()
     arquivo.close();
 }
 
+
+//============================================= Cliente =============================================
+
+
+void cliente(){
+    Cliente::carregarDoArquivo("listaClientes.txt");
+    char opcao;
+    
+    do {
+        limparTela(); // Utilizar essa função sempre que abrir o do {}
+
+         std::cout << "-------------- CLIENTE --------------" << std::endl;
+        std::cout << "1 - Cadastrar Ciente" << std::endl;
+        std::cout << "2 - Consultar agendamentos do cliente" << std::endl;
+        std::cout << "3 - Consultar informações de cliente" << std::endl;
+        std::cout << "4 - Consultar ordens de servico do cliente" << std::endl;
+        std::cout << "5 - Consultar veiculos do cliente" << std::endl;
+        std::cout << "6 - Listar clientes" << std::endl;
+        std::cout << "X - Voltar" << std::endl;
+
+        std::cout << std::endl << "Digite uma opcao:" << std::endl;
+        std::cin >> opcao;
+        std::cin.ignore(5000, '\n'); // Limpa o buffer de entrada 
+        
+        switch (opcao) {
+            case '1': { 
+                limparTela();
+                std::cout << "-------------- CADASTRAR CLIENTE --------------" << std::endl;
+                
+                char continuar = 's';
+                while (continuar == 's' || continuar == 'S') {
+                    try {
+                        Cliente* novocliente = new Cliente();
+                    }
+                    catch (const std::invalid_argument& e) {
+                        std::cout << "Erro capturado: " << e.what() << std::endl;
+                    }
+
+                    std::cout << "\nDeseja cadastrar outro cliente? (S/N): ";
+                    std::cin >> continuar;
+                    std::cin.ignore(5000, '\n');
+                }
+                
+                break; 
+            }
+
+            case '2': {
+                limparTela();
+                std::cout << "-------------- CONSULTAR AGENDAMENTO --------------" << std::endl;
+                
+                //NÃO FAÇO IDEIA DE COMO FAZER ISSO
+                break;
+            }
+
+            
+
+            case '3': {
+                limparTela();
+                std::cout << "-------------- CONSULTAR INFORMAÇÕES DE CLIENTE --------------" << std::endl;
+                
+                Cliente* consulta = nullptr;
+                std::string cod;
+                
+                do {
+                    std::cout << "Digite o cpf do cliente que deseja consultar (ou 'X' para voltar): " << std::endl;
+                    std::getline(std::cin, cod);
+
+                    if (cod == "X" || cod == "x") {
+                        break;
+                    }
+
+                    consulta = Cliente::pesquisarPorCpf(cod);
+                    if (consulta == nullptr) {
+                        std::cout << "Não existe cliente com esse cpf.\n" << std::endl;
+                    }
+                } while (consulta == nullptr);
+
+                if (consulta == nullptr) {
+                    break;
+                }
+                
+                std::cout << "\n Cliente encontrado!\n";
+                std::cout << "Nome: " << consulta->getNome() << std::endl;
+                std::cout << "Cpf: " << consulta->getCpf() << std::endl;
+                std::cout << "Contato: R$ " << consulta->getContato() << std::endl;
+                std::cout << "Endereco: " << consulta->getEndereco() << std::endl;
+                
+                break;
+            }
+
+            case '4': {
+                limparTela();
+                std::cout << "-------------- CONSULTAR ORDENS DE SERVIÇO DO CLIENTE --------------" << std::endl;
+                //NÃO FAÇO IDEIA DE COMO FAZER ISSO
+                
+                break;
+            }
+
+            case '5': {
+                limparTela();
+                std::cout << "-------------- CONSULTAR VEICULOS DO CLIENTE --------------" << std::endl;
+                //NÃO FAÇO IDEIA DE COMO FAZER ISSO
+                break;
+            }
+
+            case '6': {
+                limparTela();
+                Cliente::listarTodas();
+                break;
+            }
+
+            case 'X':
+            case 'x': {
+                limparTela();
+                Cliente::salvarNoArquivo("listaClientes.txt"); 
+                std::cout << "\nAlterações salvas com sucesso! Voltando ao menu principal..." << std::endl;
+                return;
+            }
+
+            default: {
+                limparTela();
+                std::cout << "Opcao invalida. Tente novamente." << std::endl;
+                break;
+            }
+        }
+
+        std::cout << "\nPressione Enter para continuar...";
+        std::string pausaStr;
+        std::getline(std::cin, pausaStr);
+
+    } while (true);
+}
+       
 //============================================= AGENDAMENTOS =============================================
 
 void agendamento()
