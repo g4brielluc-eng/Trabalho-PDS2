@@ -41,7 +41,7 @@ AGENDAMENTOS
 X - Voltar
 
 
-CLIENTES 
+CLIENTES
 
 1 - Cadastrar cliente
 2 - Consultar agendamentos do cliente
@@ -115,7 +115,6 @@ VEICULOS
 X - Voltar
 */
 
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -132,27 +131,28 @@ X - Voltar
 #include "Veiculo.hpp"
 #include "OrdemDeServico.hpp"
 #include "Mecanico.hpp"
-#include "Status_Ordem.hpp" 
+#include "Status_Ordem.hpp"
 #include "Servico.hpp"
 
 std::vector<std::shared_ptr<Agendamento>> armazenamentoAgendamentos; // Armazena os agendamentos criados
 std::vector<std::shared_ptr<Veiculo>> armazenamentoVeiculos;         // Armazena os veiculos criados
 
-
 // Função para limpar a tela do console
-void limparTela() {
-    #ifdef _WIN32
-        std::system("cls");
-    #else
-        std::system("clear");
-    #endif
+void limparTela()
+{
+#ifdef _WIN32
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
 }
 
 // Função para pausar a execução até que o usuário pressione Enter
-void pausar() {
-    std::cout << std::endl << "Pressione Enter para continuar...";
-    std::cin.get();  
-    
+void pausar()
+{
+    std::cout << std::endl
+              << "Pressione Enter para continuar...";
+    std::cin.get();
 }
 
 // Funcao para salvar os agendamentos em um arquivo
@@ -168,6 +168,19 @@ void salvarAgendamentos()
 
     for (const auto &agendamento : armazenamentoAgendamentos)
     {
+        std::string placa = "";
+        std::string cpf = "";
+
+        if (agendamento->getVeiculo() != nullptr)
+        {
+            placa = agendamento->getVeiculo()->getPlaca();
+        }
+
+        if (agendamento->getCliente() != nullptr)
+        {
+            cpf = agendamento->getCliente()->getCpf();
+        }
+
         arquivo << agendamento->getData() << ";"
                 << agendamento->getHorario() << ";";
 
@@ -186,10 +199,13 @@ void salvarAgendamentos()
             break;
         }
 
-        arquivo << std::endl;
+        arquivo << ";" << placa
+                << ";" << cpf << std::endl;
     }
 
     arquivo.close();
+
+    std::cout << "Agendamentos salvos com sucesso!" << std::endl;
 }
 
 // Funcao para carregar os agendamentos de um arquivo
@@ -202,16 +218,59 @@ void carregarAgendamentos()
         return;
     }
 
-    std::string data, horario, status;
+    std::string linha;
 
-    while (std::getline(arquivo, data, ';') &&
-           std::getline(arquivo, horario, ';') &&
-           std::getline(arquivo, status))
+    while (std::getline(arquivo, linha))
     {
+        std::stringstream ss(linha);
+
+        std::string data, horario, status, placa, cpf;
+
+        std::getline(ss, data, ';');
+        std::getline(ss, horario, ';');
+        std::getline(ss, status, ';');
+        std::getline(ss, placa, ';');
+        std::getline(ss, cpf);
+
         try
         {
-            std::shared_ptr<Agendamento> novoAgendamento =
+            auto novoAgendamento =
                 std::make_shared<Agendamento>(data, horario);
+
+            // Procura o veículo pela placa
+            Veiculo *veiculoEncontrado = nullptr;
+
+            for (const auto &veiculo : armazenamentoVeiculos)
+            {
+                if (veiculo->getPlaca() == placa)
+                {
+                    veiculoEncontrado = veiculo.get();
+                    break;
+                }
+            }
+
+            if (veiculoEncontrado != nullptr)
+            {
+                novoAgendamento->associarVeiculo(veiculoEncontrado);
+            }
+
+            // Procura o cliente pelo CPF
+            Cliente *clienteEncontrado = nullptr;
+
+            if (!cpf.empty())
+            {
+                clienteEncontrado = Cliente::pesquisarPorCpf(cpf);
+            }
+
+            if (clienteEncontrado == nullptr && veiculoEncontrado != nullptr)
+            {
+                clienteEncontrado = veiculoEncontrado->getCliente();
+            }
+
+            if (clienteEncontrado != nullptr)
+            {
+                novoAgendamento->associarCliente(clienteEncontrado);
+            }
 
             novoAgendamento->registrarAgendamento();
 
@@ -249,16 +308,23 @@ void salvarVeiculos()
 
     for (const auto &veiculo : armazenamentoVeiculos)
     {
+        std::string cpf = "";
+
+        if (veiculo->getCliente() != nullptr)
+        {
+            cpf = veiculo->getCliente()->getCpf();
+        }
+
         arquivo << veiculo->getMarca() << ";"
                 << veiculo->getModelo() << ";"
                 << veiculo->getAno() << ";"
                 << veiculo->getPlaca() << ";"
-                << veiculo->getQuilometragem() << std::endl;
+                << veiculo->getQuilometragem() << ";"
+                << cpf << std::endl;
     }
 
     arquivo.close();
 }
-
 
 // Funcao para carregar os veiculos de um arquivo
 void carregarVeiculos()
@@ -271,14 +337,15 @@ void carregarVeiculos()
     }
 
     std::string marca, modelo, placa;
-    std::string anoTexto, quilometragemTexto;
+    std::string anoTexto, quilometragemTexto, cpf;
 
     while (std::getline(arquivo, marca, ';'))
     {
         std::getline(arquivo, modelo, ';');
         std::getline(arquivo, anoTexto, ';');
         std::getline(arquivo, placa, ';');
-        std::getline(arquivo, quilometragemTexto);
+        std::getline(arquivo, quilometragemTexto, ';');
+        std::getline(arquivo, cpf);
 
         try
         {
@@ -288,6 +355,24 @@ void carregarVeiculos()
             std::shared_ptr<Veiculo> novoVeiculo =
                 std::make_shared<Veiculo>(
                     marca, modelo, ano, placa, quilometragem);
+
+            // Se existir um CPF salvo, procura o cliente
+            if (!cpf.empty())
+            {
+                Cliente *clienteEncontrado = Cliente::pesquisarPorCpf(cpf);
+
+                if (clienteEncontrado != nullptr)
+                {
+                    novoVeiculo->associarCliente(clienteEncontrado);
+                    clienteEncontrado->setVeiculos(novoVeiculo.get());
+                }
+                else
+                {
+                    std::cout << "Cliente de CPF " << cpf
+                              << " nao encontrado para o veiculo "
+                              << placa << std::endl;
+                }
+            }
 
             armazenamentoVeiculos.push_back(novoVeiculo);
         }
@@ -301,18 +386,18 @@ void carregarVeiculos()
     arquivo.close();
 }
 
-
 //============================================= Cliente =============================================
 
-
-void cliente(){
+void cliente()
+{
     Cliente::carregarDoArquivo("listaClientes.txt");
     char opcao;
-    
-    do {
+
+    do
+    {
         limparTela(); // Utilizar essa função sempre que abrir o do {}
 
-         std::cout << "-------------- CLIENTE --------------" << std::endl;
+        std::cout << "-------------- CLIENTE --------------" << std::endl;
         std::cout << "1 - Cadastrar Ciente" << std::endl;
         std::cout << "2 - Consultar agendamentos do cliente" << std::endl;
         std::cout << "3 - Consultar informações de cliente" << std::endl;
@@ -321,110 +406,126 @@ void cliente(){
         std::cout << "6 - Listar clientes" << std::endl;
         std::cout << "X - Voltar" << std::endl;
 
-        std::cout << std::endl << "Digite uma opcao:" << std::endl;
+        std::cout << std::endl
+                  << "Digite uma opcao:" << std::endl;
         std::cin >> opcao;
-        std::cin.ignore(5000, '\n'); // Limpa o buffer de entrada 
-        
-        switch (opcao) {
-            case '1': { 
-                limparTela();
-                std::cout << "-------------- CADASTRAR CLIENTE --------------" << std::endl;
-                
-                char continuar = 's';
-                while (continuar == 's' || continuar == 'S') {
-                    try {
-                        Cliente* novocliente = new Cliente();
-                    }
-                    catch (const std::invalid_argument& e) {
-                        std::cout << "Erro capturado: " << e.what() << std::endl;
-                    }
+        std::cin.ignore(5000, '\n'); // Limpa o buffer de entrada
 
-                    std::cout << "\nDeseja cadastrar outro cliente? (S/N): ";
-                    std::cin >> continuar;
-                    std::cin.ignore(5000, '\n');
+        switch (opcao)
+        {
+        case '1':
+        {
+            limparTela();
+            std::cout << "-------------- CADASTRAR CLIENTE --------------" << std::endl;
+
+            char continuar = 's';
+            while (continuar == 's' || continuar == 'S')
+            {
+                try
+                {
+                    Cliente *novocliente = new Cliente();
                 }
-                
-                break; 
+                catch (const std::invalid_argument &e)
+                {
+                    std::cout << "Erro capturado: " << e.what() << std::endl;
+                }
+
+                std::cout << "\nDeseja cadastrar outro cliente? (S/N): ";
+                std::cin >> continuar;
+                std::cin.ignore(5000, '\n');
             }
 
-            case '2': {
-                limparTela();
-                std::cout << "-------------- CONSULTAR AGENDAMENTO --------------" << std::endl;
-                
-                //NÃO FAÇO IDEIA DE COMO FAZER ISSO
-                break;
-            }
+            break;
+        }
 
-            
+        case '2':
+        {
+            limparTela();
+            std::cout << "-------------- CONSULTAR AGENDAMENTO --------------" << std::endl;
 
-            case '3': {
-                limparTela();
-                std::cout << "-------------- CONSULTAR INFORMAÇÕES DE CLIENTE --------------" << std::endl;
-                
-                Cliente* consulta = nullptr;
-                std::string cod;
-                
-                do {
-                    std::cout << "Digite o cpf do cliente que deseja consultar (ou 'X' para voltar): " << std::endl;
-                    std::getline(std::cin, cod);
+            // NÃO FAÇO IDEIA DE COMO FAZER ISSO
+            break;
+        }
 
-                    if (cod == "X" || cod == "x") {
-                        break;
-                    }
+        case '3':
+        {
+            limparTela();
+            std::cout << "-------------- CONSULTAR INFORMAÇÕES DE CLIENTE --------------" << std::endl;
 
-                    consulta = Cliente::pesquisarPorCpf(cod);
-                    if (consulta == nullptr) {
-                        std::cout << "Não existe cliente com esse cpf.\n" << std::endl;
-                    }
-                } while (consulta == nullptr);
+            Cliente *consulta = nullptr;
+            std::string cod;
 
-                if (consulta == nullptr) {
+            do
+            {
+                std::cout << "Digite o cpf do cliente que deseja consultar (ou 'X' para voltar): " << std::endl;
+                std::getline(std::cin, cod);
+
+                if (cod == "X" || cod == "x")
+                {
                     break;
                 }
-                
-                std::cout << "\n Cliente encontrado!\n";
-                std::cout << "Nome: " << consulta->getNome() << std::endl;
-                std::cout << "Cpf: " << consulta->getCpf() << std::endl;
-                std::cout << "Contato: R$ " << consulta->getContato() << std::endl;
-                std::cout << "Endereco: " << consulta->getEndereco() << std::endl;
-                
+
+                consulta = Cliente::pesquisarPorCpf(cod);
+                if (consulta == nullptr)
+                {
+                    std::cout << "Não existe cliente com esse cpf.\n"
+                              << std::endl;
+                }
+            } while (consulta == nullptr);
+
+            if (consulta == nullptr)
+            {
                 break;
             }
 
-            case '4': {
-                limparTela();
-                std::cout << "-------------- CONSULTAR ORDENS DE SERVIÇO DO CLIENTE --------------" << std::endl;
-                //NÃO FAÇO IDEIA DE COMO FAZER ISSO
-                
-                break;
-            }
+            std::cout << "\n Cliente encontrado!\n";
+            std::cout << "Nome: " << consulta->getNome() << std::endl;
+            std::cout << "Cpf: " << consulta->getCpf() << std::endl;
+            std::cout << "Contato: R$ " << consulta->getContato() << std::endl;
+            std::cout << "Endereco: " << consulta->getEndereco() << std::endl;
 
-            case '5': {
-                limparTela();
-                std::cout << "-------------- CONSULTAR VEICULOS DO CLIENTE --------------" << std::endl;
-                //NÃO FAÇO IDEIA DE COMO FAZER ISSO
-                break;
-            }
+            break;
+        }
 
-            case '6': {
-                limparTela();
-                Cliente::listarTodas();
-                break;
-            }
+        case '4':
+        {
+            limparTela();
+            std::cout << "-------------- CONSULTAR ORDENS DE SERVIÇO DO CLIENTE --------------" << std::endl;
+            // NÃO FAÇO IDEIA DE COMO FAZER ISSO
 
-            case 'X':
-            case 'x': {
-                limparTela();
-                Cliente::salvarNoArquivo("listaClientes.txt"); 
-                std::cout << "\nAlterações salvas com sucesso! Voltando ao menu principal..." << std::endl;
-                return;
-            }
+            break;
+        }
 
-            default: {
-                limparTela();
-                std::cout << "Opcao invalida. Tente novamente." << std::endl;
-                break;
-            }
+        case '5':
+        {
+            limparTela();
+            std::cout << "-------------- CONSULTAR VEICULOS DO CLIENTE --------------" << std::endl;
+            // NÃO FAÇO IDEIA DE COMO FAZER ISSO
+            break;
+        }
+
+        case '6':
+        {
+            limparTela();
+            Cliente::listarTodas();
+            break;
+        }
+
+        case 'X':
+        case 'x':
+        {
+            limparTela();
+            Cliente::salvarNoArquivo("listaClientes.txt");
+            std::cout << "\nAlterações salvas com sucesso! Voltando ao menu principal..." << std::endl;
+            return;
+        }
+
+        default:
+        {
+            limparTela();
+            std::cout << "Opcao invalida. Tente novamente." << std::endl;
+            break;
+        }
         }
 
         std::cout << "\nPressione Enter para continuar...";
@@ -433,7 +534,7 @@ void cliente(){
 
     } while (true);
 }
-       
+
 //============================================= AGENDAMENTOS =============================================
 
 void agendamento()
@@ -511,11 +612,11 @@ void agendamento()
             break;
         }
 
-        case '2':{
+        case '2':
+        {
             limparTela();
-            std::string data, horario;
 
-            limparTela();
+            std::string data, horario, placa;
 
             std::cout << "Digite a data do agendamento: ";
             std::getline(std::cin, data);
@@ -523,22 +624,57 @@ void agendamento()
             std::cout << "Digite o horario do agendamento: ";
             std::getline(std::cin, horario);
 
+            std::cout << "Digite a placa do veiculo: ";
+            std::getline(std::cin, placa);
+
             try
             {
+                Veiculo *veiculoEncontrado = nullptr;
+
+                // Procura o veiculo pela placa
+                for (const auto &veiculo : armazenamentoVeiculos)
+                {
+                    if (veiculo->getPlaca() == placa)
+                    {
+                        veiculoEncontrado = veiculo.get();
+                        break;
+                    }
+                }
+
+                if (veiculoEncontrado == nullptr)
+                {
+                    throw std::invalid_argument(
+                        "Nao existe veiculo cadastrado com essa placa.");
+                }
+
+                // Recupera o cliente associado ao veiculo
+                Cliente *clienteEncontrado = veiculoEncontrado->getCliente();
+
+                if (clienteEncontrado == nullptr)
+                {
+                    throw std::invalid_argument(
+                        "O veiculo nao possui um cliente associado.");
+                }
+
+                // Cria o agendamento
                 std::shared_ptr<Agendamento> novoAgendamento =
                     std::make_shared<Agendamento>(data, horario);
+
+                // Associa veiculo e cliente ao agendamento
+                novoAgendamento->associarVeiculo(veiculoEncontrado);
+                novoAgendamento->associarCliente(clienteEncontrado);
 
                 novoAgendamento->registrarAgendamento();
 
                 armazenamentoAgendamentos.push_back(novoAgendamento);
 
-                std::cout << std::endl
-                          << "Agendamento criado com sucesso!" << std::endl;
+                std::cout << "\nAgendamento criado com sucesso!" << std::endl;
+                std::cout << "Cliente: " << clienteEncontrado->getNome() << std::endl;
+                std::cout << "Veiculo: " << veiculoEncontrado->getPlaca() << std::endl;
             }
             catch (const std::exception &e)
             {
-                std::cout << std::endl
-                          << "Erro: " << e.what() << std::endl;
+                std::cout << "\nErro: " << e.what() << std::endl;
             }
 
             pausar();
@@ -732,6 +868,31 @@ void agendamento()
                 {
 
                     std::cout << "\nAgendamento " << i + 1 << std::endl;
+
+                    Cliente *cliente = agendamentos[i]->getCliente();
+                    Veiculo *veiculo = agendamentos[i]->getVeiculo();
+
+                    std::cout << "Cliente: ";
+
+                    if (cliente != nullptr)
+                    {
+                        std::cout << cliente->getNome() << std::endl;
+                    }
+                    else
+                    {
+                        std::cout << "Nao associado" << std::endl;
+                    }
+
+                    std::cout << "Placa: ";
+
+                    if (veiculo != nullptr)
+                    {
+                        std::cout << veiculo->getPlaca() << std::endl;
+                    }
+                    else
+                    {
+                        std::cout << "Nao associado" << std::endl;
+                    }
                     std::cout << "Data: "
                               << agendamentos[i]->getData() << std::endl;
 
@@ -836,6 +997,16 @@ void veiculos()
                     std::cout << "Ano: " << veiculo->getAno() << std::endl;
                     std::cout << "Placa: " << veiculo->getPlaca() << std::endl;
                     std::cout << "Quilometragem: " << veiculo->getQuilometragem() << " km" << std::endl;
+                    std::cout << "Cliente: ";
+                    if (veiculo->getCliente() != nullptr)
+                    {
+                        std::cout << veiculo->getCliente()->getNome();
+                    }
+                    else
+                    {
+                        std::cout << "Nao associado";
+                    }
+                    std::cout << std::endl;
 
                     encontrado = true;
                     break;
@@ -854,10 +1025,9 @@ void veiculos()
         case '2':
         {
             limparTela();
-
             std::cout << "-------------- CADASTRAR VEICULO --------------" << std::endl;
 
-            std::string marca, modelo, placa;
+            std::string marca, modelo, placa, cpf;
             int ano, quilometragem;
 
             std::cout << "Digite a marca do veiculo: ";
@@ -877,14 +1047,60 @@ void veiculos()
             std::cin >> quilometragem;
             std::cin.ignore(5000, '\n');
 
+            std::cout << "Digite o CPF do proprietario: ";
+            std::getline(std::cin, cpf);
+
             try
             {
-                std::shared_ptr<Veiculo> novoVeiculo =
-                    std::make_shared<Veiculo>(marca, modelo, ano, placa, quilometragem);
+                Cliente *clienteEncontrado = Cliente::pesquisarPorCpf(cpf);
 
-                armazenamentoVeiculos.push_back(novoVeiculo);
+                if (clienteEncontrado == nullptr)
+                {
+                    std::cout << "\nCliente nao encontrado. Veiculo nao cadastrado." << std::endl;
+                    pausar();
+                    break;
+                }
 
-                std::cout << "\nVeiculo cadastrado com sucesso!" << std::endl;
+                // Procura um veículo com a mesma placa
+                std::shared_ptr<Veiculo> veiculoEncontrado = nullptr;
+
+                for (const auto &veiculo : armazenamentoVeiculos)
+                {
+                    if (veiculo->getPlaca() == placa)
+                    {
+                        veiculoEncontrado = veiculo;
+                        break;
+                    }
+                }
+
+                // Se o veículo já existe
+                if (veiculoEncontrado != nullptr)
+                {
+                    if (veiculoEncontrado->getCliente() != nullptr)
+                    {
+                        throw std::invalid_argument(
+                            "Ja existe um veiculo cadastrado com essa placa.");
+                    }
+
+                    // Associa o cliente ao veículo existente
+                    veiculoEncontrado->associarCliente(clienteEncontrado);
+                    clienteEncontrado->setVeiculos(veiculoEncontrado.get());
+
+                    std::cout << "\nVeiculo existente associado ao cliente com sucesso!" << std::endl;
+                }
+                else
+                {
+                    // Se não existe, cria um novo veículo
+                    std::shared_ptr<Veiculo> novoVeiculo =
+                        std::make_shared<Veiculo>(marca, modelo, ano, placa, quilometragem);
+
+                    novoVeiculo->associarCliente(clienteEncontrado);
+                    clienteEncontrado->setVeiculos(novoVeiculo.get());
+
+                    armazenamentoVeiculos.push_back(novoVeiculo);
+
+                    std::cout << "\nVeiculo cadastrado com sucesso!" << std::endl;
+                }
             }
             catch (const std::exception &e)
             {
@@ -1045,6 +1261,16 @@ void veiculos()
                     std::cout << "Placa: " << veiculo->getPlaca() << std::endl;
                     std::cout << "Quilometragem: "
                               << veiculo->getQuilometragem() << " km" << std::endl;
+                    std::cout << "Cliente: ";
+                    if (veiculo->getCliente() != nullptr)
+                    {
+                        std::cout << veiculo->getCliente()->getNome();
+                    }
+                    else
+                    {
+                        std::cout << "Nao associado";
+                    }
+                    std::cout << std::endl;
                 }
 
                 std::cout << "\n----------------------------------------" << std::endl;
@@ -1078,11 +1304,13 @@ void veiculos()
 
 //------------------------------- PEÇAS  --------------------------------------
 
-void pecas() {
+void pecas()
+{
     Peca::carregarDoArquivo("estoque.txt");
     char opcao = ' ';
-    
-    do {
+
+    do
+    {
         limparTela(); // Utilizar essa função sempre que abrir o do {}
 
         std::cout << "-------------- PEÇAS --------------" << std::endl;
@@ -1094,195 +1322,230 @@ void pecas() {
         std::cout << "6 - Listar peças em falta" << std::endl;
         std::cout << "X - Voltar" << std::endl;
 
-        std::cout << std::endl << "Digite uma opcao:" << std::endl;
+        std::cout << std::endl
+                  << "Digite uma opcao:" << std::endl;
         std::cin >> opcao;
-        std::cin.ignore(5000, '\n'); // Limpa o buffer de entrada 
-        
-        switch (opcao) {
-            case '1': { 
-                limparTela(); 
-                std::cout << "-------------- ATUALIZAR PREÇO --------------" << std::endl;
-                
-                Peca* atualizando = nullptr;
-                std::string cod;
-                
-                do {
-                    std::cout << "Digite o código da peça que deseja alterar o preço (ou 'X' para voltar): " << std::endl;
-                    std::getline(std::cin, cod);
+        std::cin.ignore(5000, '\n'); // Limpa o buffer de entrada
 
-                    if (cod == "0" || cod == "0") {
-                        break; // Sai do do-while se o usuário quiser voltar
-                    }
+        switch (opcao)
+        {
+        case '1':
+        {
+            limparTela();
+            std::cout << "-------------- ATUALIZAR PREÇO --------------" << std::endl;
 
-                    atualizando = Peca::pesquisarPorCodigo(cod);
-                    if (atualizando == nullptr) {
-                        std::cout << "Não existe peça com esse código.\n" << std::endl;
-                    }
-                } while (atualizando == nullptr);
+            Peca *atualizando = nullptr;
+            std::string cod;
 
-                if (atualizando == nullptr) {
-                    break;
+            do
+            {
+                std::cout << "Digite o código da peça que deseja alterar o preço (ou 'X' para voltar): " << std::endl;
+                std::getline(std::cin, cod);
+
+                if (cod == "0" || cod == "0")
+                {
+                    break; // Sai do do-while se o usuário quiser voltar
                 }
-                
-                std::cout << "Descrição: " << atualizando->getDescricao() << std::endl;
-                std::cout << "Digite o novo preço da peça " << atualizando->getCodigo() << ":" << std::endl;
-                float a;
-                std::cin >>  a; 
-                try{
-                    atualizando->setPreco(a);
-                    std::cout << "Preço atualizado com sucesso, a peça " << atualizando->getCodigo() << " custa R$" << atualizando->getPreco() << std::endl;
-                } catch (const std::invalid_argument& e) {
-                    std::cout << "Erro capturado: " << e.what() << std::endl;
+
+                atualizando = Peca::pesquisarPorCodigo(cod);
+                if (atualizando == nullptr)
+                {
+                    std::cout << "Não existe peça com esse código.\n"
+                              << std::endl;
                 }
-                
+            } while (atualizando == nullptr);
+
+            if (atualizando == nullptr)
+            {
                 break;
             }
 
-            case '2': {
-                limparTela();
-                std::cout << "-------------- ATUALIZAR QUANTIDADE --------------" << std::endl;
-                
-                Peca* atualizando = nullptr;
-                std::string cod;
-                
-                do {
-                    std::cout << "Digite o código da peça que deseja alterar a quantidade (ou 'X' para voltar): " << std::endl;
-                    std::getline(std::cin, cod);
+            std::cout << "Descrição: " << atualizando->getDescricao() << std::endl;
+            std::cout << "Digite o novo preço da peça " << atualizando->getCodigo() << ":" << std::endl;
+            float a;
+            std::cin >> a;
+            try
+            {
+                atualizando->setPreco(a);
+                std::cout << "Preço atualizado com sucesso, a peça " << atualizando->getCodigo() << " custa R$" << atualizando->getPreco() << std::endl;
+            }
+            catch (const std::invalid_argument &e)
+            {
+                std::cout << "Erro capturado: " << e.what() << std::endl;
+            }
 
-                    if (cod == "0" || cod == "0") {
-                        break;
-                    }
+            break;
+        }
 
-                    atualizando = Peca::pesquisarPorCodigo(cod);
-                    if (atualizando == nullptr) {
-                        std::cout << "Não existe peça com esse código.\n" << std::endl;
-                    }
-                } while (atualizando == nullptr);
+        case '2':
+        {
+            limparTela();
+            std::cout << "-------------- ATUALIZAR QUANTIDADE --------------" << std::endl;
 
-                if (atualizando == nullptr) {
+            Peca *atualizando = nullptr;
+            std::string cod;
+
+            do
+            {
+                std::cout << "Digite o código da peça que deseja alterar a quantidade (ou 'X' para voltar): " << std::endl;
+                std::getline(std::cin, cod);
+
+                if (cod == "0" || cod == "0")
+                {
                     break;
                 }
-                
-                std::cout << "Descrição: " << atualizando->getDescricao() << std::endl;
-                std::cout << "Digite a nova quantidade de peças para " << atualizando->getCodigo() << ":" << std::endl;
-                int novaQtd;
-                std::cin >> novaQtd;
-                std::cin.ignore(5000, '\n');
 
-                try {
-                    atualizando->setQuantidade(novaQtd);
-                    std::cout << "Quantidade atualizada com sucesso, a peça " << atualizando->getCodigo() << " possui " << atualizando->getQuantidade() << " unidades." << std::endl;
-                } catch (const std::invalid_argument& e) {
-                    std::cout << "Erro capturado: " << e.what() << std::endl;
+                atualizando = Peca::pesquisarPorCodigo(cod);
+                if (atualizando == nullptr)
+                {
+                    std::cout << "Não existe peça com esse código.\n"
+                              << std::endl;
                 }
-                
+            } while (atualizando == nullptr);
+
+            if (atualizando == nullptr)
+            {
                 break;
             }
 
-            case '3': { 
-                limparTela();
-                std::cout << "-------------- CADASTRAR PEÇA --------------" << std::endl;
-                
-                char continuar = 's';
-                while (continuar == 's' || continuar == 'S') {
-                    std::string cod;
-                    float prec;
-                    int quantidad;
-                    
-                    std::cout << "\nDigite o código da peça que deseja cadastrar: " << std::endl;
-                    std::getline(std::cin, cod);
+            std::cout << "Descrição: " << atualizando->getDescricao() << std::endl;
+            std::cout << "Digite a nova quantidade de peças para " << atualizando->getCodigo() << ":" << std::endl;
+            int novaQtd;
+            std::cin >> novaQtd;
+            std::cin.ignore(5000, '\n');
 
-                    std::cout << "Digite o preço da peça: " << std::endl;
-                    std::cin >> prec;
+            try
+            {
+                atualizando->setQuantidade(novaQtd);
+                std::cout << "Quantidade atualizada com sucesso, a peça " << atualizando->getCodigo() << " possui " << atualizando->getQuantidade() << " unidades." << std::endl;
+            }
+            catch (const std::invalid_argument &e)
+            {
+                std::cout << "Erro capturado: " << e.what() << std::endl;
+            }
 
-                    std::cout << "Digite quantas unidades temos em estoque: " << std::endl;
-                    std::cin >> quantidad; 
-                    try {
-                        Peca* novaPeca = new Peca(cod, prec, quantidad);
-                        std::cout << "Peça cadastrada com sucesso! Deseja adicionar descrição? (S/N): " << std::endl;
-                        char l;
-                        std::cin >> l;
-                        std::cin.ignore(5000, '\n');
+            break;
+        }
 
-                        if (l == 's' || l == 'S') {
-                            std::string descric;
-                            std::cout << "Descreva a peça: " << std::endl;
-                            std::getline(std::cin, descric);
-                            novaPeca->setDescricao(descric);
-                        }
-                        std::cout << "Peça salva na memória com sucesso!\n";
-                    } 
-                    catch (const std::invalid_argument& e) {
-                        std::cout << "Erro capturado: " << e.what() << std::endl;
-                    }
+        case '3':
+        {
+            limparTela();
+            std::cout << "-------------- CADASTRAR PEÇA --------------" << std::endl;
 
-                    std::cout << "\nDeseja cadastrar outra peça? (S/N): ";
-                    std::cin >> continuar;
+            char continuar = 's';
+            while (continuar == 's' || continuar == 'S')
+            {
+                std::string cod;
+                float prec;
+                int quantidad;
+
+                std::cout << "\nDigite o código da peça que deseja cadastrar: " << std::endl;
+                std::getline(std::cin, cod);
+
+                std::cout << "Digite o preço da peça: " << std::endl;
+                std::cin >> prec;
+
+                std::cout << "Digite quantas unidades temos em estoque: " << std::endl;
+                std::cin >> quantidad;
+                try
+                {
+                    Peca *novaPeca = new Peca(cod, prec, quantidad);
+                    std::cout << "Peça cadastrada com sucesso! Deseja adicionar descrição? (S/N): " << std::endl;
+                    char l;
+                    std::cin >> l;
                     std::cin.ignore(5000, '\n');
+
+                    if (l == 's' || l == 'S')
+                    {
+                        std::string descric;
+                        std::cout << "Descreva a peça: " << std::endl;
+                        std::getline(std::cin, descric);
+                        novaPeca->setDescricao(descric);
+                    }
+                    std::cout << "Peça salva na memória com sucesso!\n";
                 }
-                
-                break; 
+                catch (const std::invalid_argument &e)
+                {
+                    std::cout << "Erro capturado: " << e.what() << std::endl;
+                }
+
+                std::cout << "\nDeseja cadastrar outra peça? (S/N): ";
+                std::cin >> continuar;
+                std::cin.ignore(5000, '\n');
             }
 
-            case '4': {
-                limparTela();
-                std::cout << "-------------- CONSULTAR INFORMAÇÕES DE PEÇA --------------" << std::endl;
-                
-                Peca* consulta = nullptr;
-                std::string cod;
-                
-                do {
-                    std::cout << "Digite o código da peça que deseja consultar (ou 'X' para voltar): " << std::endl;
-                    std::getline(std::cin, cod);
+            break;
+        }
 
-                    if (cod == "X" || cod == "x") {
-                        break;
-                    }
+        case '4':
+        {
+            limparTela();
+            std::cout << "-------------- CONSULTAR INFORMAÇÕES DE PEÇA --------------" << std::endl;
 
-                    consulta = Peca::pesquisarPorCodigo(cod);
-                    if (consulta == nullptr) {
-                        std::cout << "Não existe peça com esse código.\n" << std::endl;
-                    }
-                } while (consulta == nullptr);
+            Peca *consulta = nullptr;
+            std::string cod;
 
-                if (consulta == nullptr) {
+            do
+            {
+                std::cout << "Digite o código da peça que deseja consultar (ou 'X' para voltar): " << std::endl;
+                std::getline(std::cin, cod);
+
+                if (cod == "X" || cod == "x")
+                {
                     break;
                 }
-                
-                std::cout << "\nPeça encontrada!\n";
-                std::cout << "Descrição: " << consulta->getDescricao() << std::endl;
-                std::cout << "Código: " << consulta->getCodigo() << std::endl;
-                std::cout << "Preço: R$ " << consulta->getPreco() << std::endl;
-                std::cout << "Quantidade: " << consulta->getQuantidade() << std::endl;
-                
+
+                consulta = Peca::pesquisarPorCodigo(cod);
+                if (consulta == nullptr)
+                {
+                    std::cout << "Não existe peça com esse código.\n"
+                              << std::endl;
+                }
+            } while (consulta == nullptr);
+
+            if (consulta == nullptr)
+            {
                 break;
             }
 
-            case '5': {
-                limparTela();
-                Peca::listarTodas(false);
-                break;
-            }
+            std::cout << "\nPeça encontrada!\n";
+            std::cout << "Descrição: " << consulta->getDescricao() << std::endl;
+            std::cout << "Código: " << consulta->getCodigo() << std::endl;
+            std::cout << "Preço: R$ " << consulta->getPreco() << std::endl;
+            std::cout << "Quantidade: " << consulta->getQuantidade() << std::endl;
 
-            case '6': {
-                limparTela();
-                Peca::listarTodas(true);
-                break;
-            }
+            break;
+        }
 
-            case 'X':
-            case 'x': {
-                limparTela();
-                Peca::salvarNoArquivo("estoque.txt"); 
-                std::cout << "\nAlterações salvas com sucesso! Voltando ao menu principal..." << std::endl;
-                return;
-            }
+        case '5':
+        {
+            limparTela();
+            Peca::listarTodas(false);
+            break;
+        }
 
-            default: {
-                limparTela();
-                std::cout << "Opcao invalida. Tente novamente." << std::endl;
-                break;
-            }
+        case '6':
+        {
+            limparTela();
+            Peca::listarTodas(true);
+            break;
+        }
+
+        case 'X':
+        case 'x':
+        {
+            limparTela();
+            Peca::salvarNoArquivo("estoque.txt");
+            std::cout << "\nAlterações salvas com sucesso! Voltando ao menu principal..." << std::endl;
+            return;
+        }
+
+        default:
+        {
+            limparTela();
+            std::cout << "Opcao invalida. Tente novamente." << std::endl;
+            break;
+        }
         }
 
         std::cout << "\nPressione Enter para continuar...";
@@ -1292,8 +1555,10 @@ void pecas() {
     } while (true);
 }
 
-bool testarVolta(const std::string& str) {
-    if (str == "0") {
+bool testarVolta(const std::string &str)
+{
+    if (str == "0")
+    {
         std::cout << "Operacao cancelada" << std::endl;
         pausar();
         return true; // Sai da função e volta ao menu anterior
@@ -1301,51 +1566,68 @@ bool testarVolta(const std::string& str) {
     return false; // Continua a execução normal
 }
 
-bool converterParaId(const std::string& entrada, int& idDestino) {
+bool converterParaId(const std::string &entrada, int &idDestino)
+{
 
-    try {
+    try
+    {
         idDestino = std::stoi(entrada);
-        return true; 
-    } catch (...) {
+        return true;
+    }
+    catch (...)
+    {
         std::cout << "Erro: O ID deve ser um numero valido." << std::endl;
         pausar();
-        return false; 
+        return false;
     }
 }
 
-bool verificarID(int& id) {
-     while (!(std::cin >> id)) {
-                    std::cin.clear(); // Tira o cin do estado de erro
-                    std::cin.ignore(5000, '\n'); // Joga a letra errada fora
-                    std::cout << "Entrada invalida! Digite apenas numeros";
-                }
-                std::cin.ignore(5000, '\n'); // Limpa o \n para os próximos getlines
+bool verificarID(int &id)
+{
+    while (!(std::cin >> id))
+    {
+        std::cin.clear();            // Tira o cin do estado de erro
+        std::cin.ignore(5000, '\n'); // Joga a letra errada fora
+        std::cout << "Entrada invalida! Digite apenas numeros";
+    }
+    std::cin.ignore(5000, '\n'); // Limpa o \n para os próximos getlines
 
-                if(id == 0) {
-                    return true;
-                }
-                return false;
+    if (id == 0)
+    {
+        return true;
+    }
+    return false;
 }
 
-std::string converterStatusParaString(StatusOrdem status) {
-    switch (status) {
-        case StatusOrdem::ABERTA: return "ABERTA";
-        case StatusOrdem::EM_DIAGNOSTICO: return "EM DIAGNOSTICO";
-        case StatusOrdem::EM_EXECUCAO: return "EM EXECUCAO";
-        case StatusOrdem::AGUARDANDO_PECA: return "AGUARDANDO PECA";
-        case StatusOrdem::AGUARDANDO_RETIRADA: return "AGUARDANDO RETIRADA";
-        case StatusOrdem::FINALIZADA: return "FINALIZADA";
-        default: return "STATUS DESCONHECIDO";
+std::string converterStatusParaString(StatusOrdem status)
+{
+    switch (status)
+    {
+    case StatusOrdem::ABERTA:
+        return "ABERTA";
+    case StatusOrdem::EM_DIAGNOSTICO:
+        return "EM DIAGNOSTICO";
+    case StatusOrdem::EM_EXECUCAO:
+        return "EM EXECUCAO";
+    case StatusOrdem::AGUARDANDO_PECA:
+        return "AGUARDANDO PECA";
+    case StatusOrdem::AGUARDANDO_RETIRADA:
+        return "AGUARDANDO RETIRADA";
+    case StatusOrdem::FINALIZADA:
+        return "FINALIZADA";
+    default:
+        return "STATUS DESCONHECIDO";
     }
 }
 
-void mecanicos(std::vector<std::shared_ptr<Mecanico>>& listaDeMecanicos) {
+void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
+{
     char opcao = ' ';
 
     Mecanico::carregarMecanicosDoArquivo(listaDeMecanicos, "mecanicos.txt");
 
-
-    do {
+    do
+    {
         limparTela();
 
         std::cout << "-------------- MECANICOS --------------" << std::endl;
@@ -1358,433 +1640,497 @@ void mecanicos(std::vector<std::shared_ptr<Mecanico>>& listaDeMecanicos) {
         std::cout << "7- Listar mecanicos" << std::endl;
         std::cout << "0- Voltar" << std::endl;
 
-        std::cout << std::endl << "Digite uma opcao:" << std::endl;
+        std::cout << std::endl
+                  << "Digite uma opcao:" << std::endl;
 
         std::cin >> opcao;
-        std::cin.ignore(5000, '\n'); 
+        std::cin.ignore(5000, '\n');
 
+        switch (opcao)
+        {
+        case '1':
+        {
+            limparTela();
+            std::cout << "-------------- CADASTRAR MECANICO --------------" << std::endl;
 
-        switch (opcao) {
-            case '1': {
-                limparTela();
-                std::cout << "-------------- CADASTRAR MECANICO --------------" << std::endl;
+            std::cout << "Digite o ID do mecanico ou digite '0' para voltar: " << std::endl;
+            int id = 0;
+            if (verificarID(id))
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
 
-                std::cout << "Digite o ID do mecanico ou digite '0' para voltar: " << std::endl;
-                int id = 0; 
-                if(verificarID(id)) {
-                    std::cout << "Operacao cancelada." << std::endl;
-                    pausar();
-                    break; 
+            try
+            {
+                if (id <= 0)
+                {
+                    throw std::invalid_argument("O ID do mecanico deve ser um numero positivo.");
                 }
+            }
+            catch (const std::invalid_argument &e)
+            {
+                std::cout << "Erro: " << e.what() << std::endl;
+                pausar();
+                break;
+            }
 
-                try {
-                    if (id <= 0) {
-                        throw std::invalid_argument("O ID do mecanico deve ser um numero positivo.");
-                    }
-                } catch (const std::invalid_argument& e) {
-                    std::cout << "Erro: " << e.what() << std::endl;
-                    pausar();
-                    break; 
-                }
+            auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico> &m)
+                                   { return m->getId() == id; });
 
-                auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico>& m) {
-                 return m->getId() == id;
-                });
-
-                if (it != listaDeMecanicos.end()) {
+            if (it != listaDeMecanicos.end())
+            {
                 std::cout << "Erro: Ja existe um mecanico cadastrado com o ID " << id << "." << std::endl;
                 pausar();
                 break;
+            }
+
+            std::cout << "Digite o nome do mecanico ou '0' para voltar: " << std::endl;
+            std::string nome;
+            std::getline(std::cin, nome);
+
+            if (testarVolta(nome))
+            {
+                break;
+            }
+
+            try
+            {
+                if (nome == "")
+                {
+                    throw std::invalid_argument("O nome do mecanico nao pode ser vazio.");
                 }
-                                
-                std::cout << "Digite o nome do mecanico ou '0' para voltar: " << std::endl; 
-                std::string nome;
-                std::getline(std::cin, nome);
-
-                if(testarVolta(nome)) {
-                    break;
-                }
-
-                try {
-                    if (nome == "") {
-                        throw std::invalid_argument("O nome do mecanico nao pode ser vazio.");
-                    }
-                } catch (const std::invalid_argument& e) {
-                    std::cout << "Erro: " << e.what() << std::endl;
-                    pausar();
-                    break; 
-                }
-
-                std::cout << "Digite a especialidade do mecanico ou '0' para voltar: " << std::endl;
-                std::string especialidade;
-                std::getline(std::cin, especialidade);
-
-                if(testarVolta(especialidade)) {
-                    break;
-                }
-
-                try {
-                    if (especialidade == "") {
-                        throw std::invalid_argument("A especialidade do mecanico nao pode ser vazia.");
-                    }
-                } catch (const std::invalid_argument& e) {
-                    std::cout << "Erro: " << e.what() << std::endl;
-                    pausar();
-                    break; 
-                }
-
-                std::shared_ptr<Mecanico> new_mecanico = std::make_shared<Mecanico>(id, nome, especialidade);
-
-                listaDeMecanicos.push_back(new_mecanico);
-
-                std::cout << "Mecanico cadastrado com sucesso!" << std::endl;
-
+            }
+            catch (const std::invalid_argument &e)
+            {
+                std::cout << "Erro: " << e.what() << std::endl;
                 pausar();
                 break;
             }
-            case '2': {
-                limparTela();
-                std::cout << "-------------- CONSULTAR MECANICO --------------" << std::endl;
-                if(listaDeMecanicos.empty()) {
-                    std::cout << "Nenhum mecanico cadastrado." << std::endl;
-                    pausar();
-                    break;
-                }
 
-                std::cout << "Digite o ID do mecanico que deseja consultar ou digite '0' para voltar: " << std::endl;
-                int id = 0;
-                if(verificarID(id)) {
-                    std::cout << "Operacao cancelada." << std::endl;
-                    pausar();
-                    break; 
-                }
+            std::cout << "Digite a especialidade do mecanico ou '0' para voltar: " << std::endl;
+            std::string especialidade;
+            std::getline(std::cin, especialidade);
 
-                auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico>& m) {
-                    return m->getId() == id;
-                });
-
-                if(it == listaDeMecanicos.end()) {
-                    std::cout << "Mecanico nao encontrado." << std::endl;
-                    pausar();
-                    break;
-                }
-
-                std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
-
-                pausar();
+            if (testarVolta(especialidade))
+            {
                 break;
-}
-            case '3': {
-                limparTela();
-                std::cout << "-------------- ALTERAR ESPECIALIDADE --------------" << std::endl;
+            }
 
-                if(listaDeMecanicos.empty()) {
-                    std::cout << "Nenhum mecanico cadastrado." << std::endl;
-                    pausar();
-                    break;
+            try
+            {
+                if (especialidade == "")
+                {
+                    throw std::invalid_argument("A especialidade do mecanico nao pode ser vazia.");
                 }
-
-                std::cout << "Digite o ID do mecanico que deseja alterar a especialidade ou digite '0' para voltar: " << std::endl;
-                int id = 0;
-                if(verificarID(id)) {
-                    std::cout << "Operacao cancelada." << std::endl;
-                    pausar();
-                    break; 
-                }
-
-                auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico>& m) {
-                    return m->getId() == id;
-                });
-
-                if(it == listaDeMecanicos.end()) {
-                    std::cout << "Mecanico nao encontrado." << std::endl;
-                    pausar();
-                    break;
-                }
-
-                std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
-
-
-                std::cout << "Digite a nova especialidade do mecanico ou '0' para voltar: " << std::endl;
-                std::string novaEspecialidade;
-                std::getline(std::cin, novaEspecialidade);
-                if(testarVolta(novaEspecialidade)) {
-                    break;
-                }
-
-                if(novaEspecialidade.empty()) {
-                    std::cout << "Especialidade nao pode ser vazia." << std::endl;
-                    pausar();
-                    break;
-                }
-
-                it->get()->alterarEspecialidade(novaEspecialidade);
-                std::cout << "Especialidade alterada com sucesso!" << std::endl;
-                std::cout << "Novo registro: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
-
+            }
+            catch (const std::invalid_argument &e)
+            {
+                std::cout << "Erro: " << e.what() << std::endl;
                 pausar();
                 break;
             }
-            case '4': {
-                limparTela();
-                std::cout << "-------------- REGISTRAR DIAGNOSTICO --------------" << std::endl;
 
-                if (listaDeMecanicos.empty()) {
-                    std::cout << "Nenhum mecanico cadastrado." << std::endl;        
-                    pausar();
-                    break;
-                }
+            std::shared_ptr<Mecanico> new_mecanico = std::make_shared<Mecanico>(id, nome, especialidade);
 
-                std::cout << "Digite o ID do mecanico ou '0' para voltar: " << std::endl;
-                int id = 0;
-                if(verificarID(id)) {
-                    std::cout << "Operacao cancelada." << std::endl;
-                    pausar();
-                    break; 
-                }
+            listaDeMecanicos.push_back(new_mecanico);
 
-                auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico>& m) {
-                    return m->getId() == id;
-                });
+            std::cout << "Mecanico cadastrado com sucesso!" << std::endl;
 
-                if (it == listaDeMecanicos.end()) {
-                    std::cout << "Mecanico nao encontrado." << std::endl;
-                    pausar();
-                    break;
-                }
+            pausar();
+            break;
+        }
+        case '2':
+        {
+            limparTela();
+            std::cout << "-------------- CONSULTAR MECANICO --------------" << std::endl;
+            if (listaDeMecanicos.empty())
+            {
+                std::cout << "Nenhum mecanico cadastrado." << std::endl;
+                pausar();
+                break;
+            }
 
-                auto ordens = (*it)->consultarOrdensAtribuidas();
-                
-                if (ordens.empty()) {
-                    std::cout << "Este mecanico nao possui ordens atribuidas para diagnosticar." << std::endl;
-                    pausar();
-                    break;
-                }
+            std::cout << "Digite o ID do mecanico que deseja consultar ou digite '0' para voltar: " << std::endl;
+            int id = 0;
+            if (verificarID(id))
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
 
-                std::cout << "\nOrdens atribuidas ao mecanico " << (*it)->getNome() << ":\n";
-                // Lista as ordens na tela começando do número 1 para facilitar para o usuário
-                for (size_t i = 0; i < ordens.size(); ++i) {
-                    std::cout << "[" << i + 1 << "] Ordem com " << ordens[i]->getServicos().size() << " servico(s)" << " atribuida ao veiculo de placa " << ordens[i]->getVeiculo()->getPlaca() << std::endl; 
-                }
+            auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico> &m)
+                                   { return m->getId() == id; });
 
-                std::cout << "\nDigite o numero entre colchetes [ ] da ordem que deseja diagnosticar (ou 0 para cancelar): ";
-                int escolha;
-                std::cin >> escolha;
+            if (it == listaDeMecanicos.end())
+            {
+                std::cout << "Mecanico nao encontrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
+
+            pausar();
+            break;
+        }
+        case '3':
+        {
+            limparTela();
+            std::cout << "-------------- ALTERAR ESPECIALIDADE --------------" << std::endl;
+
+            if (listaDeMecanicos.empty())
+            {
+                std::cout << "Nenhum mecanico cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "Digite o ID do mecanico que deseja alterar a especialidade ou digite '0' para voltar: " << std::endl;
+            int id = 0;
+            if (verificarID(id))
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
+
+            auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico> &m)
+                                   { return m->getId() == id; });
+
+            if (it == listaDeMecanicos.end())
+            {
+                std::cout << "Mecanico nao encontrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
+
+            std::cout << "Digite a nova especialidade do mecanico ou '0' para voltar: " << std::endl;
+            std::string novaEspecialidade;
+            std::getline(std::cin, novaEspecialidade);
+            if (testarVolta(novaEspecialidade))
+            {
+                break;
+            }
+
+            if (novaEspecialidade.empty())
+            {
+                std::cout << "Especialidade nao pode ser vazia." << std::endl;
+                pausar();
+                break;
+            }
+
+            it->get()->alterarEspecialidade(novaEspecialidade);
+            std::cout << "Especialidade alterada com sucesso!" << std::endl;
+            std::cout << "Novo registro: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
+
+            pausar();
+            break;
+        }
+        case '4':
+        {
+            limparTela();
+            std::cout << "-------------- REGISTRAR DIAGNOSTICO --------------" << std::endl;
+
+            if (listaDeMecanicos.empty())
+            {
+                std::cout << "Nenhum mecanico cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "Digite o ID do mecanico ou '0' para voltar: " << std::endl;
+            int id = 0;
+            if (verificarID(id))
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
+
+            auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico> &m)
+                                   { return m->getId() == id; });
+
+            if (it == listaDeMecanicos.end())
+            {
+                std::cout << "Mecanico nao encontrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            auto ordens = (*it)->consultarOrdensAtribuidas();
+
+            if (ordens.empty())
+            {
+                std::cout << "Este mecanico nao possui ordens atribuidas para diagnosticar." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "\nOrdens atribuidas ao mecanico " << (*it)->getNome() << ":\n";
+            // Lista as ordens na tela começando do número 1 para facilitar para o usuário
+            for (size_t i = 0; i < ordens.size(); ++i)
+            {
+                std::cout << "[" << i + 1 << "] Ordem com " << ordens[i]->getServicos().size() << " servico(s)" << " atribuida ao veiculo de placa " << ordens[i]->getVeiculo()->getPlaca() << std::endl;
+            }
+
+            std::cout << "\nDigite o numero entre colchetes [ ] da ordem que deseja diagnosticar (ou 0 para cancelar): ";
+            int escolha;
+            std::cin >> escolha;
+            std::cin.clear();
+            std::cin.ignore(5000, '\n');
+
+            if (escolha == 0)
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
+
+            size_t indiceVetor = escolha - 1; // Converte a escolha de volta para o índice padrao do vetor
+
+            if (indiceVetor >= ordens.size())
+            {
+                std::cout << "Opcao invalida!" << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "Digite o diagnostico tecnico:\n";
+            std::string diagnostico;
+            std::getline(std::cin, diagnostico);
+
+            try
+            {
+                (*it)->registrarDiagnostico(ordens[indiceVetor], diagnostico);
+                std::cout << "Diagnostico registrado com sucesso!" << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "Erro ao registrar: " << e.what() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+        case '5':
+        {
+            limparTela();
+            std::cout << "-------------- ATUALIZAR STATUS --------------" << std::endl;
+
+            if (listaDeMecanicos.empty())
+            {
+                std::cout << "Nenhum mecanico cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "Digite o ID do mecanico que deseja acessar a ordem de servico para alterar seu Status ou digite '0' para voltar: " << std::endl;
+            int id = 0;
+            if (verificarID(id))
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
+
+            auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico> &m)
+                                   { return m->getId() == id; });
+
+            if (it == listaDeMecanicos.end())
+            {
+                std::cout << "Mecanico nao encontrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
+
+            auto ordens = (*it)->consultarOrdensAtribuidas();
+
+            if (ordens.empty())
+            {
+                std::cout << "Este mecanico nao possui ordens atribuidas para atualizar o Status." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "\nOrdens atribuidas ao mecanico " << (*it)->getNome() << ":\n";
+            // Lista as ordens na tela começando do número 1 para facilitar para o usuário
+            for (size_t i = 0; i < ordens.size(); ++i)
+            {
+                std::cout << "[" << i + 1 << "] Ordem com " << ordens[i]->getServicos().size() << " servico(s)" << " atribuida ao veiculo de placa " << ordens[i]->getVeiculo()->getPlaca() << " com o atual Status: " << converterStatusParaString(ordens[i]->getStatus()) << std::endl;
+            }
+
+            std::cout << "\nDigite o numero entre colchetes [ ] da ordem que deseja alterar o Status (ou 0 para cancelar): ";
+            int escolha;
+            std::cin >> escolha;
+            std::cin.clear();
+            std::cin.ignore(5000, '\n');
+
+            if (escolha == 0)
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
+
+            size_t indiceVetor = escolha - 1; // Converte a escolha de volta para o índice padrão do vetor
+
+            if (indiceVetor >= ordens.size())
+            {
+                std::cout << "Opcao invalida!" << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "Digite o novo Status da ordem (0 - ABERTA, 1 - EM DIAGNOSTICO, 2 - EM EXECUCAO, 3 - AGUARDANDO PECA, 4 - AGUARDANDO RETIRADA, 5 - FINALIZADA): ";
+            int novoStatus;
+            if (!(std::cin >> novoStatus) || novoStatus < 0 || novoStatus > 5)
+            {
                 std::cin.clear();
                 std::cin.ignore(5000, '\n');
-
-                if (escolha == 0) {
-                    std::cout << "Operacao cancelada." << std::endl;
-                    pausar();
-                    break;
-                }
-
-                size_t indiceVetor = escolha - 1; // Converte a escolha de volta para o índice padrao do vetor
-
-                if (indiceVetor >= ordens.size()) {
-                    std::cout << "Opcao invalida!" << std::endl;
-                    pausar();
-                    break;
-                }
-
-                std::cout << "Digite o diagnostico tecnico:\n";
-                std::string diagnostico;
-                std::getline(std::cin, diagnostico);
-
-                try {
-                    (*it)->registrarDiagnostico(ordens[indiceVetor], diagnostico);
-                    std::cout << "Diagnostico registrado com sucesso!" << std::endl;
-                } catch (const std::exception& e) {
-                    std::cout << "Erro ao registrar: " << e.what() << std::endl;
-                }
-
+                std::cout << "Status invalido." << std::endl;
                 pausar();
                 break;
             }
-            case '5': {
-                limparTela();
-                std::cout << "-------------- ATUALIZAR STATUS --------------" << std::endl;
-                
-                if (listaDeMecanicos.empty()) {
-                    std::cout << "Nenhum mecanico cadastrado." << std::endl;        
-                    pausar();
-                    break;
-                }
-                
-                std::cout << "Digite o ID do mecanico que deseja acessar a ordem de servico para alterar seu Status ou digite '0' para voltar: " << std::endl;
-                int id = 0;
-                if(verificarID(id)) {
-                    std::cout << "Operacao cancelada." << std::endl;
-                    pausar();
-                    break; 
-                }
+            std::cin.ignore(5000, '\n');
 
-                auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico>& m) {
-                    return m->getId() == id;
-                });
+            try
+            {
+                (*it)->atualizarAndamento(ordens[indiceVetor], static_cast<StatusOrdem>(novoStatus));
+                std::cout << "Status atualizado com sucesso!" << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "Erro ao atualizar status: " << e.what() << std::endl;
+            }
 
-                if(it == listaDeMecanicos.end()) {
-                    std::cout << "Mecanico nao encontrado." << std::endl;
-                    pausar();
-                    break;
-                }
+            pausar();
+            break;
+        }
+        case '6':
+        {
+            limparTela();
+            std::cout << "-------------- CONSULTAR ORDEM ATRIBUIDA --------------" << std::endl;
 
-                std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
-
-                auto ordens = (*it)->consultarOrdensAtribuidas();
-
-                if(ordens.empty()) {
-                    std::cout << "Este mecanico nao possui ordens atribuidas para atualizar o Status." << std::endl;
-                    pausar();
-                    break;
-                }
-
-                std::cout << "\nOrdens atribuidas ao mecanico " << (*it)->getNome() << ":\n";
-                // Lista as ordens na tela começando do número 1 para facilitar para o usuário
-                for (size_t i = 0; i < ordens.size(); ++i) {
-                    std::cout << "[" << i + 1 << "] Ordem com " << ordens[i]->getServicos().size() << " servico(s)" << " atribuida ao veiculo de placa " << ordens[i]->getVeiculo()->getPlaca() << " com o atual Status: " << converterStatusParaString(ordens[i]->getStatus()) << std::endl;
-                }
-
-                std::cout << "\nDigite o numero entre colchetes [ ] da ordem que deseja alterar o Status (ou 0 para cancelar): ";
-                int escolha;
-                std::cin >> escolha;
-                std::cin.clear();
-                std::cin.ignore(5000, '\n');
-
-                if (escolha == 0) {
-                    std::cout << "Operacao cancelada." << std::endl;
-                    pausar();
-                    break;
-                }
-
-                size_t indiceVetor = escolha - 1; // Converte a escolha de volta para o índice padrão do vetor
-
-                if (indiceVetor >= ordens.size()) {
-                    std::cout << "Opcao invalida!" << std::endl;
-                    pausar();
-                    break;
-                }
-
-                std::cout << "Digite o novo Status da ordem (0 - ABERTA, 1 - EM DIAGNOSTICO, 2 - EM EXECUCAO, 3 - AGUARDANDO PECA, 4 - AGUARDANDO RETIRADA, 5 - FINALIZADA): ";
-                int novoStatus;
-                if (!(std::cin >> novoStatus) || novoStatus < 0 || novoStatus > 5) {
-                     std::cin.clear();
-                     std::cin.ignore(5000, '\n');
-                     std::cout << "Status invalido." << std::endl;
-                     pausar();
-                     break;
-                    }
-                    std::cin.ignore(5000, '\n');
-
-                try {
-                    (*it)->atualizarAndamento(ordens[indiceVetor], static_cast<StatusOrdem>(novoStatus));
-                    std::cout << "Status atualizado com sucesso!" << std::endl;
-                } catch (const std::exception& e) {
-                    std::cout << "Erro ao atualizar status: " << e.what() << std::endl;
-                }
-
-                pausar();  
+            if (listaDeMecanicos.empty())
+            {
+                std::cout << "Nenhum mecanico cadastrado." << std::endl;
+                pausar();
                 break;
             }
-            case '6': { 
-                limparTela();
-                std::cout << "-------------- CONSULTAR ORDEM ATRIBUIDA --------------" << std::endl;
-                
-                if(listaDeMecanicos.empty()) {
-                    std::cout << "Nenhum mecanico cadastrado." << std::endl;
-                    pausar();
-                    break;
-                }
-                std::cout << "Digite o ID do mecanico que deseja consultar suas ordens atribuidas ou digite '0' para voltar: " << std::endl;
-                int id = 0;
-                if(verificarID(id)) {
-                    std::cout << "Operacao cancelada." << std::endl;
-                    pausar();
-                    break; 
-                }
+            std::cout << "Digite o ID do mecanico que deseja consultar suas ordens atribuidas ou digite '0' para voltar: " << std::endl;
+            int id = 0;
+            if (verificarID(id))
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
 
-                auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico>& m) {
-                    return m->getId() == id;
-                });
+            auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(), [id](const std::shared_ptr<Mecanico> &m)
+                                   { return m->getId() == id; });
 
-                if(it == listaDeMecanicos.end()) {
-                    std::cout << "Mecanico nao encontrado." << std::endl;
-                    pausar();
-                    break;
-                }
+            if (it == listaDeMecanicos.end())
+            {
+                std::cout << "Mecanico nao encontrado." << std::endl;
+                pausar();
+                break;
+            }
 
-                std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
-                std::vector<OrdemDeServico*> ordens = it->get()->consultarOrdensAtribuidas();
-                
-                if(ordens.empty()) {
-                    std::cout << "Nenhuma ordem atribuida a este mecanico." << std::endl;
-                } else {
-                    for(const auto& ordem : ordens) {
-                        std::cout << "Status da Ordem: " << converterStatusParaString(ordem->getStatus())
-                                  << " | Quantidade de servicos: " << ordem->getServicos().size()
-                                  << " | Veiculo de placa: " << ordem->getVeiculo()->getPlaca()  
-                                  << " | Diagnostico: "
-                                  << (ordem->getDiagnostico().empty()
+            std::cout << "Mecanico encontrado: " << it->get()->getNome() << " - " << it->get()->getEspecialidade() << std::endl;
+            std::vector<OrdemDeServico *> ordens = it->get()->consultarOrdensAtribuidas();
+
+            if (ordens.empty())
+            {
+                std::cout << "Nenhuma ordem atribuida a este mecanico." << std::endl;
+            }
+            else
+            {
+                for (const auto &ordem : ordens)
+                {
+                    std::cout << "Status da Ordem: " << converterStatusParaString(ordem->getStatus())
+                              << " | Quantidade de servicos: " << ordem->getServicos().size()
+                              << " | Veiculo de placa: " << ordem->getVeiculo()->getPlaca()
+                              << " | Diagnostico: "
+                              << (ordem->getDiagnostico().empty()
                                       ? "Nenhum diagnostico registrado."
                                       : ordem->getDiagnostico())
-                                  << std::endl;
-                    }
+                              << std::endl;
                 }
+            }
 
-                pausar();
-                break;
-            } 
-            case '7': {
-                limparTela();
-                std::cout << "-------------- LISTAR MECANICOS --------------" << std::endl;
-                
-                if (listaDeMecanicos.empty()) {
-                    std::cout << "Nenhum mecanico cadastrado no sistema." << std::endl;
-                } else {
-                    for (const auto& mecanico : listaDeMecanicos) {
-                        std::cout << "ID: " << mecanico->getId() 
-                                  << " | Nome: " << mecanico->getNome() 
-                                  << " | Especialidade: " << mecanico->getEspecialidade() << std::endl;
-                    }
-                }
-                
-                pausar();
-                break;
-            }
-            case '0': {
-                limparTela();
-                try {
-                    Mecanico::salvarMecanicosNoArquivo(listaDeMecanicos, "mecanicos.txt");
-                    std::cout << "Dados salvos com sucesso!" << std::endl;
-                } 
-                catch (const std::exception& e) {
-                    std::cout << e.what() << std::endl;
-                    std::cout << "Por favor, verifique se o arquivo nao esta aberto em outro programa." << std::endl;
-                }
-                std::cout << "Voltando ao menu principal..." << std::endl;
-                pausar();
-                break;
-            }
-                
-            default:
-                limparTela();
-                std::cout << "Opcao invalida. Tente novamente." << std::endl;
-                pausar();
-                break;
+            pausar();
+            break;
         }
-    } while(opcao != '0');
+        case '7':
+        {
+            limparTela();
+            std::cout << "-------------- LISTAR MECANICOS --------------" << std::endl;
+
+            if (listaDeMecanicos.empty())
+            {
+                std::cout << "Nenhum mecanico cadastrado no sistema." << std::endl;
+            }
+            else
+            {
+                for (const auto &mecanico : listaDeMecanicos)
+                {
+                    std::cout << "ID: " << mecanico->getId()
+                              << " | Nome: " << mecanico->getNome()
+                              << " | Especialidade: " << mecanico->getEspecialidade() << std::endl;
+                }
+            }
+
+            pausar();
+            break;
+        }
+        case '0':
+        {
+            limparTela();
+            try
+            {
+                Mecanico::salvarMecanicosNoArquivo(listaDeMecanicos, "mecanicos.txt");
+                std::cout << "Dados salvos com sucesso!" << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << e.what() << std::endl;
+                std::cout << "Por favor, verifique se o arquivo nao esta aberto em outro programa." << std::endl;
+            }
+            std::cout << "Voltando ao menu principal..." << std::endl;
+            pausar();
+            break;
+        }
+
+        default:
+            limparTela();
+            std::cout << "Opcao invalida. Tente novamente." << std::endl;
+            pausar();
+            break;
+        }
+    } while (opcao != '0');
 }
 
-int main() {
-    
-    std::vector<std::shared_ptr<Mecanico>> listaDeMecanicos;
-    carregarAgendamentos();
-    carregarVeiculos();
+int main()
+{
 
-    agendamento();
-    pecas();
-    mecanicos(listaDeMecanicos);
+    std::vector<std::shared_ptr<Mecanico>> listaDeMecanicos;
+
+    Cliente::carregarDoArquivo("listaClientes.txt");
+    carregarVeiculos();
+    carregarAgendamentos();
+
+    cliente();
     veiculos();
+    agendamento();
+    // pecas();
+    // mecanicos(listaDeMecanicos);
 
     salvarAgendamentos();
     salvarVeiculos();
