@@ -101,7 +101,7 @@ void Cliente::salvarNoArquivo(const std::string& nomeArquivo) {
 
 
 
-        void Cliente::carregarDoArquivo(const std::string& nomeArquivo) {
+void Cliente::carregarDoArquivo(const std::string& nomeArquivo) {
     std::ifstream arquivo(nomeArquivo);
     std::string linha;
 
