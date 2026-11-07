@@ -23,30 +23,46 @@ class OrdemDeServico;
  */
 class Peca{
    
-        /// Código identificador da peça.
+        // Código identificador da peça.
         std::string codigo;
-        /// Descrição da peça.
+        // Descrição da peça.
         std::string descricao;
-        /// Preço unitário da peça.
+        // Preço unitário da peça.
         float preco;
-        /// Quantidade da peça em estoque.
+        // Quantidade da peça em estoque.
         int quantidade;
-        /// Lista de veículos associados à peça.
+        // Lista de veículos associados à peça.
         std::vector<Veiculo*> veiculos;
-        /// Lista de ordens de serviço que utilizam a peça.
+        // Lista de ordens de serviço que utilizam a peça.
         std::vector<OrdemDeServico*> servicos;
         static std::vector<Peca*> listaPecas;
 
     public:
-
+        /** @brief Construtor da classe Peca.
+         * @param codigo Código identificador da peça.
+         * @param preco Preço unitário da peça.
+         * @param quantidade Quantidade da peça em estoque.  
+         */
         Peca(std::string codigo,float preco,int quantidade);
 
-
+        /** @brief Lista todas as peças cadastradas.
+         * @param apenasEmFalta Se @c true, lista apenas as peças em falta.
+         */
         static void listarTodas(bool apenasEmFalta = false);
+        
+        /** @brief Pesquisa uma peça pelo código.
+         * @param codigoBuscado Código da peça a ser pesquisada.
+         */
         static Peca* pesquisarPorCodigo(const std::string& codigoBuscado);
 
-
+        /** @brief Salva as peças em um arquivo.
+         * @param nomeArquivo Nome do arquivo onde as peças serão salvas.
+         */
         static void salvarNoArquivo(const std::string& nomeArquivo);
+        
+        /** @brief Carrega as peças de um arquivo.
+         * @param nomeArquivo Nome do arquivo de onde as peças serão carregadas.
+         */
         static void carregarDoArquivo(const std::string& nomeArquivo);
         
 
@@ -56,13 +72,16 @@ class Peca{
          */
         void setCodigo(std::string codigo);
 
+        /// @brief Retorna o código da peça.
         std::string getCodigo() const;
+        
         /**
          * @brief Define a descrição da peça.
          * @param descricao Nova descrição da peça.
          */
         void setDescricao(std::string descricao);
 
+        /// @brief Retorna a descrição da peça.
         std::string getDescricao() const;
 
         /**
@@ -70,6 +89,8 @@ class Peca{
          * @param preco Novo preço unitário da peça.
          */
         void setPreco(float preco);
+
+        /// @brief Retorna o preço unitário da peça.
         float getPreco() const;
 
         /**

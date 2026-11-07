@@ -50,6 +50,29 @@ TEST_CASE("Peça: Alterar dados"){
     SUBCASE("verificar descrição") {
         CHECK(p.getDescricao() == "coxim do amortecedor dianteiro");
     }
+}
 
+TEST_CASE("Peça: Verificar disponibilidade") {
+    Peca p("0001", 12.50, 10);
+    CHECK(p.disponivel() == true);
+
+    p.setQuantidade(0);
+    CHECK(p.disponivel() == false);
+}
+
+TEST_CASE("Peça: Alterar preço inválido") {
+    Peca p("0001", 12.50, 10);
+    CHECK_THROWS_AS(p.setPreco(-5.0), std::invalid_argument);
+}
+
+TEST_CASE("Peça: Alterar quantidade inválida") {
+    Peca p("0001", 12.50, 10);
+    CHECK_THROWS_AS(p.setQuantidade(-10), std::invalid_argument);
+}
+
+TEST_CASE("Peça: Pesquisar peça existente") {
+    Peca p("0001", 12.50, 10);
+    Peca* achado = Peca::pesquisarPorCodigo("0001");
+    CHECK(achado == &p);
 }
 
