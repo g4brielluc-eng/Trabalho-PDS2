@@ -3,6 +3,9 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
+#include <sstream>
+#include <memory>
 #include "Status_Ordem.hpp"
 
 class OrdemDeServico;
@@ -28,6 +31,8 @@ public:
      * @param id ID único do mecânico.
      * @param nome Nome do mecânico.
      * @param especialidade Área de atuação do mecânico.
+     * @throws std::invalid_argument se o id for menor ou igual a zero.
+     * @throws std::invalid_argument se o nome ou a especialidade estiverem vazios.
      */
     Mecanico(int id, const std::string& nome, const std::string& especialidade);
 
@@ -35,10 +40,10 @@ public:
     int getId() const;
 
     /// @brief Retorna o nome do mecânico.
-    std::string getNome() const;
+    const std::string& getNome() const;
 
     /// @brief Retorna a especialidade do mecânico.
-    std::string getEspecialidade() const;
+    const std::string& getEspecialidade() const;
 
     /**
      * @brief Altera a especialidade.
@@ -60,6 +65,7 @@ public:
      * @brief Registra o diagnóstico em uma ordem atribuída ao mecânico.
      * @param ordem Ordem atribuída ao mecânico. 
      * @param diagnostico Problema encontrado no veículo.
+     * @throws std::logic_error se a ordem não estiver atribuída ao mecânico.
      */
     void registrarDiagnostico(OrdemDeServico* ordem, const std::string& diagnostico);
 
@@ -68,6 +74,7 @@ public:
      * @param ordem Ordem atribuída ao mecânico.
      * @param servico Serviço executado pelo mecânico (nao pode ser nulo).
      * @throws std::invalid_argument se o servico for nulo. 
+     * @throws std::logic_error se a ordem não estiver atribuída ao mecânico.
      */
     void registrarServicoRealizado(OrdemDeServico* ordem, Servico* servico);
 
@@ -81,8 +88,27 @@ public:
      * @param ordem Ordem atribuída a este mecânico.
      * @param novoStatus Novo status.
      * @throws std::invalid_argument se novoStatus for FINALIZADA.
+     * @throws std::logic_error se a ordem não estiver atribuída ao mecânico.
      */
     void atualizarAndamento(OrdemDeServico* ordem, StatusOrdem novoStatus);
+
+    /**
+     * @brief Carrega os mecânicos de um arquivo.
+     * @param lista Vetor para armazenar os mecânicos carregados.
+     * @param nomeArquivo Nome do arquivo a ser lido.
+     */
+
+    static void carregarMecanicosDoArquivo(std::vector<std::shared_ptr<Mecanico>>& lista, const std::string& nomeArquivo);
+
+    /**
+     * @brief Salva os mecânicos em um arquivo.
+     * @param lista Vetor contendo os mecânicos a serem salvos.
+     * @param nomeArquivo Nome do arquivo a ser escrito.
+     * @throws std::runtime_error se houver falha na gravação do arquivo.
+     */
+
+    static void salvarMecanicosNoArquivo(const std::vector<std::shared_ptr<Mecanico>>& lista, const std::string& nomeArquivo);
+
 };
 
 #endif
