@@ -171,10 +171,30 @@ void Cliente::salvarNoArquivo(const std::string& nomeArquivo) {
     }
 
     for (Cliente* p : listaClientes) {
-        arquivo << p->nome << ","
-                << p->cpf << ","
-                << p->contato << ","
+        arquivo << "C;" << p->nome << ";"
+                << p->cpf << ";"
+                << p->contato << ";"
                 << p->endereco << "\n";
+
+        for (Veiculo* v : p->veiculos) {
+            arquivo << "V;" << p->cpf << ";"
+                    << v->getMarca() << ";"
+                    << v->getModelo() << ";"
+                    << v->getAno() << ";"
+                    << v->getPlaca() << ";"
+                    << v->getQuilometragem() << "\n";
+        }
+
+        for (Agendamento* a : p->agendamentos) {
+            std::string status = "PENDENTE";
+            if (a->getStatus() == Agendamento::Status::CONFIRMADO) status = "CONFIRMADO";
+            if (a->getStatus() == Agendamento::Status::CANCELADO)  status = "CANCELADO";
+
+            arquivo << "A;" << p->cpf << ";"
+                    << a->getData() << ";"
+                    << a->getHorario() << ";"
+                    << status << "\n";
+        }
     }
     arquivo.close();
 
@@ -200,23 +220,88 @@ void Cliente::carregarDoArquivo(const std::string& nomeArquivo) {
 
     while (std::getline(arquivo, linha)) {
         numeroLinha++;
-        
+        if (linha.empty()) continue;
 
         std::stringstream ss(linha);
-        std::string nome, cpf, contato, endereco;
-
-        std::getline(ss, nome, ',');
-        std::getline(ss, cpf, ',');
-        std::getline(ss, contato, ',');
-        std::getline(ss, endereco);
+        std::string tipo;
+        std::getline(ss, tipo, ';');
 
         try {
-            if (pesquisarPorCpf(cpf) != nullptr) {
-            continue;   // já carregado antes
+            if (tipo == "C") {
+                std::string nome, cpf, contato, endereco;
+                std::getline(ss, nome, ';');
+                std::getline(ss, cpf, ';');
+                std::getline(ss, contato, ';');
+                std::getline(ss, endereco);
+
+                if (pesquisarPorCpf(cpf) != nullptr) {
+                    continue;   // já carregado antes
+                }
+                new Cliente(nome, cpf, contato, endereco);
+                carregados++;
+
+            } else if (tipo == "V") {
+                std::string cpf, marca, modelo, anoTxt, placa, kmTxt;
+                std::getline(ss, cpf, ';');
+                std::getline(ss, marca, ';');
+                std::getline(ss, modelo, ';');
+                std::getline(ss, anoTxt, ';');
+                std::getline(ss, placa, ';');
+                std::getline(ss, kmTxt);
+
+                Cliente* dono = pesquisarPorCpf(cpf);
+                if (dono == nullptr) {
+                    throw std::invalid_argument("cliente do veículo não encontrado.");
+                }
+
+                bool jaTem = false;
+                for (Veiculo* v : dono->veiculos) {
+                    if (v->getPlaca() == placa) jaTem = true;
+                }
+                if (jaTem) continue;
+
+                dono->setVeiculos(new Veiculo(marca, modelo, std::stoi(anoTxt),
+                                              placa, std::stoi(kmTxt)));
+
+            } else if (tipo == "A") {
+                std::string cpf, data, horario, status;
+                std::getline(ss, cpf, ';');
+                std::getline(ss, data, ';');
+                std::getline(ss, horario, ';');
+                std::getline(ss, status);
+
+                Cliente* dono = pesquisarPorCpf(cpf);
+                if (dono == nullptr) {
+                    throw std::invalid_argument("cliente do agendamento não encontrado.");
+                }
+
+                // Se o agendamento já foi carregado do agendamentos.txt, reaproveita
+                Agendamento* ag = nullptr;
+                const std::vector<Agendamento*>& todos = Agendamento::consultarAgendamentos();
+                for (Agendamento* a : todos) {
+                    if (a->getData() == data && a->getHorario() == horario) {
+                        ag = a;
+                        break;
+                    }
+                }
+
+                if (ag == nullptr) {
+                    ag = new Agendamento(data, horario);
+                    try {
+                        ag->registrarAgendamento();
+                        if (status == "CONFIRMADO") ag->confirmar();
+                        else if (status == "CANCELADO") ag->cancelar();
+                    } catch (...) {
+                        delete ag;
+                        throw;
+                    }
+                }
+                dono->setAgendamento(ag);
+
+            } else {
+                throw std::invalid_argument("tipo de linha desconhecido (arquivo no formato antigo?).");
             }
-            new Cliente(nome, cpf, contato, endereco);
-            carregados++;
-        } catch (const std::invalid_argument& e) {
+        } catch (const std::exception& e) {
             ignorados++;
             std::cerr << "Linha " << numeroLinha << " ignorada: " << e.what() << "\n";
         }
@@ -225,7 +310,7 @@ void Cliente::carregarDoArquivo(const std::string& nomeArquivo) {
     arquivo.close();
     std::cout << carregados << " Clientes carregados do arquivo com sucesso!\n";
     if (ignorados > 0) {
-        std::cout << ignorados << " linha(s) ignorada(s) por dados inválidos ou duplicados.\n";
+        std::cout << ignorados << " linha(s) ignorada(s) por dados inválidos.\n";
     }
 }
 
@@ -295,6 +380,38 @@ void Cliente::listarServicos() {
                   << (o->getDiagnostico().empty() ? "Nenhum" : o->getDiagnostico())
                   << "\n";
     }
+    std::cout << "--------------------------------\n";
+}
+
+
+void Cliente::listarAgendamentos() {
+    if (agendamentos.empty()) {
+        std::cout << "\nNenhum agendamento associado a esse cliente.\n";
+        return;
+    }
+
+    std::cout << "\n-------------- AGENDAMENTOS --------------\n";
+    std::cout << "Total: " << agendamentos.size() << "\n";
+
+    for (Agendamento* a : agendamentos) {
+        std::cout << "\nData: " << a->getData() << "\n";
+        std::cout << "Horário: " << a->getHorario() << "\n";
+        std::cout << "Status: ";
+
+        switch (a->getStatus()) {
+            case Agendamento::Status::PENDENTE:
+                std::cout << "Pendente";
+                break;
+            case Agendamento::Status::CONFIRMADO:
+                std::cout << "Confirmado";
+                break;
+            case Agendamento::Status::CANCELADO:
+                std::cout << "Cancelado";
+                break;
+        }
+        std::cout << "\n";
+    }
+
     std::cout << "--------------------------------\n";
 }
 
