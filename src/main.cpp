@@ -1958,7 +1958,7 @@ void pecas()
 
     do
     {
-        limparTela(); // Utilizar essa função sempre que abrir o do {}
+        limparTela(); 
 
         std::cout << "-------------- PEÇAS --------------" << std::endl;
         std::cout << "1 - Atualizar preço" << std::endl;
@@ -1972,7 +1972,7 @@ void pecas()
         std::cout << std::endl
                   << "Digite uma opcao:" << std::endl;
         std::cin >> opcao;
-        std::cin.ignore(5000, '\n'); // Limpa o buffer de entrada
+        std::cin.ignore(5000, '\n'); 
 
         switch (opcao)
         {
@@ -1991,7 +1991,7 @@ void pecas()
 
                 if (cod == "0" || cod == "0")
                 {
-                    break; // Sai do do-while se o usuário quiser voltar
+                    break; 
                 }
 
                 atualizando = Peca::pesquisarPorCodigo(cod);
