@@ -138,6 +138,8 @@ X - Voltar
 std::vector<std::shared_ptr<Agendamento>> armazenamentoAgendamentos; // Armazena os agendamentos criados
 std::vector<std::shared_ptr<Veiculo>> armazenamentoVeiculos;         // Armazena os veiculos criados
 std::vector<std::shared_ptr<Servico>> armazenamentoServicos;         // Armazena os servicos cadastrados
+std::vector<std::shared_ptr<Mecanico>> listaDeMecanicos;              // Armazena os mecanicos cadastrados
+std::vector<std::shared_ptr<OrdemDeServico>> armazenamentoOrdens; // Armazena as ordens de servico criadas
 
 // Função para limpar a tela do console
 void limparTela()
@@ -1104,7 +1106,7 @@ switch (opcao) {
 void agendamento()
 {
 
-    char opcao;
+    char opcao = ' ';
 
     do
     {
@@ -1520,7 +1522,7 @@ void agendamento()
 
 void veiculos()
 {
-    char opcao;
+    char opcao = ' ';
 
     do
     {
@@ -1931,7 +1933,7 @@ void veiculos()
     salvarVeiculos();
 }
 
-//------------------------------- PEÇAS  --------------------------------------
+//------------------------------- PEÇAS --------------------------------------
 
 void pecas()
 {
@@ -2685,8 +2687,6 @@ void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
 // COLE ESTE BLOCO INTEIRO NO main.cpp, DEPOIS da funcao mecanicos() e ANTES do int main().
 // Precisa tambem de:  #include <iomanip>  la no topo, junto com os outros includes.
 
-std::vector<std::shared_ptr<OrdemDeServico>> armazenamentoOrdens; // Armazena as ordens de servico criadas
-
 // Le um numero inteiro digitado pelo usuario. Retorna false se nao for um numero valido.
 bool lerInteiroOrdem(int &valor)
 {
@@ -2853,7 +2853,7 @@ void mostrarDetalhesOrdem(const OrdemDeServico &ordem)
 
 void ordensDeServico(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
 {
-    char opcao;
+    char opcao = ' ';
 
     do
     {
@@ -3340,27 +3340,88 @@ void ordensDeServico(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
     } while (opcao != 'X' && opcao != 'x');
 }
 
-int main()
-{
+void menuPrincipal() {
+    char opcao = ' ';
 
-    std::vector<std::shared_ptr<Mecanico>> listaDeMecanicos;
+    do
+    {
+        limparTela();
+        std::cout << "============== MENU PRINCIPAL ==============" << std::endl;
+        std::cout << "1. Clientes" << std::endl;
+        std::cout << "2. Veiculos" << std::endl;
+        std::cout << "3. Agendamentos" << std::endl;
+        std::cout << "4. Ordens de Servico" << std::endl;
+        std::cout << "5. Pecas" << std::endl;
+        std::cout << "6. Mecanicos" << std::endl;
+        std::cout << "X. Sair" << std::endl;
+        std::cout << "============================================" << std::endl;
+        std::cout << "Escolha uma opcao: ";
+        std::cin >> opcao;
+        std::cin.ignore();
 
+        switch (opcao)
+        {
+        case '1':
+            limparTela();
+            cliente();
+            pausar();
+            break;
+        case '2':
+            limparTela();
+            veiculos();
+            pausar();
+            break;
+        case '3':
+            limparTela();
+            agendamento();
+            pausar();
+            break;
+        case '4':
+            limparTela();
+            ordensDeServico(listaDeMecanicos);
+            pausar();
+            break;
+        case '5':
+            limparTela();
+            pecas();
+            pausar();
+            break;
+        case '6':
+            limparTela();
+            mecanicos(listaDeMecanicos);
+            break;
+        case 'X':
+        case 'x':
+            limparTela();
+            std::cout << "Saindo do programa..." << std::endl;
+            break;
+        default:
+            limparTela();
+            std::cout << "Opcao invalida. Tente novamente." << std::endl;
+            pausar();
+            break;
+        }
+    } while (opcao != 'X' && opcao != 'x');
+}
+
+
+
+
+int main() {
+    
     Cliente::carregarDoArquivo("listaClientes.txt");
     carregarVeiculos();
     carregarAgendamentos();
     carregarServicos();
-
-    cliente();
-    veiculos();
-    agendamento();
-    ordensDeServico(listaDeMecanicos);
-    pecas();
-    mecanicos(listaDeMecanicos);
-    servicos();
-
+    Mecanico::carregarMecanicosDoArquivo(listaDeMecanicos, "mecanicos.txt");
+    
+    menuPrincipal();
+    
+    salvarServicos();
     salvarAgendamentos();
     salvarVeiculos();
-    salvarServicos();
+    Mecanico::salvarMecanicosNoArquivo(listaDeMecanicos, "mecanicos.txt");
+    Cliente::salvarNoArquivo("listaClientes.txt");
 
     return 0;
 }
