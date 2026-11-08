@@ -928,152 +928,176 @@ void servicos()
 
 //============================================= Cliente =============================================
 
-void cliente()
-{
-    Cliente::carregarDoArquivo("listaClientes.txt");
+void cliente() {
+    static bool carregado = false;
+    const std::string arquivoClientes = "listaClientes.txt";
+
+    if (!carregado) {
+        Cliente::carregarDoArquivo(arquivoClientes);
+        carregado = true;
+    }
+
     char opcao;
 
-    do
-    {
-        limparTela(); // Utilizar essa função sempre que abrir o do {}
+    while (true) {
+        limparTela(); // Utilizar essa função sempre que abrir o while
 
         std::cout << "-------------- CLIENTE --------------" << std::endl;
-        std::cout << "1 - Cadastrar Ciente" << std::endl;
+        std::cout << "1 - Cadastrar cliente" << std::endl;
         std::cout << "2 - Consultar agendamentos do cliente" << std::endl;
         std::cout << "3 - Consultar informações de cliente" << std::endl;
-        std::cout << "4 - Consultar ordens de servico do cliente" << std::endl;
-        std::cout << "5 - Consultar veiculos do cliente" << std::endl;
+        std::cout << "4 - Consultar ordens de serviço do cliente" << std::endl;
+        std::cout << "5 - Consultar veículos do cliente" << std::endl;
         std::cout << "6 - Listar clientes" << std::endl;
         std::cout << "X - Voltar" << std::endl;
 
-        std::cout << std::endl
-                  << "Digite uma opcao:" << std::endl;
+        std::cout << std::endl << "Digite uma opcao:" << std::endl;
         std::cin >> opcao;
-        std::cin.ignore(5000, '\n'); // Limpa o buffer de entrada
+        std::cin.ignore(5000, '\n');
 
-        switch (opcao)
-        {
-        case '1':
-        {
-            limparTela();
-            std::cout << "-------------- CADASTRAR CLIENTE --------------" << std::endl;
+switch (opcao) {
+            case '1': {
+                limparTela();
+                std::cout << "-------------- CADASTRAR CLIENTE --------------" << std::endl;
 
-            char continuar = 's';
-            while (continuar == 's' || continuar == 'S')
-            {
-                try
-                {
-                    Cliente *novocliente = new Cliente();
+                std::string continuar = "s";
+                while (continuar == "s" || continuar == "S") {
+                    try {
+                        new Cliente();
+                    } catch (const std::runtime_error& e) {
+                        std::cout << "Erro: " << e.what() << std::endl;
+                        return;
+                    }
+                    Cliente::salvarNoArquivo(arquivoClientes);
+
+                    std::cout << "\nDeseja cadastrar outro cliente? (S/N): ";
+                    std::getline(std::cin, continuar);
                 }
-                catch (const std::invalid_argument &e)
-                {
-                    std::cout << "Erro capturado: " << e.what() << std::endl;
-                }
-
-                std::cout << "\nDeseja cadastrar outro cliente? (S/N): ";
-                std::cin >> continuar;
-                std::cin.ignore(5000, '\n');
-            }
-
-            break;
-        }
-
-        case '2':
-        {
-            limparTela();
-            std::cout << "-------------- CONSULTAR AGENDAMENTO --------------" << std::endl;
-
-            // NÃO FAÇO IDEIA DE COMO FAZER ISSO
-            break;
-        }
-
-        case '3':
-        {
-            limparTela();
-            std::cout << "-------------- CONSULTAR INFORMAÇÕES DE CLIENTE --------------" << std::endl;
-
-            Cliente *consulta = nullptr;
-            std::string cod;
-
-            do
-            {
-                std::cout << "Digite o cpf do cliente que deseja consultar (ou 'X' para voltar): " << std::endl;
-                std::getline(std::cin, cod);
-
-                if (cod == "X" || cod == "x")
-                {
-                    break;
-                }
-
-                consulta = Cliente::pesquisarPorCpf(cod);
-                if (consulta == nullptr)
-                {
-                    std::cout << "Não existe cliente com esse cpf.\n"
-                              << std::endl;
-                }
-            } while (consulta == nullptr);
-
-            if (consulta == nullptr)
-            {
                 break;
             }
 
-            std::cout << "\n Cliente encontrado!\n";
-            std::cout << "Nome: " << consulta->getNome() << std::endl;
-            std::cout << "Cpf: " << consulta->getCpf() << std::endl;
-            std::cout << "Contato: R$ " << consulta->getContato() << std::endl;
-            std::cout << "Endereco: " << consulta->getEndereco() << std::endl;
+            case '2': {
+                limparTela();
+                std::cout << "-------------- CONSULTAR AGENDAMENTOS --------------" << std::endl;
 
-            break;
-        }
+                // Falta um getAgendamentos() na classe Cliente para isso.
+                std::cout << "Consulta de agendamentos ainda não disponível.\n";
+                break;
+            }
 
-        case '4':
-        {
-            limparTela();
-            std::cout << "-------------- CONSULTAR ORDENS DE SERVIÇO DO CLIENTE --------------" << std::endl;
-            // NÃO FAÇO IDEIA DE COMO FAZER ISSO
+            case '3': {
+                limparTela();
+                std::cout << "-------------- CONSULTAR INFORMAÇÕES DE CLIENTE --------------" << std::endl;
+                std::cout << "Digite o CPF do cliente (ou 'X' para voltar): " << std::endl;
+                std::string cpf;
+                std::getline(std::cin, cpf);
 
-            break;
-        }
+                if (cpf == "X" || cpf == "x") {
+                    break;
+                }
 
-        case '5':
-        {
-            limparTela();
-            std::cout << "-------------- CONSULTAR VEICULOS DO CLIENTE --------------" << std::endl;
-            // NÃO FAÇO IDEIA DE COMO FAZER ISSO
-            break;
-        }
+                Cliente* consulta = Cliente::pesquisarPorCpf(cpf);
+                if (consulta == nullptr) {
+                    break;
+                }
 
-        case '6':
-        {
-            limparTela();
-            Cliente::listarTodas();
-            break;
-        }
+                std::cout << "\nCliente encontrado!\n";
+                std::cout << "Nome: " << consulta->getNome() << std::endl;
+                std::cout << "CPF: " << consulta->getCpf() << std::endl;
+                std::cout << "Contato: " << consulta->getContato() << std::endl;
+                std::cout << "Endereço: " << consulta->getEndereco() << std::endl;
+                std::string excluir;
+                std::cout << "\nPara excluir o cadastro desse cliente tecle 'S': ";
+                std::getline(std::cin, excluir);
+                if(excluir == "s" || excluir == "S"){
+                    std::cout << "\nTem certeza que deseja excluir o cadastro desse cliente? (S/N): ";
+                    std::getline(std::cin, excluir);
+                    if(excluir == "s" || excluir == "S") {
+                        delete consulta;
+                        consulta = nullptr;
+                        Cliente::salvarNoArquivo(arquivoClientes);
+                        std::cout << "Cliente excluido." << std::endl;
+                    }
+                }
+                break;
+            }
 
-        case 'X':
-        case 'x':
-        {
-            limparTela();
-            Cliente::salvarNoArquivo("listaClientes.txt");
-            std::cout << "\nAlterações salvas com sucesso! Voltando ao menu principal..." << std::endl;
-            return;
-        }
+            case '4': {
+                limparTela();
+                std::cout << "-------------- CONSULTAR ORDENS DE SERVIÇO DO CLIENTE --------------" << std::endl;
 
-        default:
-        {
-            limparTela();
-            std::cout << "Opcao invalida. Tente novamente." << std::endl;
-            break;
-        }
+                std::cout << "Digite o CPF do cliente (ou 'X' para voltar): " << std::endl;
+                std::string cpf;
+                std::getline(std::cin, cpf);
+
+                if (cpf == "X" || cpf == "x") {
+                    break;
+                }
+
+                Cliente* consulta = Cliente::pesquisarPorCpf(cpf);
+                if (consulta == nullptr) {
+                    break;
+                }
+                consulta->listarServicos();
+                break;
+            }
+
+            case '5': {
+                limparTela();
+                std::cout << "-------------- CONSULTAR VEÍCULOS DO CLIENTE --------------" << std::endl;
+
+                std::cout << "Digite o CPF do cliente (ou 'X' para voltar): " << std::endl;
+                std::string cpf;
+                std::getline(std::cin, cpf);
+
+                if (cpf == "X" || cpf == "x") {
+                    break;
+                }
+
+                Cliente* consulta = Cliente::pesquisarPorCpf(cpf);
+                if (consulta == nullptr) {
+                    break;
+                }
+
+                std::vector<Veiculo*>& veiculos = consulta->getVeiculos();
+                if (veiculos.empty()) {
+                    std::cout << "\nNenhum veículo associado a esse cliente.\n";
+                    break;
+                }
+
+                std::cout << "\n-------------- VEÍCULOS --------------\n";
+                std::cout << "Total: " << veiculos.size() << "\n";
+                // aqui entra a impressão de cada veículo
+                std::cout << "--------------------------------\n";
+                break;
+            }
+
+            case '6': {
+                limparTela();
+                Cliente::listarTodas();
+                break;
+            }
+
+            case 'X':
+            case 'x': {
+                limparTela();
+                std::cout << "Voltando ao menu principal..." << std::endl;
+                return;
+            }
+
+            default: {
+                limparTela();
+                std::cout << "Opcao invalida. Tente novamente." << std::endl;
+                break;
+            }
         }
 
         std::cout << "\nPressione Enter para continuar...";
-        std::string pausaStr;
-        std::getline(std::cin, pausaStr);
-
-    } while (true);
+        std::string pausa;
+        std::getline(std::cin, pausa);
+    }
 }
+
 
 //============================================= AGENDAMENTOS =============================================
 
