@@ -124,6 +124,7 @@ X - Voltar
 #include <algorithm>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
 #include "Agendamento.hpp"
 #include "Peca.hpp"
@@ -2117,6 +2118,666 @@ void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
     } while (opcao != '0');
 }
 
+//============================================= ORDENS DE SERVICO =============================================
+// COLE ESTE BLOCO INTEIRO NO main.cpp, DEPOIS da funcao mecanicos() e ANTES do int main().
+// Precisa tambem de:  #include <iomanip>  la no topo, junto com os outros includes.
+
+std::vector<std::shared_ptr<OrdemDeServico>> armazenamentoOrdens; // Armazena as ordens de servico criadas
+std::vector<std::shared_ptr<Servico>> armazenamentoServicos;      // Armazena os servicos cadastrados
+
+// Le um numero inteiro digitado pelo usuario. Retorna false se nao for um numero valido.
+bool lerInteiroOrdem(int &valor)
+{
+    std::string entrada;
+    std::getline(std::cin, entrada);
+
+    try
+    {
+        std::size_t pos = 0;
+        valor = std::stoi(entrada, &pos);
+        return pos == entrada.size();
+    }
+    catch (...)
+    {
+        return false;
+    }
+}
+
+// Mostra uma linha de resumo para cada ordem cadastrada
+void mostrarResumoOrdens()
+{
+    for (size_t i = 0; i < armazenamentoOrdens.size(); ++i)
+    {
+        const auto &ordem = armazenamentoOrdens[i];
+
+        std::cout << "[" << i + 1 << "] Placa: " << ordem->getVeiculo()->getPlaca()
+                  << " | Entrada: " << ordem->getDataEntrada()
+                  << " | Status: " << converterStatusParaString(ordem->getStatus())
+                  << std::endl;
+    }
+}
+
+// Mostra as ordens e pede para o usuario escolher uma.
+// Retorna nullptr se nao houver ordens, se cancelar ou se a escolha for invalida.
+std::shared_ptr<OrdemDeServico> escolherOrdem()
+{
+    if (armazenamentoOrdens.empty())
+    {
+        std::cout << "Nenhuma ordem de servico cadastrada." << std::endl;
+        return nullptr;
+    }
+
+    mostrarResumoOrdens();
+
+    std::cout << "\nDigite o numero da ordem (ou 0 para cancelar): ";
+    int escolha = 0;
+
+    if (!lerInteiroOrdem(escolha))
+    {
+        std::cout << "Entrada invalida." << std::endl;
+        return nullptr;
+    }
+
+    if (escolha == 0)
+    {
+        std::cout << "Operacao cancelada." << std::endl;
+        return nullptr;
+    }
+
+    if (escolha < 0 || escolha > static_cast<int>(armazenamentoOrdens.size()))
+    {
+        std::cout << "Numero de ordem invalido." << std::endl;
+        return nullptr;
+    }
+
+    return armazenamentoOrdens[escolha - 1];
+}
+
+// Avisa e retorna true se a ordem ja foi finalizada (nao pode mais ser alterada)
+bool ordemFinalizada(const std::shared_ptr<OrdemDeServico> &ordem)
+{
+    if (ordem->getStatus() == StatusOrdem::FINALIZADA)
+    {
+        std::cout << "Esta ordem ja foi finalizada e nao pode ser alterada." << std::endl;
+        return true;
+    }
+    return false;
+}
+
+// Mostra todos os dados de uma ordem
+void mostrarDetalhesOrdem(const OrdemDeServico &ordem)
+{
+    std::cout << std::fixed << std::setprecision(2);
+
+    Veiculo *veiculo = ordem.getVeiculo();
+    std::cout << "Veiculo: " << veiculo->getMarca() << " " << veiculo->getModelo()
+              << " (placa " << veiculo->getPlaca() << ")" << std::endl;
+
+    Cliente *cliente = veiculo->getCliente();
+    std::cout << "Cliente: ";
+    if (cliente != nullptr)
+    {
+        std::cout << cliente->getNome();
+    }
+    else
+    {
+        std::cout << "Nao associado";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Status: " << converterStatusParaString(ordem.getStatus()) << std::endl;
+    std::cout << "Data de entrada: " << ordem.getDataEntrada() << std::endl;
+
+    std::cout << "Data de saida: ";
+    if (ordem.getDataSaida().empty())
+    {
+        std::cout << "ainda nao finalizada";
+    }
+    else
+    {
+        std::cout << ordem.getDataSaida();
+    }
+    std::cout << std::endl;
+
+    std::cout << "Diagnostico: ";
+    if (ordem.getDiagnostico().empty())
+    {
+        std::cout << "Nenhum diagnostico registrado.";
+    }
+    else
+    {
+        std::cout << ordem.getDiagnostico();
+    }
+    std::cout << std::endl;
+
+    std::cout << "Mecanico: ";
+    if (ordem.getMecanico() != nullptr)
+    {
+        std::cout << ordem.getMecanico()->getNome();
+    }
+    else
+    {
+        std::cout << "Nao associado";
+    }
+    std::cout << std::endl;
+
+    std::cout << "\nServicos:" << std::endl;
+    const std::vector<Servico *> &servicos = ordem.getServicos();
+    if (servicos.empty())
+    {
+        std::cout << "  Nenhum servico adicionado." << std::endl;
+    }
+    for (size_t i = 0; i < servicos.size(); ++i)
+    {
+        std::cout << "  - " << servicos[i]->getNome()
+                  << " | R$ " << servicos[i]->getPreco() << std::endl;
+    }
+
+    std::cout << "\nPecas:" << std::endl;
+    const std::vector<Peca *> &pecasUsadas = ordem.getPecas();
+    if (pecasUsadas.empty())
+    {
+        std::cout << "  Nenhuma peca adicionada." << std::endl;
+    }
+    for (size_t i = 0; i < pecasUsadas.size(); ++i)
+    {
+        std::cout << "  - " << pecasUsadas[i]->getCodigo()
+                  << " (" << pecasUsadas[i]->getDescricao() << ")"
+                  << " | R$ " << pecasUsadas[i]->getPreco() << std::endl;
+    }
+
+    std::cout << "\nValor total: R$ " << ordem.calcularValorTotal() << std::endl;
+}
+
+void ordensDeServico(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
+{
+    char opcao;
+
+    do
+    {
+        limparTela();
+
+        std::cout << "-------------- ORDENS DE SERVICO --------------" << std::endl;
+        std::cout << "1 - Abrir ordem de servico" << std::endl;
+        std::cout << "2 - Listar ordens" << std::endl;
+        std::cout << "3 - Consultar ordem" << std::endl;
+        std::cout << "4 - Adicionar servico" << std::endl;
+        std::cout << "5 - Adicionar peca" << std::endl;
+        std::cout << "6 - Associar mecanico" << std::endl;
+        std::cout << "7 - Atualizar status" << std::endl;
+        std::cout << "8 - Calcular valor total" << std::endl;
+        std::cout << "9 - Finalizar ordem" << std::endl;
+        std::cout << "X - Voltar" << std::endl;
+
+        std::cout << std::endl
+                  << "Digite uma opcao: ";
+        std::cin >> opcao;
+        std::cin.ignore(5000, '\n');
+
+        switch (opcao)
+        {
+        case '1':
+        {
+            limparTela();
+            std::cout << "-------------- ABRIR ORDEM DE SERVICO --------------" << std::endl;
+
+            std::string placa;
+            std::cout << "Digite a placa do veiculo (ou 0 para voltar): ";
+            std::getline(std::cin, placa);
+
+            if (testarVolta(placa))
+            {
+                break;
+            }
+
+            // Procura o veiculo pela placa
+            Veiculo *veiculoEncontrado = nullptr;
+
+            for (const auto &veiculo : armazenamentoVeiculos)
+            {
+                if (veiculo->getPlaca() == placa)
+                {
+                    veiculoEncontrado = veiculo.get();
+                    break;
+                }
+            }
+
+            if (veiculoEncontrado == nullptr)
+            {
+                std::cout << "\nNao existe veiculo cadastrado com essa placa." << std::endl;
+                pausar();
+                break;
+            }
+
+            Cliente *clienteEncontrado = veiculoEncontrado->getCliente();
+
+            if (clienteEncontrado == nullptr)
+            {
+                std::cout << "\nO veiculo nao possui um cliente associado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::string dataEntrada;
+            std::cout << "Digite a data de entrada (dd/mm/aaaa): ";
+            std::getline(std::cin, dataEntrada);
+
+            if (dataEntrada.empty())
+            {
+                std::cout << "\nA data de entrada nao pode ser vazia." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::string problema;
+            std::cout << "Digite o problema relatado (ou aperte Enter para deixar em branco): ";
+            std::getline(std::cin, problema);
+
+            try
+            {
+                std::shared_ptr<OrdemDeServico> novaOrdem =
+                    std::make_shared<OrdemDeServico>(veiculoEncontrado, dataEntrada);
+
+                if (!problema.empty())
+                {
+                    novaOrdem->registrarDiagnostico(problema);
+                }
+
+                // Registra a ordem no cliente, para aparecer em "Consultar ordens de servico do cliente"
+                clienteEncontrado->setServicos(novaOrdem.get());
+
+                armazenamentoOrdens.push_back(novaOrdem);
+
+                std::cout << "\nOrdem de servico aberta com sucesso!" << std::endl;
+                std::cout << "Cliente: " << clienteEncontrado->getNome() << std::endl;
+                std::cout << "Veiculo: " << veiculoEncontrado->getPlaca() << std::endl;
+                std::cout << "Status: " << converterStatusParaString(novaOrdem->getStatus()) << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "\nErro ao abrir ordem: " << e.what() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '2':
+        {
+            limparTela();
+            std::cout << "-------------- LISTA DE ORDENS --------------" << std::endl;
+
+            if (armazenamentoOrdens.empty())
+            {
+                std::cout << "Nenhuma ordem de servico cadastrada." << std::endl;
+            }
+            else
+            {
+                mostrarResumoOrdens();
+                std::cout << "\nTotal de ordens: " << armazenamentoOrdens.size() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '3':
+        {
+            limparTela();
+            std::cout << "-------------- CONSULTAR ORDEM --------------" << std::endl;
+
+            std::shared_ptr<OrdemDeServico> ordem = escolherOrdem();
+
+            if (ordem == nullptr)
+            {
+                pausar();
+                break;
+            }
+
+            limparTela();
+            std::cout << "-------------- DADOS DA ORDEM --------------" << std::endl;
+            mostrarDetalhesOrdem(*ordem);
+
+            pausar();
+            break;
+        }
+
+        case '4':
+        {
+            limparTela();
+            std::cout << "-------------- ADICIONAR SERVICO --------------" << std::endl;
+
+            std::shared_ptr<OrdemDeServico> ordem = escolherOrdem();
+
+            if (ordem == nullptr || ordemFinalizada(ordem))
+            {
+                pausar();
+                break;
+            }
+
+            if (armazenamentoServicos.empty())
+            {
+                std::cout << "\nNenhum servico cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << std::fixed << std::setprecision(2);
+            std::cout << "\nServicos disponiveis:" << std::endl;
+            for (size_t i = 0; i < armazenamentoServicos.size(); ++i)
+            {
+                std::cout << "[" << i + 1 << "] " << armazenamentoServicos[i]->getNome()
+                          << " | R$ " << armazenamentoServicos[i]->getPreco() << std::endl;
+            }
+
+            std::cout << "\nDigite o numero do servico (ou 0 para cancelar): ";
+            int escolha = 0;
+
+            if (!lerInteiroOrdem(escolha))
+            {
+                std::cout << "Entrada invalida." << std::endl;
+                pausar();
+                break;
+            }
+
+            if (escolha == 0)
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
+
+            if (escolha < 0 || escolha > static_cast<int>(armazenamentoServicos.size()))
+            {
+                std::cout << "Numero de servico invalido." << std::endl;
+                pausar();
+                break;
+            }
+
+            try
+            {
+                std::shared_ptr<Servico> servico = armazenamentoServicos[escolha - 1];
+
+                ordem->adicionarServico(servico.get());
+                servico->associarOrdem(ordem.get());
+
+                std::cout << "\nServico adicionado com sucesso!" << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "\nErro ao adicionar servico: " << e.what() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '5':
+        {
+            limparTela();
+            std::cout << "-------------- ADICIONAR PECA --------------" << std::endl;
+
+            std::shared_ptr<OrdemDeServico> ordem = escolherOrdem();
+
+            if (ordem == nullptr || ordemFinalizada(ordem))
+            {
+                pausar();
+                break;
+            }
+
+            std::string codigo;
+            std::cout << "\nDigite o codigo da peca (ou 0 para cancelar): ";
+            std::getline(std::cin, codigo);
+
+            if (testarVolta(codigo))
+            {
+                break;
+            }
+
+            Peca *peca = Peca::pesquisarPorCodigo(codigo);
+
+            if (peca == nullptr)
+            {
+                std::cout << "\nNao existe peca com esse codigo." << std::endl;
+                pausar();
+                break;
+            }
+
+            if (!peca->disponivel())
+            {
+                std::cout << "\nPeca sem estoque suficiente." << std::endl;
+                pausar();
+                break;
+            }
+
+            try
+            {
+                // Usa uma unidade da peca: baixa o estoque e adiciona na ordem
+                peca->setQuantidade(peca->getQuantidade() - 1);
+                ordem->adicionarPeca(peca);
+
+                std::cout << "\nPeca adicionada com sucesso!" << std::endl;
+                std::cout << "Estoque restante: " << peca->getQuantidade() << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "\nErro ao adicionar peca: " << e.what() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '6':
+        {
+            limparTela();
+            std::cout << "-------------- ASSOCIAR MECANICO --------------" << std::endl;
+
+            std::shared_ptr<OrdemDeServico> ordem = escolherOrdem();
+
+            if (ordem == nullptr || ordemFinalizada(ordem))
+            {
+                pausar();
+                break;
+            }
+
+            if (listaDeMecanicos.empty())
+            {
+                std::cout << "\nNenhum mecanico cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "\nMecanicos cadastrados:" << std::endl;
+            for (const auto &mecanico : listaDeMecanicos)
+            {
+                std::cout << "ID: " << mecanico->getId()
+                          << " | Nome: " << mecanico->getNome()
+                          << " | Especialidade: " << mecanico->getEspecialidade() << std::endl;
+            }
+
+            std::cout << "\nDigite o ID do mecanico (ou 0 para cancelar): ";
+            int id = 0;
+
+            if (!lerInteiroOrdem(id))
+            {
+                std::cout << "Entrada invalida." << std::endl;
+                pausar();
+                break;
+            }
+
+            if (id == 0)
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
+
+            auto it = std::find_if(listaDeMecanicos.begin(), listaDeMecanicos.end(),
+                                   [id](const std::shared_ptr<Mecanico> &m)
+                                   { return m->getId() == id; });
+
+            if (it == listaDeMecanicos.end())
+            {
+                std::cout << "\nMecanico nao encontrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            try
+            {
+                // O mecanico assume a ordem (ela passa a aparecer nas ordens dele)
+                (*it)->assumirOrdem(ordem.get());
+
+                // Garante que a ordem tambem sabe quem e o mecanico responsavel
+                if (ordem->getMecanico() != it->get())
+                {
+                    ordem->associarMecanico(it->get());
+                }
+
+                std::cout << "\nMecanico " << (*it)->getNome()
+                          << " associado a ordem com sucesso!" << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "\nErro ao associar mecanico: " << e.what() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '7':
+        {
+            limparTela();
+            std::cout << "-------------- ATUALIZAR STATUS --------------" << std::endl;
+
+            std::shared_ptr<OrdemDeServico> ordem = escolherOrdem();
+
+            if (ordem == nullptr || ordemFinalizada(ordem))
+            {
+                pausar();
+                break;
+            }
+
+            std::cout << "\nStatus atual: " << converterStatusParaString(ordem->getStatus()) << std::endl;
+            std::cout << "\n0 - ABERTA" << std::endl;
+            std::cout << "1 - EM DIAGNOSTICO" << std::endl;
+            std::cout << "2 - EM EXECUCAO" << std::endl;
+            std::cout << "3 - AGUARDANDO PECA" << std::endl;
+            std::cout << "4 - AGUARDANDO RETIRADA" << std::endl;
+            std::cout << "(Para finalizar a ordem, use a opcao 9 do menu)" << std::endl;
+
+            std::cout << "\nDigite o novo status: ";
+            int novoStatus = 0;
+
+            if (!lerInteiroOrdem(novoStatus) || novoStatus < 0 || novoStatus > 4)
+            {
+                std::cout << "Status invalido." << std::endl;
+                pausar();
+                break;
+            }
+
+            try
+            {
+                ordem->alterarStatus(static_cast<StatusOrdem>(novoStatus));
+                std::cout << "\nStatus atualizado para "
+                          << converterStatusParaString(ordem->getStatus()) << "!" << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "\nErro ao atualizar status: " << e.what() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '8':
+        {
+            limparTela();
+            std::cout << "-------------- CALCULAR VALOR TOTAL --------------" << std::endl;
+
+            std::shared_ptr<OrdemDeServico> ordem = escolherOrdem();
+
+            if (ordem == nullptr)
+            {
+                pausar();
+                break;
+            }
+
+            std::cout << std::fixed << std::setprecision(2);
+            std::cout << "\nValor total da ordem: R$ " << ordem->calcularValorTotal() << std::endl;
+
+            pausar();
+            break;
+        }
+
+        case '9':
+        {
+            limparTela();
+            std::cout << "-------------- FINALIZAR ORDEM --------------" << std::endl;
+
+            std::shared_ptr<OrdemDeServico> ordem = escolherOrdem();
+
+            if (ordem == nullptr || ordemFinalizada(ordem))
+            {
+                pausar();
+                break;
+            }
+
+            std::cout << "\nStatus atual: " << converterStatusParaString(ordem->getStatus()) << std::endl;
+
+            std::string dataSaida;
+            std::cout << "Digite a data de saida/entrega do veiculo (dd/mm/aaaa): ";
+            std::getline(std::cin, dataSaida);
+
+            if (dataSaida.empty())
+            {
+                std::cout << "\nA data de saida nao pode ser vazia." << std::endl;
+                pausar();
+                break;
+            }
+
+            try
+            {
+                ordem->finalizar(dataSaida);
+
+                std::cout << std::fixed << std::setprecision(2);
+                std::cout << "\nOrdem finalizada com sucesso!" << std::endl;
+                std::cout << "Valor total: R$ " << ordem->calcularValorTotal() << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "\nErro ao finalizar ordem: " << e.what() << std::endl;
+                std::cout << "(A ordem precisa estar com status AGUARDANDO RETIRADA.)" << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case 'X':
+        case 'x':
+        {
+            limparTela();
+            std::cout << "Voltando ao menu principal..." << std::endl;
+            break;
+        }
+
+        default:
+        {
+            limparTela();
+            std::cout << "Opcao invalida. Tente novamente." << std::endl;
+            pausar();
+            break;
+        }
+        }
+
+    } while (opcao != 'X' && opcao != 'x');
+}
+
+
 int main()
 {
 
@@ -2129,8 +2790,10 @@ int main()
     cliente();
     veiculos();
     agendamento();
+    ordensDeServico(listaDeMecanicos);
     // pecas();
     // mecanicos(listaDeMecanicos);
+    
 
     salvarAgendamentos();
     salvarVeiculos();
