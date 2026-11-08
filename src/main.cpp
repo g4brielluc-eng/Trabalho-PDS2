@@ -157,6 +157,71 @@ void pausar()
     std::cin.get();
 }
 
+bool testarVolta(const std::string &str)
+{
+    if (str == "0")
+    {
+        std::cout << "Operacao cancelada" << std::endl;
+        pausar();
+        return true; // Sai da função e volta ao menu anterior
+    }
+    return false; // Continua a execução normal
+}
+
+bool converterParaId(const std::string &entrada, int &idDestino)
+{
+
+    try
+    {
+        idDestino = std::stoi(entrada);
+        return true;
+    }
+    catch (...)
+    {
+        std::cout << "Erro: O ID deve ser um numero valido." << std::endl;
+        pausar();
+        return false;
+    }
+}
+
+bool verificarID(int &id)
+{
+    while (!(std::cin >> id))
+    {
+        std::cin.clear();            // Tira o cin do estado de erro
+        std::cin.ignore(5000, '\n'); // Joga a letra errada fora
+        std::cout << "Entrada invalida! Digite apenas numeros";
+    }
+    std::cin.ignore(5000, '\n'); // Limpa o \n para os próximos getlines
+
+    if (id == 0)
+    {
+        return true;
+    }
+    return false;
+}
+
+std::string converterStatusParaString(StatusOrdem status)
+{
+    switch (status)
+    {
+    case StatusOrdem::ABERTA:
+        return "ABERTA";
+    case StatusOrdem::EM_DIAGNOSTICO:
+        return "EM DIAGNOSTICO";
+    case StatusOrdem::EM_EXECUCAO:
+        return "EM EXECUCAO";
+    case StatusOrdem::AGUARDANDO_PECA:
+        return "AGUARDANDO PECA";
+    case StatusOrdem::AGUARDANDO_RETIRADA:
+        return "AGUARDANDO RETIRADA";
+    case StatusOrdem::FINALIZADA:
+        return "FINALIZADA";
+    default:
+        return "STATUS DESCONHECIDO";
+    }
+}
+
 // Funcao para salvar os agendamentos em um arquivo
 void salvarAgendamentos()
 {
@@ -1029,7 +1094,7 @@ void agendamento()
         std::cout << "4- Confirmar agendamento" << std::endl;
         std::cout << "5- Cancelar agendamento" << std::endl;
         std::cout << "6- Consultar agendamentos" << std::endl;
-        std::cout << "X- Voltar" << std::endl;
+        std::cout << "0- Voltar" << std::endl;
 
         std::cout << std::endl
                   << "Digite uma opcao:" << std::endl;
@@ -1044,27 +1109,17 @@ void agendamento()
             limparTela(); // Utilizar essa função sempre que abrir um case novo
             std::cout << "Verificando disponibilidade" << std::endl;
 
-            std::cout << "Digite a data (dd/mm/aaaa) ou digite 'X' para voltar: " << std::endl;
+            std::cout << "Digite a data (dd/mm/aaaa) ou digite '0' para voltar: " << std::endl;
             std::string data;
             std::getline(std::cin, data);
 
-            if (data == "X" || data == "x")
-            {
-                std::cout << "Operacao cancelada" << std::endl;
-                pausar();
-                break; // Sai do case '1' e volta ao menu de agendamentos
-            }
+            if (testarVolta(data))break;
 
-            std::cout << "Digite o horario (hh:mm) ou digite 'X' para voltar: " << std::endl;
+            std::cout << "Digite o horario (hh:mm) ou digite '0' para voltar: " << std::endl;
             std::string horario;
             std::getline(std::cin, horario);
 
-            if (horario == "X" || horario == "x")
-            {
-                std::cout << "Operacao cancelada" << std::endl;
-                pausar(); // Usar essa função sempre antes do break
-                break;
-            }
+            if (testarVolta(horario))break;
 
             try
             {
@@ -1093,11 +1148,14 @@ void agendamento()
 
             std::string data, horario, placa;
 
-            std::cout << "Digite a data do agendamento: ";
+            std::cout << "Criando agendamento" << std::endl;
+            std::cout << "Digite a data (dd/mm/aaaa) ou digite '0' para voltar: ";
             std::getline(std::cin, data);
+            if (testarVolta(data))break;
 
-            std::cout << "Digite o horario do agendamento: ";
+            std::cout << "Digite o horario (hh:mm) ou digite '0' para voltar: ";
             std::getline(std::cin, horario);
+            if (testarVolta(horario))break;
 
             std::cout << "Digite a placa do veiculo: ";
             std::getline(std::cin, placa);
@@ -1112,6 +1170,7 @@ void agendamento()
                     if (veiculo->getPlaca() == placa)
                     {
                         veiculoEncontrado = veiculo.get();
+                        pausar();
                         break;
                     }
                 }
@@ -1177,12 +1236,16 @@ void agendamento()
                           << " | Horario: " << lista[i]->getHorario() << std::endl;
             }
 
-            size_t indice;
+            size_t indice=0;
 
             std::cout << std::endl
-                      << "Digite o numero do agendamento: ";
-            std::cin >> indice;
-            std::cin.ignore(5000, '\n');
+                      << "Digite o numero do agendamento ou '0' para voltar: ";
+            if (indice == 0)
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
 
             try
             {
@@ -1241,9 +1304,16 @@ void agendamento()
 
             size_t indice;
 
-            std::cout << "\nDigite o numero do agendamento que deseja confirmar: ";
+            std::cout << "\nDigite o numero do agendamento que deseja confirmar ou '0' para voltar: ";
             std::cin >> indice;
             std::cin.ignore(5000, '\n');
+
+            if (indice == 0)
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
 
             // Verifica se o numero informado e valido
             if (indice < 1 || indice > agendamentos.size())
@@ -1297,10 +1367,16 @@ void agendamento()
 
             size_t indice;
 
-            std::cout << "\nDigite o numero do agendamento que deseja cancelar: ";
+            std::cout << "\nDigite o numero do agendamento que deseja cancelar ou '0' para voltar: ";
             std::cin >> indice;
             std::cin.ignore(5000, '\n');
 
+            if (indice == 0)
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
             // Verifica se o numero informado e valido
             if (indice < 1 || indice > agendamentos.size())
             {
@@ -1400,8 +1476,7 @@ void agendamento()
             break;
         }
 
-        case 'X':
-        case 'x':
+        case '0':
             limparTela();
             std::cout << "Voltando ao menu principal..." << std::endl;
             break;
@@ -1413,7 +1488,8 @@ void agendamento()
             break;
         }
 
-    } while (opcao != 'X' && opcao != 'x');
+    } while (opcao != '0');
+    salvarAgendamentos();
 }
 
 //================================================= VEÍCULOS =============================================
@@ -1429,12 +1505,11 @@ void veiculos()
         std::cout << "-------------- VEICULOS --------------" << std::endl;
         std::cout << "1 - Consultar veiculo" << std::endl;
         std::cout << "2 - Cadastrar veiculo" << std::endl;
-        std::cout << "3 - Associar cliente ao veiculo" << std::endl;
-        std::cout << "4 - Atualizar placa" << std::endl;
-        std::cout << "5 - Registrar quilometragem" << std::endl;
-        std::cout << "6 - Consultar historico de manutencoes" << std::endl;
-        std::cout << "7 - Listar veiculos" << std::endl;
-        std::cout << "X - Voltar" << std::endl;
+        std::cout << "3 - Atualizar placa" << std::endl;
+        std::cout << "4 - Registrar quilometragem" << std::endl;
+        std::cout << "5 - Consultar historico de manutencoes" << std::endl;
+        std::cout << "6 - Listar veiculos" << std::endl;
+        std::cout << "0 - Voltar" << std::endl;
 
         std::cout << std::endl
                   << "Digite uma opcao: ";
@@ -1457,8 +1532,10 @@ void veiculos()
             }
 
             std::string placa;
-            std::cout << "Digite a placa do veiculo: ";
+            std::cout << "Digite a placa do veiculo ou '0' para voltar: ";
             std::getline(std::cin, placa);
+
+            if (testarVolta(placa))break;
 
             bool encontrado = false;
 
@@ -1503,24 +1580,32 @@ void veiculos()
             std::cout << "-------------- CADASTRAR VEICULO --------------" << std::endl;
 
             std::string marca, modelo, placa, cpf;
-            int ano, quilometragem;
+            int ano = 0, quilometragem = 0;
 
-            std::cout << "Digite a marca do veiculo: ";
+            std::cout << "Digite a marca do veiculo ou '0' para voltar: ";
             std::getline(std::cin, marca);
 
+            if (testarVolta(marca)){
+                pausar();
+                break;
+            }
             std::cout << "Digite o modelo do veiculo: ";
             std::getline(std::cin, modelo);
 
             std::cout << "Digite o ano do veiculo: ";
-            std::cin >> ano;
-            std::cin.ignore(5000, '\n');
+            if(verificarID(ano)){
+                pausar();
+                break;
+            }
 
             std::cout << "Digite a placa do veiculo: ";
             std::getline(std::cin, placa);
 
             std::cout << "Digite a quilometragem do veiculo: ";
-            std::cin >> quilometragem;
-            std::cin.ignore(5000, '\n');
+            if(verificarID(quilometragem)){
+                pausar();
+                break;
+            }
 
             std::cout << "Digite o CPF do proprietario: ";
             std::getline(std::cin, cpf);
@@ -1588,12 +1673,6 @@ void veiculos()
 
         case '3':
         {
-            // Associar cliente ao veiculo
-            break;
-        }
-
-        case '4':
-        {
             limparTela();
 
             std::cout << "-------------- ATUALIZAR PLACA --------------" << std::endl;
@@ -1607,8 +1686,10 @@ void veiculos()
 
             std::string placaAtual;
 
-            std::cout << "Digite a placa atual do veiculo: ";
+            std::cout << "Digite a placa atual do veiculo ou '0' para voltar: ";
             std::getline(std::cin, placaAtual);
+
+            if (testarVolta(placaAtual))break;
 
             Veiculo *veiculoEncontrado = nullptr;
 
@@ -1648,7 +1729,7 @@ void veiculos()
             break;
         }
 
-        case '5':
+        case '4':
         {
             limparTela();
 
@@ -1663,8 +1744,10 @@ void veiculos()
 
             std::string placa;
 
-            std::cout << "Digite a placa do veiculo: ";
+            std::cout << "Digite a placa do veiculo ou '0' para voltar: ";
             std::getline(std::cin, placa);
+
+            if (testarVolta(placa))break;
 
             Veiculo *veiculoEncontrado = nullptr;
 
@@ -1683,14 +1766,16 @@ void veiculos()
             }
             else
             {
-                int novaQuilometragem;
+                int novaQuilometragem = 0;
 
                 std::cout << "Quilometragem atual: "
                           << veiculoEncontrado->getQuilometragem() << " km" << std::endl;
 
                 std::cout << "Digite a nova quilometragem: ";
-                std::cin >> novaQuilometragem;
-                std::cin.ignore(5000, '\n');
+                if(verificarID(novaQuilometragem)){
+                pausar();
+                break;
+            }
 
                 try
                 {
@@ -1709,13 +1794,58 @@ void veiculos()
             break;
         }
 
-        case '6':
+        case '5':
         {
-            // Consultar historico de manutencoes
+            limparTela();
+
+            std::cout << "-------------- HISTORICO DE MANUTENCOES --------------"
+                      << std::endl;
+
+            if (armazenamentoVeiculos.empty())
+            {
+                std::cout << "Nenhum veiculo cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::string placa;
+
+            std::cout << "Digite a placa do veiculo ou '0' para voltar: ";
+            std::getline(std::cin, placa);
+
+            if (testarVolta(placa))break;
+            Veiculo *veiculoEncontrado = nullptr;
+
+            for (const auto &veiculo : armazenamentoVeiculos)
+            {
+                if (veiculo->getPlaca() == placa)
+                {
+                    veiculoEncontrado = veiculo.get();
+                    break;
+                }
+            }
+
+            if (veiculoEncontrado == nullptr)
+            {
+                std::cout << "\nVeiculo nao encontrado." << std::endl;
+            }
+            else
+            {
+                std::cout << "\nVeiculo: "
+                          << veiculoEncontrado->getMarca() << " "
+                          << veiculoEncontrado->getModelo() << std::endl;
+
+                std::cout << "Placa: "
+                          << veiculoEncontrado->getPlaca() << std::endl;
+
+                veiculoEncontrado->consultarHistoricoManutencoes();
+            }
+
+            pausar();
             break;
         }
 
-        case '7':
+        case '6':
         {
             limparTela();
 
@@ -1757,8 +1887,7 @@ void veiculos()
             break;
         }
 
-        case 'X':
-        case 'x':
+        case '0':
         {
             limparTela();
             std::cout << "Voltando ao menu principal..." << std::endl;
@@ -1774,7 +1903,8 @@ void veiculos()
         }
         }
 
-    } while (opcao != 'X' && opcao != 'x');
+    } while (opcao != '0');
+    salvarVeiculos();
 }
 
 //------------------------------- PEÇAS  --------------------------------------
@@ -2028,71 +2158,6 @@ void pecas()
         std::getline(std::cin, pausaStr);
 
     } while (true);
-}
-
-bool testarVolta(const std::string &str)
-{
-    if (str == "0")
-    {
-        std::cout << "Operacao cancelada" << std::endl;
-        pausar();
-        return true; // Sai da função e volta ao menu anterior
-    }
-    return false; // Continua a execução normal
-}
-
-bool converterParaId(const std::string &entrada, int &idDestino)
-{
-
-    try
-    {
-        idDestino = std::stoi(entrada);
-        return true;
-    }
-    catch (...)
-    {
-        std::cout << "Erro: O ID deve ser um numero valido." << std::endl;
-        pausar();
-        return false;
-    }
-}
-
-bool verificarID(int &id)
-{
-    while (!(std::cin >> id))
-    {
-        std::cin.clear();            // Tira o cin do estado de erro
-        std::cin.ignore(5000, '\n'); // Joga a letra errada fora
-        std::cout << "Entrada invalida! Digite apenas numeros";
-    }
-    std::cin.ignore(5000, '\n'); // Limpa o \n para os próximos getlines
-
-    if (id == 0)
-    {
-        return true;
-    }
-    return false;
-}
-
-std::string converterStatusParaString(StatusOrdem status)
-{
-    switch (status)
-    {
-    case StatusOrdem::ABERTA:
-        return "ABERTA";
-    case StatusOrdem::EM_DIAGNOSTICO:
-        return "EM DIAGNOSTICO";
-    case StatusOrdem::EM_EXECUCAO:
-        return "EM EXECUCAO";
-    case StatusOrdem::AGUARDANDO_PECA:
-        return "AGUARDANDO PECA";
-    case StatusOrdem::AGUARDANDO_RETIRADA:
-        return "AGUARDANDO RETIRADA";
-    case StatusOrdem::FINALIZADA:
-        return "FINALIZADA";
-    default:
-        return "STATUS DESCONHECIDO";
-    }
 }
 
 void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
@@ -2858,6 +2923,7 @@ void ordensDeServico(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
 
                 // Registra a ordem no cliente, para aparecer em "Consultar ordens de servico do cliente"
                 clienteEncontrado->setServicos(novaOrdem.get());
+                veiculoEncontrado->adicionarOrdemServico(novaOrdem.get());
 
                 armazenamentoOrdens.push_back(novaOrdem);
 
