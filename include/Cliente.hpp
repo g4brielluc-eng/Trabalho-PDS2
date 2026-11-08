@@ -47,7 +47,7 @@ class Cliente{
         static Cliente* pesquisarPorCpf(const std::string& cpfBuscado);
         void excluirCliente();
         void listarServicos();
-
+        void listarAgendamentos();
         static void salvarNoArquivo(const std::string& nomeArquivo);
         static void carregarDoArquivo(const std::string& nomeArquivo);
 
