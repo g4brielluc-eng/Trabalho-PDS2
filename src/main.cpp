@@ -971,6 +971,7 @@ switch (opcao) {
                         return;
                     }
                     Cliente::salvarNoArquivo(arquivoClientes);
+                    
 
                     std::cout << "\nDeseja cadastrar outro cliente? (S/N): ";
                     std::getline(std::cin, continuar);
@@ -981,9 +982,19 @@ switch (opcao) {
             case '2': {
                 limparTela();
                 std::cout << "-------------- CONSULTAR AGENDAMENTOS --------------" << std::endl;
+                std::cout << "Digite o CPF do cliente (ou 'X' para voltar): " << std::endl;
+                std::string cpf;
+                std::getline(std::cin, cpf);
 
-                // Falta um getAgendamentos() na classe Cliente para isso.
-                std::cout << "Consulta de agendamentos ainda não disponível.\n";
+                if (cpf == "X" || cpf == "x") {
+                    break;
+                }
+
+                Cliente* consulta = Cliente::pesquisarPorCpf(cpf);
+                if (consulta == nullptr) 
+                    break;
+
+                consulta->listarAgendamentos();
                 break;
             }
 
@@ -1069,7 +1080,13 @@ switch (opcao) {
 
                 std::cout << "\n-------------- VEÍCULOS --------------\n";
                 std::cout << "Total: " << veiculos.size() << "\n";
-                // aqui entra a impressão de cada veículo
+                for (Veiculo* v : veiculos) {
+                    std::cout << "\nMarca: " << v->getMarca() << "\n";
+                    std::cout << "Modelo: " << v->getModelo() << "\n";
+                    std::cout << "Ano: " << v->getAno() << "\n";
+                    std::cout << "Placa: " << v->getPlaca() << "\n";
+                    std::cout << "Quilometragem: " << v->getQuilometragem() << " km\n";
+                }
                 std::cout << "--------------------------------\n";
                 break;
             }
