@@ -137,6 +137,7 @@ X - Voltar
 
 std::vector<std::shared_ptr<Agendamento>> armazenamentoAgendamentos; // Armazena os agendamentos criados
 std::vector<std::shared_ptr<Veiculo>> armazenamentoVeiculos;         // Armazena os veiculos criados
+std::vector<std::shared_ptr<Servico>> armazenamentoServicos;         // Armazena os servicos cadastrados
 
 // Função para limpar a tela do console
 void limparTela()
@@ -385,6 +386,479 @@ void carregarVeiculos()
     }
 
     arquivo.close();
+}
+
+// Funcao para salvar os servicos em um arquivo
+void salvarServicos()
+{
+    std::ofstream arquivo("servicos.txt");
+
+    if (!arquivo.is_open())
+    {
+        std::cout << "Erro ao salvar os servicos." << std::endl;
+        return;
+    }
+
+    for (const auto &servico : armazenamentoServicos)
+    {
+        arquivo << servico->getNome() << ";"
+                << servico->getDescricao() << ";"
+                << servico->getPreco() << ";"
+                << servico->getDuracaoEstimada() << std::endl;
+    }
+
+    arquivo.close();
+}
+
+// Funcao para carregar os servicos de um arquivo
+void carregarServicos()
+{
+    std::ifstream arquivo("servicos.txt");
+
+    if (!arquivo.is_open())
+    {
+        return;
+    }
+
+    std::string nome, descricao, precoTexto, duracaoTexto;
+
+    while (std::getline(arquivo, nome, ';'))
+    {
+        std::getline(arquivo, descricao, ';');
+        std::getline(arquivo, precoTexto, ';');
+        std::getline(arquivo, duracaoTexto);
+
+        try
+        {
+            float preco = std::stof(precoTexto);
+            int duracao = std::stoi(duracaoTexto);
+
+            armazenamentoServicos.push_back(
+                std::make_shared<Servico>(nome, descricao, preco, duracao));
+        }
+        catch (const std::exception &e)
+        {
+            std::cout << "Erro ao carregar servico: " << e.what() << std::endl;
+        }
+    }
+
+    arquivo.close();
+}
+
+// Procura um servico pelo nome (ignora maiusculas/minusculas). Retorna nullptr se nao achar.
+Servico *buscarServico(const std::string &nome)
+{
+    auto minusculo = [](std::string s)
+    {
+        std::transform(s.begin(), s.end(), s.begin(),
+                       [](unsigned char c)
+                       { return std::tolower(c); });
+        return s;
+    };
+
+    for (const auto &servico : armazenamentoServicos)
+    {
+        if (minusculo(servico->getNome()) == minusculo(nome))
+        {
+            return servico.get();
+        }
+    }
+    return nullptr;
+}
+
+// Le um float do teclado; se o usuario digitar lixo, limpa o cin e retorna false
+bool lerFloat(float &valor)
+{
+    if (!(std::cin >> valor))
+    {
+        std::cin.clear();
+        std::cin.ignore(5000, '\n');
+        return false;
+    }
+    std::cin.ignore(5000, '\n');
+    return true;
+}
+
+// Le um int do teclado; se o usuario digitar lixo, limpa o cin e retorna false
+bool lerInt(int &valor)
+{
+    if (!(std::cin >> valor))
+    {
+        std::cin.clear();
+        std::cin.ignore(5000, '\n');
+        return false;
+    }
+    std::cin.ignore(5000, '\n');
+    return true;
+}
+
+//================================================= SERVICOS =============================================
+
+void servicos()
+{
+    char opcao;
+
+    do
+    {
+        limparTela();
+
+        std::cout << "-------------- SERVICOS --------------" << std::endl;
+        std::cout << "1 - Cadastrar servico" << std::endl;
+        std::cout << "2 - Consultar servicos" << std::endl;
+        std::cout << "3 - Atualizar descricao" << std::endl;
+        std::cout << "4 - Atualizar preco" << std::endl;
+        std::cout << "5 - Atualizar duracao estimada" << std::endl;
+        std::cout << "6 - Consultar tempo estimado" << std::endl;
+        std::cout << "7 - Calcular custo total" << std::endl;
+        std::cout << "X - Voltar" << std::endl;
+
+        std::cout << std::endl
+                  << "Digite uma opcao: ";
+        std::cin >> opcao;
+        std::cin.ignore(5000, '\n');
+
+        switch (opcao)
+        {
+        case '1':
+        {
+            limparTela();
+
+            std::cout << "-------------- CADASTRAR SERVICO --------------" << std::endl;
+
+            std::string nome, descricao;
+            float preco;
+            int duracao;
+
+            std::cout << "Digite o nome do servico ou 'X' para voltar: ";
+            std::getline(std::cin, nome);
+
+            if (nome == "X" || nome == "x")
+            {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
+
+            if (buscarServico(nome) != nullptr)
+            {
+                std::cout << "\nErro: ja existe um servico com esse nome." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "Digite a descricao do servico: ";
+            std::getline(std::cin, descricao);
+
+            std::cout << "Digite o preco do servico: ";
+            if (!lerFloat(preco))
+            {
+                std::cout << "\nErro: preco invalido." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::cout << "Digite a duracao estimada (em minutos): ";
+            if (!lerInt(duracao))
+            {
+                std::cout << "\nErro: duracao invalida." << std::endl;
+                pausar();
+                break;
+            }
+
+            try
+            {
+                armazenamentoServicos.push_back(
+                    std::make_shared<Servico>(nome, descricao, preco, duracao));
+
+                std::cout << "\nServico cadastrado com sucesso!" << std::endl;
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "\nErro ao cadastrar servico: " << e.what() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '2':
+        {
+            limparTela();
+
+            std::cout << "-------------- LISTA DE SERVICOS --------------" << std::endl;
+
+            if (armazenamentoServicos.empty())
+            {
+                std::cout << "Nenhum servico cadastrado." << std::endl;
+            }
+            else
+            {
+                for (const auto &servico : armazenamentoServicos)
+                {
+                    std::cout << "\n----------------------------------------" << std::endl;
+                    std::cout << servico->consultarInformacoes() << std::endl;
+                }
+
+                std::cout << "\n----------------------------------------" << std::endl;
+                std::cout << "Total de servicos: "
+                          << armazenamentoServicos.size() << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '3':
+        {
+            limparTela();
+
+            std::cout << "-------------- ATUALIZAR DESCRICAO --------------" << std::endl;
+
+            if (armazenamentoServicos.empty())
+            {
+                std::cout << "Nenhum servico cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::string nome;
+            std::cout << "Digite o nome do servico: ";
+            std::getline(std::cin, nome);
+
+            Servico *servico = buscarServico(nome);
+
+            if (servico == nullptr)
+            {
+                std::cout << "\nServico nao encontrado." << std::endl;
+            }
+            else
+            {
+                std::string novaDescricao;
+
+                std::cout << "Descricao atual: " << servico->getDescricao() << std::endl;
+                std::cout << "Digite a nova descricao: ";
+                std::getline(std::cin, novaDescricao);
+
+                servico->atualizarDescricao(novaDescricao);
+
+                std::cout << "\nDescricao atualizada com sucesso!" << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '4':
+        {
+            limparTela();
+
+            std::cout << "-------------- ATUALIZAR PRECO --------------" << std::endl;
+
+            if (armazenamentoServicos.empty())
+            {
+                std::cout << "Nenhum servico cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::string nome;
+            std::cout << "Digite o nome do servico: ";
+            std::getline(std::cin, nome);
+
+            Servico *servico = buscarServico(nome);
+
+            if (servico == nullptr)
+            {
+                std::cout << "\nServico nao encontrado." << std::endl;
+            }
+            else
+            {
+                float novoPreco;
+
+                std::cout << "Preco atual: R$ " << servico->getPreco() << std::endl;
+                std::cout << "Digite o novo preco: ";
+
+                if (!lerFloat(novoPreco))
+                {
+                    std::cout << "\nErro: preco invalido." << std::endl;
+                }
+                else
+                {
+                    try
+                    {
+                        servico->atualizarPreco(novoPreco);
+
+                        std::cout << "\nPreco atualizado com sucesso!" << std::endl;
+                    }
+                    catch (const std::exception &e)
+                    {
+                        std::cout << "\nErro ao atualizar preco: " << e.what() << std::endl;
+                    }
+                }
+            }
+
+            pausar();
+            break;
+        }
+
+        case '5':
+        {
+            limparTela();
+
+            std::cout << "-------------- ATUALIZAR DURACAO ESTIMADA --------------" << std::endl;
+
+            if (armazenamentoServicos.empty())
+            {
+                std::cout << "Nenhum servico cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::string nome;
+            std::cout << "Digite o nome do servico: ";
+            std::getline(std::cin, nome);
+
+            Servico *servico = buscarServico(nome);
+
+            if (servico == nullptr)
+            {
+                std::cout << "\nServico nao encontrado." << std::endl;
+            }
+            else
+            {
+                int novaDuracao;
+
+                std::cout << "Duracao atual: " << servico->getDuracaoEstimada() << " min" << std::endl;
+                std::cout << "Digite a nova duracao (em minutos): ";
+
+                if (!lerInt(novaDuracao))
+                {
+                    std::cout << "\nErro: duracao invalida." << std::endl;
+                }
+                else
+                {
+                    try
+                    {
+                        servico->registrarDuracaoEstimada(novaDuracao);
+
+                        std::cout << "\nDuracao atualizada com sucesso!" << std::endl;
+                    }
+                    catch (const std::exception &e)
+                    {
+                        std::cout << "\nErro ao atualizar duracao: " << e.what() << std::endl;
+                    }
+                }
+            }
+
+            pausar();
+            break;
+        }
+
+        case '6':
+        {
+            limparTela();
+
+            std::cout << "-------------- CONSULTAR TEMPO ESTIMADO --------------" << std::endl;
+
+            if (armazenamentoServicos.empty())
+            {
+                std::cout << "Nenhum servico cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::string nome;
+            std::cout << "Digite o nome do servico: ";
+            std::getline(std::cin, nome);
+
+            Servico *servico = buscarServico(nome);
+
+            if (servico == nullptr)
+            {
+                std::cout << "\nServico nao encontrado." << std::endl;
+            }
+            else
+            {
+                std::cout << "\nO servico \"" << servico->getNome()
+                          << "\" leva cerca de " << servico->getDuracaoEstimada()
+                          << " minutos." << std::endl;
+            }
+
+            pausar();
+            break;
+        }
+
+        case '7':
+        {
+            limparTela();
+
+            std::cout << "-------------- CALCULAR CUSTO TOTAL --------------" << std::endl;
+
+            if (armazenamentoServicos.empty())
+            {
+                std::cout << "Nenhum servico cadastrado." << std::endl;
+                pausar();
+                break;
+            }
+
+            std::string nome;
+            std::cout << "Digite o nome do servico: ";
+            std::getline(std::cin, nome);
+
+            Servico *servico = buscarServico(nome);
+
+            if (servico == nullptr)
+            {
+                std::cout << "\nServico nao encontrado." << std::endl;
+            }
+            else
+            {
+                int quantidade;
+
+                std::cout << "Preco unitario: R$ " << servico->getPreco() << std::endl;
+                std::cout << "Digite a quantidade: ";
+
+                if (!lerInt(quantidade))
+                {
+                    std::cout << "\nErro: quantidade invalida." << std::endl;
+                }
+                else
+                {
+                    try
+                    {
+                        float custo = servico->calcularCusto(quantidade);
+
+                        std::cout << "\nCusto total: R$ " << custo << std::endl;
+                    }
+                    catch (const std::exception &e)
+                    {
+                        std::cout << "\nErro ao calcular custo: " << e.what() << std::endl;
+                    }
+                }
+            }
+
+            pausar();
+            break;
+        }
+
+        case 'X':
+        case 'x':
+        {
+            limparTela();
+            std::cout << "Voltando ao menu principal..." << std::endl;
+            break;
+        }
+
+        default:
+        {
+            limparTela();
+            std::cout << "Opcao invalida. Tente novamente." << std::endl;
+            pausar();
+            break;
+        }
+        }
+
+    } while (opcao != 'X' && opcao != 'x');
 }
 
 //============================================= Cliente =============================================
@@ -2123,7 +2597,6 @@ void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
 // Precisa tambem de:  #include <iomanip>  la no topo, junto com os outros includes.
 
 std::vector<std::shared_ptr<OrdemDeServico>> armazenamentoOrdens; // Armazena as ordens de servico criadas
-std::vector<std::shared_ptr<Servico>> armazenamentoServicos;      // Armazena os servicos cadastrados
 
 // Le um numero inteiro digitado pelo usuario. Retorna false se nao for um numero valido.
 bool lerInteiroOrdem(int &valor)
@@ -2777,7 +3250,6 @@ void ordensDeServico(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
     } while (opcao != 'X' && opcao != 'x');
 }
 
-
 int main()
 {
 
@@ -2786,17 +3258,19 @@ int main()
     Cliente::carregarDoArquivo("listaClientes.txt");
     carregarVeiculos();
     carregarAgendamentos();
+    carregarServicos();
 
     cliente();
     veiculos();
     agendamento();
     ordensDeServico(listaDeMecanicos);
-    // pecas();
-    // mecanicos(listaDeMecanicos);
-    
+    pecas();
+    mecanicos(listaDeMecanicos);
+    servicos();
 
     salvarAgendamentos();
     salvarVeiculos();
+    salvarServicos();
 
     return 0;
 }
