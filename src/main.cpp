@@ -1937,7 +1937,6 @@ void veiculos()
 
 void pecas()
 {
-    Peca::carregarDoArquivo("estoque.txt");
     char opcao = ' ';
 
     do
@@ -2189,8 +2188,6 @@ void pecas()
 void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
 {
     char opcao = ' ';
-
-    Mecanico::carregarMecanicosDoArquivo(listaDeMecanicos, "mecanicos.txt");
 
     do
     {
@@ -3353,6 +3350,7 @@ void menuPrincipal() {
         std::cout << "4. Ordens de Servico" << std::endl;
         std::cout << "5. Pecas" << std::endl;
         std::cout << "6. Mecanicos" << std::endl;
+        std::cout << "7. Servicos" << std::endl;
         std::cout << "X. Sair" << std::endl;
         std::cout << "============================================" << std::endl;
         std::cout << "Escolha uma opcao: ";
@@ -3390,6 +3388,11 @@ void menuPrincipal() {
             limparTela();
             mecanicos(listaDeMecanicos);
             break;
+        case '7':
+            limparTela();
+            servicos();
+            pausar();
+            break;
         case 'X':
         case 'x':
             limparTela();
@@ -3406,22 +3409,23 @@ void menuPrincipal() {
 
 
 
-
 int main() {
     
     Cliente::carregarDoArquivo("listaClientes.txt");
     carregarVeiculos();
     carregarAgendamentos();
     carregarServicos();
+    Peca::carregarDoArquivo("pecas.txt");
     Mecanico::carregarMecanicosDoArquivo(listaDeMecanicos, "mecanicos.txt");
     
     menuPrincipal();
-    
+
     salvarServicos();
     salvarAgendamentos();
     salvarVeiculos();
     Mecanico::salvarMecanicosNoArquivo(listaDeMecanicos, "mecanicos.txt");
     Cliente::salvarNoArquivo("listaClientes.txt");
+    Peca::salvarNoArquivo("pecas.txt");
 
     return 0;
 }
