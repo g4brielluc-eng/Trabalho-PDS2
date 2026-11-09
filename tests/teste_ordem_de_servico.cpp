@@ -2,6 +2,7 @@
 #include "OrdemDeServico.hpp"
 #include "Veiculo.hpp"
 #include "Mecanico.hpp"
+   #include "Cliente.hpp"
 #include "Servico.hpp"
 #include "Peca.hpp"
 #include <stdexcept>
@@ -142,4 +143,21 @@ TEST_CASE("OrdemDeServico: Adicionar peca valida") {
 
     REQUIRE(ordem.getPecas().size() == 1);
     CHECK(ordem.getPecas()[0] == &peca);
+}
+TEST_CASE("OrdemDeServico: getCliente retorna o cliente do veiculo") {
+    Cliente cliente("Ana", "12345678900", "31999999999", "Rua A, 10");
+    Veiculo veiculo("Fiat", "Uno", 2010, "ABC1234", 50000);
+    veiculo.associarCliente(&cliente);
+
+    OrdemDeServico ordem(&veiculo, "02/11/2026");
+
+    CHECK(ordem.getCliente() == &cliente);
+}
+
+TEST_CASE("OrdemDeServico: getCliente retorna nulo se o veiculo nao tem cliente") {
+    Veiculo veiculo("Fiat", "Uno", 2010, "ABC1234", 50000);
+
+    OrdemDeServico ordem(&veiculo, "02/11/2026");
+
+    CHECK(ordem.getCliente() == nullptr);
 }

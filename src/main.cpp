@@ -165,17 +165,17 @@ bool testarVolta(const std::string &str)
     {
         std::cout << "Operacao cancelada" << std::endl;
         pausar();
-        return true; // Sai da função e volta ao menu anterior
+        return true; 
     }
-    return false; // Continua a execução normal
+    return false; 
 }
 
 bool verificarID(int &id)
 {
     while (!(std::cin >> id))
     {
-        std::cin.clear();            // Tira o cin do estado de erro
-        std::cin.ignore(5000, '\n'); // Joga a letra errada fora
+        std::cin.clear();            
+        std::cin.ignore(5000, '\n'); 
         std::cout << "Entrada invalida! Digite apenas numeros";
     }
     std::cin.ignore(5000, '\n'); // Limpa o \n para os próximos getlines

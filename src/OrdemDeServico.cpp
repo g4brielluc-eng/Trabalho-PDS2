@@ -97,6 +97,7 @@ const std::string& OrdemDeServico::getDataSaida() const {
 Veiculo* OrdemDeServico::getVeiculo() const { 
     return veiculo; 
 }
+   Cliente* OrdemDeServico::getCliente() const { return veiculo->getCliente(); }
 
 Mecanico* OrdemDeServico::getMecanico() const { 
     return mecanico; 

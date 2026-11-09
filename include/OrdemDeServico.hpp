@@ -14,6 +14,7 @@ class Veiculo;
 class Servico;
 class Peca;
 class Mecanico;
+   class Cliente;
 
 /**
  * @brief Representa uma ordem de serviço da oficina mecânica.
@@ -58,6 +59,16 @@ public:
     const std::string& getDataEntrada() const;
     const std::string& getDataSaida() const;
     Veiculo* getVeiculo() const;
+    
+    /**
+     * @brief Retorna o cliente responsável pela ordem.
+     *
+     * O cliente é obtido a partir do veículo associado à ordem.
+     *
+     * @return Ponteiro para o cliente do veículo (nulo se o veículo
+     *         ainda não tiver cliente).
+     */
+    Cliente* getCliente() const;
     Mecanico* getMecanico() const;
     const std::vector<Servico*>& getServicos() const;
     const std::vector<Peca*>& getPecas() const;
