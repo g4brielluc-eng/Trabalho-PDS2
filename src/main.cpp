@@ -323,6 +323,7 @@ void carregarAgendamentos()
             if (clienteEncontrado != nullptr)
             {
                 novoAgendamento->associarCliente(clienteEncontrado);
+                clienteEncontrado->setAgendamento(novoAgendamento.get());
             }
 
             novoAgendamento->registrarAgendamento();
@@ -572,7 +573,7 @@ void salvarOrdens()
         for (size_t i = 0; i < servicosDaOrdem.size(); ++i)
         {
             arquivo << servicosDaOrdem[i]->getNome();
-            if (i < servicosDaOrdem.size() - 1) arquivo << ";";
+            if (i < servicosDaOrdem.size() - 1) arquivo << "|";
         }
         arquivo << ";";
 
@@ -581,7 +582,7 @@ void salvarOrdens()
         for (size_t i = 0; i < pecasDaOrdem.size(); ++i)
         {
             arquivo << pecasDaOrdem[i]->getCodigo();
-            if (i < pecasDaOrdem.size() - 1) arquivo << ";";
+            if (i < pecasDaOrdem.size() - 1) arquivo << "|";
         }
         arquivo << std::endl;
     }
@@ -652,7 +653,7 @@ void carregarOrdens()
             {
                 std::stringstream ssServ(servicosStr);
                 std::string nomeServico;
-                while (std::getline(ssServ, nomeServico, ';'))
+                while (std::getline(ssServ, nomeServico, '|'))
                 {
                     Servico *s = buscarServico(nomeServico);
                     if (s != nullptr)
@@ -668,7 +669,7 @@ void carregarOrdens()
             {
                 std::stringstream ssPeca(pecasStr);
                 std::string codPeca;
-                while (std::getline(ssPeca, codPeca, ';'))
+                while (std::getline(ssPeca, codPeca, '|'))
                 {
                     Peca *p = Peca::pesquisarPorCodigo(codPeca);
                     if (p != nullptr) novaOrdem->adicionarPeca(p);
@@ -1409,6 +1410,7 @@ void agendamento()
                 // Associa veiculo e cliente ao agendamento
                 novoAgendamento->associarVeiculo(veiculoEncontrado);
                 novoAgendamento->associarCliente(clienteEncontrado);
+                clienteEncontrado->setAgendamento(novoAgendamento.get());
 
                 novoAgendamento->registrarAgendamento();
 
@@ -3622,7 +3624,6 @@ void menuPrincipal() {
         }
     } while (opcao != 'X' && opcao != 'x');
 }
-
 
 
 int main() {

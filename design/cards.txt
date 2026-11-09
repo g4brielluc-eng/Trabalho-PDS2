@@ -120,7 +120,7 @@
       "Associar uma peça a uma ordem de serviço"
     ],
     "collaborators": [
-      "OrdemDeServico",
+      "OrdemDeServico"
     ]
   },
   {

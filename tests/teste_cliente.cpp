@@ -207,8 +207,7 @@ TEST_CASE("Cliente: salvarNoArquivo") {
 
     CHECK(texto.find("C;Ana Souza;11122233344;31988887777;Rua A") != std::string::npos);
     CHECK(texto.find("V;") == std::string::npos);
-    CHECK(texto.find("A;11122233344;11/12/2026;09:00;CONFIRMADO") != std::string::npos);
-    CHECK(texto.find("A;11122233344;12/12/2026;16:00;CANCELADO") != std::string::npos);
+    CHECK(texto.find("A;") == std::string::npos);
 
     CHECK_NOTHROW(Cliente::salvarNoArquivo("pasta_que_nao_existe/clientes.txt"));
 }

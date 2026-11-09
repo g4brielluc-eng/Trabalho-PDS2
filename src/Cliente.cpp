@@ -175,17 +175,6 @@ void Cliente::salvarNoArquivo(const std::string& nomeArquivo) {
                 << p->cpf << ";"
                 << p->contato << ";"
                 << p->endereco << "\n";
-
-        for (Agendamento* a : p->agendamentos) {
-            std::string status = "PENDENTE";
-            if (a->getStatus() == Agendamento::Status::CONFIRMADO) status = "CONFIRMADO";
-            if (a->getStatus() == Agendamento::Status::CANCELADO)  status = "CANCELADO";
-
-            arquivo << "A;" << p->cpf << ";"
-                    << a->getData() << ";"
-                    << a->getHorario() << ";"
-                    << status << "\n";
-        }
     }
     arquivo.close();
 
@@ -235,39 +224,7 @@ void Cliente::carregarDoArquivo(const std::string& nomeArquivo) {
                 continue; 
 
             } else if (tipo == "A") {
-                std::string cpf, data, horario, status;
-                std::getline(ss, cpf, ';');
-                std::getline(ss, data, ';');
-                std::getline(ss, horario, ';');
-                std::getline(ss, status);
-
-                Cliente* dono = pesquisarPorCpf(cpf);
-                if (dono == nullptr) {
-                    throw std::invalid_argument("cliente do agendamento não encontrado.");
-                }
-
-                // Se o agendamento já foi carregado do agendamentos.txt, reaproveita
-                Agendamento* ag = nullptr;
-                const std::vector<Agendamento*>& todos = Agendamento::consultarAgendamentos();
-                for (Agendamento* a : todos) {
-                    if (a->getData() == data && a->getHorario() == horario) {
-                        ag = a;
-                        break;
-                    }
-                }
-
-                if (ag == nullptr) {
-                    ag = new Agendamento(data, horario);
-                    try {
-                        ag->registrarAgendamento();
-                        if (status == "CONFIRMADO") ag->confirmar();
-                        else if (status == "CANCELADO") ag->cancelar();
-                    } catch (...) {
-                        delete ag;
-                        throw;
-                    }
-                }
-                dono->setAgendamento(ag);
+                continue;
 
             } else {
                 throw std::invalid_argument("tipo de linha desconhecido (arquivo no formato antigo?).");
