@@ -20,10 +20,10 @@ class Servico;
 class Mecanico {
 
 private:
-    int id_; //ID único do mecânico.
-    std::string nome_; //Nome completo do mecânico.
-    std::string especialidade_; //Especialidade do mecânico; pode ser alterada posteriormente.
-    std::vector<OrdemDeServico*> ordens_; //Lista de ordens de serviço atribuídas ao mecânico.
+    int id; ///ID único do mecânico.
+    std::string nome; ///Nome completo do mecânico.
+    std::string especialidade; ///Especialidade do mecânico; pode ser alterada posteriormente.
+    std::vector<OrdemDeServico*> ordens; ///Lista de ordens de serviço atribuídas ao mecânico.
 
 public:
     /**

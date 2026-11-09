@@ -1,6 +1,0 @@
-<<<<<<< Updated upstream
-1234,Rick,Troca de oleo
-=======
-99,ronaldo,freios
-11,gkd,qffwef
->>>>>>> Stashed changes

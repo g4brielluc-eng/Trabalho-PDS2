@@ -176,15 +176,6 @@ void Cliente::salvarNoArquivo(const std::string& nomeArquivo) {
                 << p->contato << ";"
                 << p->endereco << "\n";
 
-        for (Veiculo* v : p->veiculos) {
-            arquivo << "V;" << p->cpf << ";"
-                    << v->getMarca() << ";"
-                    << v->getModelo() << ";"
-                    << v->getAno() << ";"
-                    << v->getPlaca() << ";"
-                    << v->getQuilometragem() << "\n";
-        }
-
         for (Agendamento* a : p->agendamentos) {
             std::string status = "PENDENTE";
             if (a->getStatus() == Agendamento::Status::CONFIRMADO) status = "CONFIRMADO";
@@ -241,27 +232,7 @@ void Cliente::carregarDoArquivo(const std::string& nomeArquivo) {
                 carregados++;
 
             } else if (tipo == "V") {
-                std::string cpf, marca, modelo, anoTxt, placa, kmTxt;
-                std::getline(ss, cpf, ';');
-                std::getline(ss, marca, ';');
-                std::getline(ss, modelo, ';');
-                std::getline(ss, anoTxt, ';');
-                std::getline(ss, placa, ';');
-                std::getline(ss, kmTxt);
-
-                Cliente* dono = pesquisarPorCpf(cpf);
-                if (dono == nullptr) {
-                    throw std::invalid_argument("cliente do veículo não encontrado.");
-                }
-
-                bool jaTem = false;
-                for (Veiculo* v : dono->veiculos) {
-                    if (v->getPlaca() == placa) jaTem = true;
-                }
-                if (jaTem) continue;
-
-                dono->setVeiculos(new Veiculo(marca, modelo, std::stoi(anoTxt),
-                                              placa, std::stoi(kmTxt)));
+                continue; 
 
             } else if (tipo == "A") {
                 std::string cpf, data, horario, status;

@@ -174,7 +174,7 @@ TEST_CASE("Mecanico: Salvar informacoes em um arquivo valido cria o arquivo e fo
     std::string primeiraLinha;
     std::getline(arquivoLido, primeiraLinha);
     
-    CHECK(primeiraLinha == "123456,Rickelve,Freios");
+    CHECK(primeiraLinha == "123456;Rickelve;Freios");
     
     arquivoLido.close();
 
@@ -185,8 +185,8 @@ TEST_CASE("Mecanico: Carregar informacoes de um arquivo existente cria os objeto
     std::string arquivoTeste = "teste.txt";
 
     std::ofstream arquivoGerado(arquivoTeste);
-    arquivoGerado << "99,Carlos,Motor\n";
-    arquivoGerado << "123456,Rickelve,Freios\n";
+    arquivoGerado << "99;Carlos;Motor\n";
+    arquivoGerado << "123456;Rickelve;Freios\n";
     arquivoGerado.close();
 
     std::vector<std::shared_ptr<Mecanico>> listaCarregada;
@@ -201,7 +201,7 @@ TEST_CASE("Mecanico: Carregar informacoes de um arquivo existente cria os objeto
 
 TEST_CASE("Mecanico: Carregar informacoes de um arquivo corrompido ignora linhas ruins") {
     std::ofstream arquivo("corrompido.txt");
-    arquivo << "Texto_incorreto,Carlos,Motor\n"; 
+    arquivo << "Texto_incorreto;Carlos;Motor\n"; 
     arquivo.close();
     
     std::vector<std::shared_ptr<Mecanico>> listaTeste;
@@ -219,8 +219,8 @@ TEST_CASE("Mecanico: Salvar informacoes em um arquivo sem permissao lanca") {
 
 TEST_CASE("Mecanico: Carregar mecanicos com mesmo ID ignora o segundo") {
     std::ofstream arquivo("duplicado.txt");
-    arquivo << "99,Carlos,Motor\n"; 
-    arquivo << "99,Rickelve,Freios\n"; 
+    arquivo << "99;Carlos;Motor\n"; 
+    arquivo << "99;Rickelve;Freios\n"; 
     arquivo.close();
     
     std::vector<std::shared_ptr<Mecanico>> listaTeste;

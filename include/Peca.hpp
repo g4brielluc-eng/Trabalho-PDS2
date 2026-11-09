@@ -1,5 +1,5 @@
 /**
- * @file Peca.h
+ * @file Peca.hpp
  * @brief Declaração da classe Peca.
  */
 
@@ -23,17 +23,17 @@ class OrdemDeServico;
  */
 class Peca{
    
-        // Código identificador da peça.
+        /// Código identificador da peça.
         std::string codigo;
-        // Descrição da peça.
+        /// Descrição da peça.
         std::string descricao;
-        // Preço unitário da peça.
+        /// Preço unitário da peça.
         float preco;
-        // Quantidade da peça em estoque.
+        /// Quantidade da peça em estoque.
         int quantidade;
-        // Lista de veículos associados à peça.
+        /// Lista de veículos associados à peça.
         std::vector<Veiculo*> veiculos;
-        // Lista de ordens de serviço que utilizam a peça.
+        /// Lista de ordens de serviço que utilizam a peça.
         std::vector<OrdemDeServico*> servicos;
         static std::vector<Peca*> listaPecas;
 

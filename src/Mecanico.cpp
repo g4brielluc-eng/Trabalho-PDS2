@@ -10,7 +10,7 @@
 #include <algorithm>
 
 Mecanico::Mecanico(int id, const std::string& nome, const std::string& especialidade)
-    : id_(id), nome_(nome), especialidade_(especialidade) {
+    : id(id), nome(nome), especialidade(especialidade) {
     if (id <= 0) {
         throw std::invalid_argument("O ID do mecanico deve ser um numero positivo.");
     }
@@ -23,23 +23,23 @@ Mecanico::Mecanico(int id, const std::string& nome, const std::string& especiali
 }
 
 int Mecanico::getId() const {
-    return id_;
+    return id;
 }    
 
 const std::string& Mecanico::getNome() const {
-    return nome_;
+    return nome;
 }
 
 const std::string& Mecanico::getEspecialidade() const {
-    return especialidade_;
+    return especialidade;
 }
 
-void Mecanico::alterarEspecialidade(const std::string& especialidade) {
-    especialidade_ = especialidade;
+void Mecanico::alterarEspecialidade(const std::string& especialidade_nova) {
+    especialidade = especialidade_nova;
 }
 
 std::vector<OrdemDeServico*> Mecanico::consultarOrdensAtribuidas() const {
-    return ordens_;
+    return ordens;
 }
 
 void Mecanico::assumirOrdem(OrdemDeServico* ordem) { 
@@ -47,12 +47,12 @@ void Mecanico::assumirOrdem(OrdemDeServico* ordem) {
         throw std::invalid_argument("A ordem de servico nao pode ser nula.");
     }
     else {
-        ordens_.push_back(ordem); //Cria uma posição nova no vetor e adiciona a ordem na lista de ordens atribuídas ao mecânico.
+        ordens.push_back(ordem); //Cria uma posição nova no vetor e adiciona a ordem na lista de ordens atribuídas ao mecânico.
     }
 }
 
 void Mecanico::registrarDiagnostico(OrdemDeServico* ordem, const std::string& diagnostico) {
-    if(std::find(ordens_.begin(), ordens_.end(), ordem) == ordens_.end()) {
+    if(std::find(ordens.begin(), ordens.end(), ordem) == ordens.end()) {
         throw std::logic_error("Ordem de servico nao atribuida a este mecanico.");
     }
     else {
@@ -61,7 +61,7 @@ void Mecanico::registrarDiagnostico(OrdemDeServico* ordem, const std::string& di
 }
 
 void Mecanico::registrarServicoRealizado(OrdemDeServico* ordem, Servico* servico) {
-   if(std::find(ordens_.begin(), ordens_.end(), ordem) == ordens_.end()) { //find procura a ordem no vetor de ordens atribuídas ao mecânico. Se não encontrar, lança exceção.
+   if(std::find(ordens.begin(), ordens.end(), ordem) == ordens.end()) { //find procura a ordem no vetor de ordens atribuídas ao mecânico. Se não encontrar, lança exceção.
         throw std::logic_error("Ordem de servico nao atribuida a este mecanico.");
     }
     else if(servico == nullptr) {
@@ -73,7 +73,7 @@ void Mecanico::registrarServicoRealizado(OrdemDeServico* ordem, Servico* servico
 }
 
 void Mecanico::atualizarAndamento(OrdemDeServico* ordem, StatusOrdem novoStatus) {
-    if(std::find(ordens_.begin(), ordens_.end(), ordem) == ordens_.end()) { 
+    if(std::find(ordens.begin(), ordens.end(), ordem) == ordens.end()) { 
         throw std::logic_error("Ordem de servico nao atribuida a este mecanico.");
     }
     else if(novoStatus == StatusOrdem::FINALIZADA) {
@@ -94,9 +94,9 @@ void Mecanico::carregarMecanicosDoArquivo(std::vector<std::shared_ptr<Mecanico>>
             std::stringstream ss(linha);
             std::string idStr, nome, especialidade;
 
-            std::getline(ss, idStr, ',');
-            std::getline(ss, nome, ',');
-            std::getline(ss, especialidade, ',');
+            std::getline(ss, idStr, ';');
+            std::getline(ss, nome, ';');
+            std::getline(ss, especialidade, ';');
 
             if (!idStr.empty() && !nome.empty() && !especialidade.empty()) {
                 try {
@@ -127,8 +127,8 @@ void Mecanico::salvarMecanicosNoArquivo(const std::vector<std::shared_ptr<Mecani
     }
 
     for (const auto& mecanico : lista) {
-        arquivo << mecanico->getId() << "," 
-                << mecanico->getNome() << "," 
+        arquivo << mecanico->getId() << ";" 
+                << mecanico->getNome() << ";" 
                 << mecanico->getEspecialidade() << "\n";
     }
     arquivo.close();

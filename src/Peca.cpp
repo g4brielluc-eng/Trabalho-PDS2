@@ -61,9 +61,9 @@ std::vector<Peca*> Peca::listaPecas;
             std::ofstream arquivo(nomeArquivo);
             if (arquivo.is_open()) {
                 for (const auto& p : listaPecas) {
-                    arquivo << p->codigo << "," 
-                            << p->descricao << "," 
-                            << p->preco << "," 
+                    arquivo << p->codigo << ";" 
+                            << p->descricao << ";" 
+                            << p->preco << ";" 
                             << p->quantidade << "\n";
                 }
                 arquivo.close();
@@ -88,9 +88,9 @@ std::vector<Peca*> Peca::listaPecas;
                     std::stringstream ss(linha);
                     std::string cod, desc, precoStr, qtdStr;
 
-                    std::getline(ss, cod, ',');
-                    std::getline(ss, desc, ',');
-                    std::getline(ss, precoStr, ',');
+                    std::getline(ss, cod, ';');
+                    std::getline(ss, desc, ';');
+                    std::getline(ss, precoStr, ';');
                     std::getline(ss, qtdStr);
 
                     if (!cod.empty() && !precoStr.empty() && !qtdStr.empty()) {

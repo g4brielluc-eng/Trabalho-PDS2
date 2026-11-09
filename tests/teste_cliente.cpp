@@ -206,7 +206,7 @@ TEST_CASE("Cliente: salvarNoArquivo") {
     std::remove("teste_clientes.txt");
 
     CHECK(texto.find("C;Ana Souza;11122233344;31988887777;Rua A") != std::string::npos);
-    CHECK(texto.find("V;11122233344;FORD;Ka;2015;XYZ9876;50000") != std::string::npos);
+    CHECK(texto.find("V;") == std::string::npos);
     CHECK(texto.find("A;11122233344;11/12/2026;09:00;CONFIRMADO") != std::string::npos);
     CHECK(texto.find("A;11122233344;12/12/2026;16:00;CANCELADO") != std::string::npos);
 
@@ -231,12 +231,12 @@ TEST_CASE("Cliente: carregarDoArquivo") {
     Cliente* ana = Cliente::pesquisarPorCpf("22233344455");
     REQUIRE(ana != nullptr);
     CHECK(ana->getNome() == "Ana Souza");
-    CHECK(ana->getVeiculos().size() == 1);
+    CHECK(ana->getVeiculos().size() == 0);
     CHECK(Cliente::pesquisarPorCpf("33344455566") == nullptr);
 
     Cliente::carregarDoArquivo("teste_carregar.txt");
     CHECK(Cliente::pesquisarPorCpf("22233344455") == ana);
-    CHECK(ana->getVeiculos().size() == 1);
+    CHECK(ana->getVeiculos().size() == 0);
 
     apagarCliente("22233344455");
     std::remove("teste_carregar.txt");

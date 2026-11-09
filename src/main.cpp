@@ -170,22 +170,6 @@ bool testarVolta(const std::string &str)
     return false; // Continua a execução normal
 }
 
-bool converterParaId(const std::string &entrada, int &idDestino)
-{
-
-    try
-    {
-        idDestino = std::stoi(entrada);
-        return true;
-    }
-    catch (...)
-    {
-        std::cout << "Erro: O ID deve ser um numero valido." << std::endl;
-        pausar();
-        return false;
-    }
-}
-
 bool verificarID(int &id)
 {
     while (!(std::cin >> id))
@@ -559,11 +543,169 @@ bool lerInt(int &valor)
     return true;
 }
 
+// Funcao para salvar as ordens de servico em um arquivo
+void salvarOrdens()
+{
+    std::ofstream arquivo("ordens.txt");
+
+    if (!arquivo.is_open())
+    {
+        std::cout << "Erro ao salvar ordens de servico." << std::endl;
+        return;
+    }
+
+    for (const auto &ordem : armazenamentoOrdens)
+    {
+        std::string placa = (ordem->getVeiculo() != nullptr) ? ordem->getVeiculo()->getPlaca() : "";
+        std::string idMecanico = (ordem->getMecanico() != nullptr) ? std::to_string(ordem->getMecanico()->getId()) : "-1";
+
+        // Salva os dados primitivos da ordem
+        arquivo << placa << ";"
+                << ordem->getDataEntrada() << ";"
+                << ordem->getDataSaida() << ";"
+                << ordem->getDiagnostico() << ";"
+                << static_cast<int>(ordem->getStatus()) << ";"
+                << idMecanico << ";";
+
+        // Salva a lista de servicos 
+        const auto &servicosDaOrdem = ordem->getServicos();
+        for (size_t i = 0; i < servicosDaOrdem.size(); ++i)
+        {
+            arquivo << servicosDaOrdem[i]->getNome();
+            if (i < servicosDaOrdem.size() - 1) arquivo << ";";
+        }
+        arquivo << ";";
+
+        // Salva a lista de pecas 
+        const auto &pecasDaOrdem = ordem->getPecas();
+        for (size_t i = 0; i < pecasDaOrdem.size(); ++i)
+        {
+            arquivo << pecasDaOrdem[i]->getCodigo();
+            if (i < pecasDaOrdem.size() - 1) arquivo << ";";
+        }
+        arquivo << std::endl;
+    }
+
+    arquivo.close();
+}
+
+// Funcao para carregar as ordens de servico de um arquivo
+void carregarOrdens()
+{
+    std::ifstream arquivo("ordens.txt");
+
+    if (!arquivo.is_open()) return;
+
+    std::string linha;
+    while (std::getline(arquivo, linha))
+    {
+        if (linha.empty()) continue;
+
+        std::stringstream ss(linha);
+        std::string placa, dataEntrada, dataSaida, diagnostico, statusStr, idMecanicoStr, servicosStr, pecasStr;
+
+        std::getline(ss, placa, ';');
+        std::getline(ss, dataEntrada, ';');
+        std::getline(ss, dataSaida, ';');
+        std::getline(ss, diagnostico, ';');
+        std::getline(ss, statusStr, ';');
+        std::getline(ss, idMecanicoStr, ';');
+        std::getline(ss, servicosStr, ';');
+        std::getline(ss, pecasStr, ';');
+
+        try
+        {
+            //Encontra o Veiculo associado
+            Veiculo *veiculoEncontrado = nullptr;
+            for (const auto &veiculo : armazenamentoVeiculos)
+            {
+                if (veiculo->getPlaca() == placa)
+                {
+                    veiculoEncontrado = veiculo.get();
+                    break;
+                }
+            }
+            if (veiculoEncontrado == nullptr) continue; // Ordem ignorada se veiculo nao existir
+
+            //Cria a ordem e seta dados basicos
+            auto novaOrdem = std::make_shared<OrdemDeServico>(veiculoEncontrado, dataEntrada);
+
+            if (!diagnostico.empty()) novaOrdem->registrarDiagnostico(diagnostico);
+
+            //Associa o Mecanico
+            if (idMecanicoStr != "-1" && !idMecanicoStr.empty())
+            {
+                int idMec = std::stoi(idMecanicoStr);
+                for (const auto &mec : listaDeMecanicos)
+                {
+                    if (mec->getId() == idMec)
+                    {
+                        novaOrdem->associarMecanico(mec.get());
+                        mec->assumirOrdem(novaOrdem.get());
+                        break;
+                    }
+                }
+            }
+
+            //Associa os Servicos
+            if (!servicosStr.empty())
+            {
+                std::stringstream ssServ(servicosStr);
+                std::string nomeServico;
+                while (std::getline(ssServ, nomeServico, ';'))
+                {
+                    Servico *s = buscarServico(nomeServico);
+                    if (s != nullptr)
+                    {
+                        novaOrdem->adicionarServico(s);
+                        s->associarOrdem(novaOrdem.get());
+                    }
+                }
+            }
+
+            //Associa as Pecas
+            if (!pecasStr.empty())
+            {
+                std::stringstream ssPeca(pecasStr);
+                std::string codPeca;
+                while (std::getline(ssPeca, codPeca, ';'))
+                {
+                    Peca *p = Peca::pesquisarPorCodigo(codPeca);
+                    if (p != nullptr) novaOrdem->adicionarPeca(p);
+                }
+            }
+
+            //Configura o Status e Finaliza (se necessario)
+            int statusInt = std::stoi(statusStr);
+            if (!dataSaida.empty() && statusInt == static_cast<int>(StatusOrdem::FINALIZADA))
+            {
+                novaOrdem->alterarStatus(StatusOrdem::AGUARDANDO_RETIRADA);
+                novaOrdem->finalizar(dataSaida);
+            }
+            else
+            {
+                novaOrdem->alterarStatus(static_cast<StatusOrdem>(statusInt));
+            }
+
+            //Salva a Ordem nos registros gerais
+            Cliente *cliente = veiculoEncontrado->getCliente();
+            if (cliente != nullptr) cliente->setServicos(novaOrdem.get());
+
+            armazenamentoOrdens.push_back(novaOrdem);
+        }
+        catch (const std::exception &e)
+        {
+            std::cout << "Erro ao carregar ordem: " << e.what() << std::endl;
+        }
+    }
+    arquivo.close();
+}
+
 //================================================= SERVICOS =============================================
 
 void servicos()
 {
-    char opcao;
+    char opcao = ' ';
 
     do
     {
@@ -577,7 +719,7 @@ void servicos()
         std::cout << "5 - Atualizar duracao estimada" << std::endl;
         std::cout << "6 - Consultar tempo estimado" << std::endl;
         std::cout << "7 - Calcular custo total" << std::endl;
-        std::cout << "X - Voltar" << std::endl;
+        std::cout << "0 - Voltar" << std::endl;
 
         std::cout << std::endl
                   << "Digite uma opcao: ";
@@ -596,10 +738,10 @@ void servicos()
             float preco;
             int duracao;
 
-            std::cout << "Digite o nome do servico ou 'X' para voltar: ";
+            std::cout << "Digite o nome do servico ou '0' para voltar: ";
             std::getline(std::cin, nome);
 
-            if (nome == "X" || nome == "x")
+            if (nome == "0")
             {
                 std::cout << "Operacao cancelada." << std::endl;
                 pausar();
@@ -689,8 +831,14 @@ void servicos()
             }
 
             std::string nome;
-            std::cout << "Digite o nome do servico: ";
+            std::cout << "Digite o nome do servico ou '0' para voltar: ";
             std::getline(std::cin, nome);
+           
+            if (nome == "0") {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
 
             Servico *servico = buscarServico(nome);
 
@@ -729,8 +877,14 @@ void servicos()
             }
 
             std::string nome;
-            std::cout << "Digite o nome do servico: ";
+            std::cout << "Digite o nome do servico ou '0' para voltar: ";
             std::getline(std::cin, nome);
+
+            if (nome == "0") {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
 
             Servico *servico = buscarServico(nome);
 
@@ -782,8 +936,14 @@ void servicos()
             }
 
             std::string nome;
-            std::cout << "Digite o nome do servico: ";
+            std::cout << "Digite o nome do servico ou '0' para voltar: ";
             std::getline(std::cin, nome);
+
+            if (nome == "0") {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
 
             Servico *servico = buscarServico(nome);
 
@@ -835,8 +995,14 @@ void servicos()
             }
 
             std::string nome;
-            std::cout << "Digite o nome do servico: ";
+            std::cout << "Digite o nome do servico ou '0' para voltar: ";
             std::getline(std::cin, nome);
+
+            if (nome == "0") {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
 
             Servico *servico = buscarServico(nome);
 
@@ -869,8 +1035,14 @@ void servicos()
             }
 
             std::string nome;
-            std::cout << "Digite o nome do servico: ";
+            std::cout << "Digite o nome do servico ou '0' para voltar: ";
             std::getline(std::cin, nome);
+
+            if (nome == "0") {
+                std::cout << "Operacao cancelada." << std::endl;
+                pausar();
+                break;
+            }
 
             Servico *servico = buscarServico(nome);
 
@@ -908,10 +1080,10 @@ void servicos()
             break;
         }
 
-        case 'X':
-        case 'x':
+        case '0':
         {
             limparTela();
+            salvarServicos();
             std::cout << "Voltando ao menu principal..." << std::endl;
             break;
         }
@@ -925,23 +1097,16 @@ void servicos()
         }
         }
 
-    } while (opcao != 'X' && opcao != 'x');
+    } while (opcao != '0');
 }
 
 //============================================= Cliente =============================================
 
 void cliente() {
-    static bool carregado = false;
-    const std::string arquivoClientes = "listaClientes.txt";
+    
+    char opcao = ' ';
 
-    if (!carregado) {
-        Cliente::carregarDoArquivo(arquivoClientes);
-        carregado = true;
-    }
-
-    char opcao;
-
-    while (true) {
+    while (opcao != '0') {
         limparTela(); // Utilizar essa função sempre que abrir o while
 
         std::cout << "-------------- CLIENTE --------------" << std::endl;
@@ -951,7 +1116,7 @@ void cliente() {
         std::cout << "4 - Consultar ordens de serviço do cliente" << std::endl;
         std::cout << "5 - Consultar veículos do cliente" << std::endl;
         std::cout << "6 - Listar clientes" << std::endl;
-        std::cout << "X - Voltar" << std::endl;
+        std::cout << "0 - Voltar" << std::endl;
 
         std::cout << std::endl << "Digite uma opcao:" << std::endl;
         std::cin >> opcao;
@@ -970,7 +1135,7 @@ switch (opcao) {
                         std::cout << "Erro: " << e.what() << std::endl;
                         return;
                     }
-                    Cliente::salvarNoArquivo(arquivoClientes);
+                    Cliente::salvarNoArquivo("listaClientes.txt");
                     
 
                     std::cout << "\nDeseja cadastrar outro cliente? (S/N): ";
@@ -982,12 +1147,13 @@ switch (opcao) {
             case '2': {
                 limparTela();
                 std::cout << "-------------- CONSULTAR AGENDAMENTOS --------------" << std::endl;
-                std::cout << "Digite o CPF do cliente (ou 'X' para voltar): " << std::endl;
+                std::cout << "Digite o CPF do cliente (ou '0' para voltar): " << std::endl;
                 std::string cpf;
                 std::getline(std::cin, cpf);
 
-                if (cpf == "X" || cpf == "x") {
-                    break;
+                if(cpf == "0") {
+                std::cout << "Operacao cancelada." << std::endl;
+                break;   
                 }
 
                 Cliente* consulta = Cliente::pesquisarPorCpf(cpf);
@@ -1001,12 +1167,13 @@ switch (opcao) {
             case '3': {
                 limparTela();
                 std::cout << "-------------- CONSULTAR INFORMAÇÕES DE CLIENTE --------------" << std::endl;
-                std::cout << "Digite o CPF do cliente (ou 'X' para voltar): " << std::endl;
+                std::cout << "Digite o CPF do cliente (ou '0' para voltar): " << std::endl;
                 std::string cpf;
                 std::getline(std::cin, cpf);
 
-                if (cpf == "X" || cpf == "x") {
-                    break;
+                if(cpf == "0") {
+                std::cout << "Operacao cancelada." << std::endl;
+                break;   
                 }
 
                 Cliente* consulta = Cliente::pesquisarPorCpf(cpf);
@@ -1028,7 +1195,7 @@ switch (opcao) {
                     if(excluir == "s" || excluir == "S") {
                         delete consulta;
                         consulta = nullptr;
-                        Cliente::salvarNoArquivo(arquivoClientes);
+                        Cliente::salvarNoArquivo("listaClientes.txt");
                         std::cout << "Cliente excluido." << std::endl;
                     }
                 }
@@ -1039,12 +1206,13 @@ switch (opcao) {
                 limparTela();
                 std::cout << "-------------- CONSULTAR ORDENS DE SERVIÇO DO CLIENTE --------------" << std::endl;
 
-                std::cout << "Digite o CPF do cliente (ou 'X' para voltar): " << std::endl;
+                std::cout << "Digite o CPF do cliente (ou '0' para voltar): " << std::endl;
                 std::string cpf;
                 std::getline(std::cin, cpf);
 
-                if (cpf == "X" || cpf == "x") {
-                    break;
+                if(cpf == "0") {
+                    std::cout << "Operacao cancelada." << std::endl;
+                    break;   
                 }
 
                 Cliente* consulta = Cliente::pesquisarPorCpf(cpf);
@@ -1059,12 +1227,13 @@ switch (opcao) {
                 limparTela();
                 std::cout << "-------------- CONSULTAR VEÍCULOS DO CLIENTE --------------" << std::endl;
 
-                std::cout << "Digite o CPF do cliente (ou 'X' para voltar): " << std::endl;
+                std::cout << "Digite o CPF do cliente (ou '0' para voltar): " << std::endl;
                 std::string cpf;
                 std::getline(std::cin, cpf);
 
-                if (cpf == "X" || cpf == "x") {
-                    break;
+                if(cpf == "0") {
+                    std::cout << "Operacao cancelada." << std::endl;
+                    break;   
                 }
 
                 Cliente* consulta = Cliente::pesquisarPorCpf(cpf);
@@ -1097,9 +1266,9 @@ switch (opcao) {
                 break;
             }
 
-            case 'X':
-            case 'x': {
+            case '0': {
                 limparTela();
+                Cliente::salvarNoArquivo("listaClientes.txt");
                 std::cout << "Voltando ao menu principal..." << std::endl;
                 return;
             }
@@ -1283,6 +1452,7 @@ void agendamento()
 
             std::cout << std::endl
                       << "Digite o numero do agendamento ou '0' para voltar: ";
+            std::cin >> indice;
             if (indice == 0)
             {
                 std::cout << "Operacao cancelada." << std::endl;
@@ -1521,6 +1691,7 @@ void agendamento()
 
         case '0':
             limparTela();
+            salvarAgendamentos();
             std::cout << "Voltando ao menu principal..." << std::endl;
             break;
 
@@ -1933,6 +2104,7 @@ void veiculos()
         case '0':
         {
             limparTela();
+            salvarVeiculos();
             std::cout << "Voltando ao menu principal..." << std::endl;
             break;
         }
@@ -1967,7 +2139,7 @@ void pecas()
         std::cout << "4 - Consultar informações sobre peça" << std::endl;
         std::cout << "5 - Listar peças" << std::endl;
         std::cout << "6 - Listar peças em falta" << std::endl;
-        std::cout << "X - Voltar" << std::endl;
+        std::cout << "0 - Voltar" << std::endl;
 
         std::cout << std::endl
                   << "Digite uma opcao:" << std::endl;
@@ -1986,12 +2158,12 @@ void pecas()
 
             do
             {
-                std::cout << "Digite o código da peça que deseja alterar o preço (ou 'X' para voltar): " << std::endl;
+                std::cout << "Digite o código da peça que deseja alterar o preço (ou '0' para voltar): " << std::endl;
                 std::getline(std::cin, cod);
 
-                if (cod == "0" || cod == "0")
-                {
-                    break; 
+                if(cod == "0") {
+                    std::cout << "Operacao cancelada." << std::endl;
+                    break;
                 }
 
                 atualizando = Peca::pesquisarPorCodigo(cod);
@@ -2010,7 +2182,12 @@ void pecas()
             std::cout << "Descrição: " << atualizando->getDescricao() << std::endl;
             std::cout << "Digite o novo preço da peça " << atualizando->getCodigo() << ":" << std::endl;
             float a;
-            std::cin >> a;
+
+            if(!lerFloat(a)) {
+                std::cout << "Entrada invalida." << std::endl;
+                break;
+            }
+
             try
             {
                 atualizando->setPreco(a);
@@ -2034,11 +2211,11 @@ void pecas()
 
             do
             {
-                std::cout << "Digite o código da peça que deseja alterar a quantidade (ou 'X' para voltar): " << std::endl;
+                std::cout << "Digite o código da peça que deseja alterar a quantidade (ou '0' para voltar): " << std::endl;
                 std::getline(std::cin, cod);
 
-                if (cod == "0" || cod == "0")
-                {
+                if(cod == "0") {
+                    std::cout << "Operacao cancelada." << std::endl;
                     break;
                 }
 
@@ -2058,8 +2235,11 @@ void pecas()
             std::cout << "Descrição: " << atualizando->getDescricao() << std::endl;
             std::cout << "Digite a nova quantidade de peças para " << atualizando->getCodigo() << ":" << std::endl;
             int novaQtd;
-            std::cin >> novaQtd;
-            std::cin.ignore(5000, '\n');
+
+            if(!lerInt(novaQtd)) {
+                std::cout << "Entrada invalida." << std::endl;
+                break;
+            }
 
             try
             {
@@ -2086,14 +2266,28 @@ void pecas()
                 float prec;
                 int quantidad;
 
-                std::cout << "\nDigite o código da peça que deseja cadastrar: " << std::endl;
+                std::cout << "\nDigite o código da peça que deseja cadastrar ou '0' para voltar: " << std::endl;
                 std::getline(std::cin, cod);
 
+                if(cod == "0") {
+                    std::cout << "Operacao cancelada." << std::endl;
+                    break;
+                }
+
                 std::cout << "Digite o preço da peça: " << std::endl;
-                std::cin >> prec;
+               
+                if (!lerFloat(prec)) { 
+                    std::cout << "Entrada invalida!" << std::endl; 
+                    continue; 
+                }
 
                 std::cout << "Digite quantas unidades temos em estoque: " << std::endl;
-                std::cin >> quantidad;
+                
+                if (!lerInt(quantidad)) { 
+                    std::cout << "Entrada invalida!" << std::endl; 
+                    continue; 
+                }
+
                 try
                 {
                     Peca *novaPeca = new Peca(cod, prec, quantidad);
@@ -2134,11 +2328,11 @@ void pecas()
 
             do
             {
-                std::cout << "Digite o código da peça que deseja consultar (ou 'X' para voltar): " << std::endl;
+                std::cout << "Digite o código da peça que deseja consultar (ou '0' para voltar): " << std::endl;
                 std::getline(std::cin, cod);
 
-                if (cod == "X" || cod == "x")
-                {
+                if(cod == "0") {
+                    std::cout << "Operacao cancelada." << std::endl;
                     break;
                 }
 
@@ -2178,8 +2372,7 @@ void pecas()
             break;
         }
 
-        case 'X':
-        case 'x':
+        case '0':
         {
             limparTela();
             Peca::salvarNoArquivo("estoque.txt");
@@ -2199,7 +2392,7 @@ void pecas()
         std::string pausaStr;
         std::getline(std::cin, pausaStr);
 
-    } while (true);
+    } while (opcao != '0');
 }
 
 void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
@@ -2460,9 +2653,12 @@ void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
 
             std::cout << "\nDigite o numero entre colchetes [ ] da ordem que deseja diagnosticar (ou 0 para cancelar): ";
             int escolha;
-            std::cin >> escolha;
-            std::cin.clear();
-            std::cin.ignore(5000, '\n');
+            
+            if(!lerInt(escolha)) {
+                std::cout << "Entrada invalida." << std::endl;
+                pausar();
+                break;
+            }
 
             if (escolha == 0)
             {
@@ -2511,6 +2707,7 @@ void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
 
             std::cout << "Digite o ID do mecanico que deseja acessar a ordem de servico para alterar seu Status ou digite '0' para voltar: " << std::endl;
             int id = 0;
+
             if (verificarID(id))
             {
                 std::cout << "Operacao cancelada." << std::endl;
@@ -2548,9 +2745,12 @@ void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
 
             std::cout << "\nDigite o numero entre colchetes [ ] da ordem que deseja alterar o Status (ou 0 para cancelar): ";
             int escolha;
-            std::cin >> escolha;
-            std::cin.clear();
-            std::cin.ignore(5000, '\n');
+            
+            if(!lerInt(escolha)) {
+                std::cout << "Entrada invalida." << std::endl;
+                pausar();
+                break;
+            }
 
             if (escolha == 0)
             {
@@ -2883,7 +3083,7 @@ void ordensDeServico(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
         std::cout << "7 - Atualizar status" << std::endl;
         std::cout << "8 - Calcular valor total" << std::endl;
         std::cout << "9 - Finalizar ordem" << std::endl;
-        std::cout << "X - Voltar" << std::endl;
+        std::cout << "0 - Voltar" << std::endl;
 
         std::cout << std::endl
                   << "Digite uma opcao: ";
@@ -2961,8 +3161,7 @@ void ordensDeServico(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
 
                 // Registra a ordem no cliente, para aparecer em "Consultar ordens de servico do cliente"
                 clienteEncontrado->setServicos(novaOrdem.get());
-                veiculoEncontrado->adicionarOrdemServico(novaOrdem.get());
-
+            
                 armazenamentoOrdens.push_back(novaOrdem);
 
                 std::cout << "\nOrdem de servico aberta com sucesso!" << std::endl;
@@ -3334,10 +3533,10 @@ void ordensDeServico(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
             break;
         }
 
-        case 'X':
-        case 'x':
+        case '0':
         {
             limparTela();
+            salvarOrdens();
             std::cout << "Voltando ao menu principal..." << std::endl;
             break;
         }
@@ -3351,7 +3550,7 @@ void ordensDeServico(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
         }
         }
 
-    } while (opcao != 'X' && opcao != 'x');
+    } while (opcao != '0');
 }
 
 void menuPrincipal() {
@@ -3432,17 +3631,19 @@ int main() {
     carregarVeiculos();
     carregarAgendamentos();
     carregarServicos();
-    Peca::carregarDoArquivo("pecas.txt");
-    Mecanico::carregarMecanicosDoArquivo(listaDeMecanicos, "mecanicos.txt");
+    Peca::carregarDoArquivo("estoque.txt");
+    Mecanico::carregarMecanicosDoArquivo(listaDeMecanicos, "mecanicos.txt");    
+    carregarOrdens(); 
     
     menuPrincipal();
 
     salvarServicos();
     salvarAgendamentos();
     salvarVeiculos();
+    salvarOrdens(); 
     Mecanico::salvarMecanicosNoArquivo(listaDeMecanicos, "mecanicos.txt");
     Cliente::salvarNoArquivo("listaClientes.txt");
-    Peca::salvarNoArquivo("pecas.txt");
+    Peca::salvarNoArquivo("estoque.txt");
 
     return 0;
 }
