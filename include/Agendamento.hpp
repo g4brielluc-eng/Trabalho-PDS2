@@ -28,13 +28,19 @@ public:
     };
 
 private:
+    /// Data do agendamento.
     std::string data;
+    /// Horário do agendamento.
     std::string horario;
 
+    /// Cliente associado ao agendamento.
     Cliente* cliente;
+    /// Veículo associado ao agendamento.
     Veiculo* veiculo;
+    /// Serviço solicitado no agendamento.
     Servico* servico;
 
+    /// Status do agendamento.
     Status status;
 
     /*

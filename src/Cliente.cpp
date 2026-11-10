@@ -14,7 +14,7 @@
 std::vector<Cliente*> Cliente::listaClientes;
 
 
-void Cliente::ValidarTexto(const std::string& texto, char tipo) {
+void Cliente::validarTexto(const std::string& texto, char tipo) {
     
     if (texto.empty()) {
             throw std::invalid_argument("O texto não pode ser vazio.");
@@ -58,9 +58,9 @@ Cliente::Cliente(std::string nome, std::string cpf, std::string contato, std::st
       endereco(endereco) {
 
     
-    ValidarTexto(nome, 'T');
-    ValidarTexto(cpf, 'N');
-    ValidarTexto(contato, 'N');
+    validarTexto(nome, 'T');
+    validarTexto(cpf, 'N');
+    validarTexto(contato, 'N');
         
     
     validarCpf(listaClientes, this->cpf);
@@ -74,7 +74,7 @@ Cliente::Cliente() {
     while (true) {
         std::string entrada = lerLinha("\nDigite o nome do cliente: ");
         try {
-                ValidarTexto(entrada, 'T');            
+                validarTexto(entrada, 'T');            
                 this->nome = entrada;
                 break;
         } catch (const std::invalid_argument& e) {
@@ -85,7 +85,7 @@ Cliente::Cliente() {
     while (true) {
         std::string entrada = lerLinha("Digite o CPF do cliente: ");
         try {
-            ValidarTexto(entrada, 'N');
+            validarTexto(entrada, 'N');
             validarCpf(listaClientes, entrada);
             this->cpf = entrada;
             break;
@@ -107,7 +107,7 @@ Cliente::Cliente() {
     while (true) {
         std::string entrada = lerLinha("Digite o contato do cliente: ");
         try {
-            ValidarTexto(entrada, 'N');
+            validarTexto(entrada, 'N');
             this->contato = entrada;
             break;
         } catch (const std::invalid_argument& e) {
@@ -151,7 +151,7 @@ void Cliente::listarTodas() {
 
 
 Cliente* Cliente::pesquisarPorCpf(const std::string& cpfBuscado) {
-    ValidarTexto(cpfBuscado, 'N');
+    validarTexto(cpfBuscado, 'N');
     const std::string cpf = cpfBuscado;
 
     for (Cliente* p : listaClientes) {
@@ -256,7 +256,7 @@ std::string Cliente::getEndereco(){
 }
 
 void Cliente::setContato(std::string contato){
-    ValidarTexto(contato, 'N');
+    validarTexto(contato, 'N');
     this->contato = contato;
 }
 

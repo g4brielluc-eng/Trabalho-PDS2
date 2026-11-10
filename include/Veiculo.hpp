@@ -16,13 +16,20 @@ class OrdemDeServico;
  */
 class Veiculo {
 private:
+    /// Marca do veículo.
     std::string marca;
+    /// Modelo do veículo.
     std::string modelo;
+    /// Ano do veículo.
     int ano;
+    /// Placa do veículo.
     std::string placa;
+    /// Quilometragem atual do veículo.
     int quilometragem;
 
+    /// Ciente associado ao veículo. 
     Cliente* cliente;
+    /// Ordens de serviço relacionadas ao veículo.
     std::vector<OrdemDeServico*> ordensServico;
 
 public:
