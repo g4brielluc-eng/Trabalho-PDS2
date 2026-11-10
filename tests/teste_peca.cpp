@@ -102,13 +102,13 @@ TEST_CASE("Peça: Salvar no arquivo") {
     arquivo.close();
     std::remove("teste_pecas.txt");
 
-    CHECK(conteudo.str().find("0013,filtro de oleo,10.5,4") != std::string::npos);
+    CHECK(conteudo.str().find("0013;filtro de oleo;10.5;4") != std::string::npos);
 }
 
 TEST_CASE("Peça: Carregar do arquivo") {
     std::ofstream saida("teste_pecas.txt");
-    saida << "0014,pastilha de freio,89.9,4\n";
-    saida << "0015,vela de ignicao,25,10\n";
+    saida << "0014;pastilha de freio;89.9;4\n";
+    saida << "0015;vela de ignicao;25;10\n";
     saida.close();
 
     Peca::carregarDoArquivo("teste_pecas.txt");

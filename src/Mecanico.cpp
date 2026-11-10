@@ -52,7 +52,7 @@ void Mecanico::assumirOrdem(OrdemDeServico* ordem) {
 }
 
 void Mecanico::registrarDiagnostico(OrdemDeServico* ordem, const std::string& diagnostico) {
-    if(std::find(ordens.begin(), ordens.end(), ordem) == ordens.end()) {
+    if(std::find(ordens.begin(), ordens.end(), ordem) == ordens.end()) { //find procura a ordem no vetor de ordens atribuídas ao mecânico. Se não encontrar, lança exceção.
         throw std::logic_error("Ordem de servico nao atribuida a este mecanico.");
     }
     else {
@@ -61,7 +61,7 @@ void Mecanico::registrarDiagnostico(OrdemDeServico* ordem, const std::string& di
 }
 
 void Mecanico::registrarServicoRealizado(OrdemDeServico* ordem, Servico* servico) {
-   if(std::find(ordens.begin(), ordens.end(), ordem) == ordens.end()) { //find procura a ordem no vetor de ordens atribuídas ao mecânico. Se não encontrar, lança exceção.
+   if(std::find(ordens.begin(), ordens.end(), ordem) == ordens.end()) { 
         throw std::logic_error("Ordem de servico nao atribuida a este mecanico.");
     }
     else if(servico == nullptr) {

@@ -35,6 +35,7 @@ class Peca{
         std::vector<Veiculo*> veiculos;
         /// Lista de ordens de serviço que utilizam a peça.
         std::vector<OrdemDeServico*> servicos;
+        /// Lista de todas as peças cadastradas.
         static std::vector<Peca*> listaPecas;
 
     public:

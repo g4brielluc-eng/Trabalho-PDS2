@@ -24,7 +24,7 @@ class Agendamento;
  */
 class Cliente{
 
-    protected:
+    private:
         /// Nome do cliente (não pode ser alterado após a construção).
          std::string nome;
         /// CPF do cliente.
@@ -37,6 +37,7 @@ class Cliente{
         std::vector<OrdemDeServico*> servicos;
         /// Lista de agendamentos feitos pelo cliente.
         std::vector<Agendamento*> agendamentos;
+        /// Lista de todos os clientes cadastrados.
         static std::vector<Cliente*> listaClientes;
 
     public:
@@ -54,7 +55,7 @@ class Cliente{
          * @param texto Texto a ser validado.
          * @param tipo Tipo de validação a ser realizada.
          */
-        static void ValidarTexto(const std::string& texto, char tipo);        
+        static void validarTexto(const std::string& texto, char tipo);        
         
         /// @brief Lista todos os clientes cadastrados.
         static void listarTodas();

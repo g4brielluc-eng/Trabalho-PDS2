@@ -1,120 +1,3 @@
-/*
-======================================================================================
-                                    SISTEMA DA OFICINA
-======================================================================================
-
-1 - Agendamentos
-2 - Clientes
-3 - Mecanicos
-4 - Ordens de Servico
-5 - Pecas
-6 - Servicos
-7 - Veiculos
-0 - Sair
-
-Escolha uma opcao:
-
-
-MENU PRINCIPAL
-
-1 - Agendamentos
-2 - Clientes
-3 - Mecanicos
-4 - Ordens de Servico
-5 - Pecas
-6 - Servicos
-7 - Veiculos
-0 - Sair
-
-Escolha uma opcao:
-
-SUBMENUS
-
-AGENDAMENTOS
-
-1 - Alterar data e horario
-2 - Cancelar agendamento
-3 - Confirmar agendamento
-4 - Criar agendamento
-5 - Consultar agendamentos
-6 - Verificar disponibilidade
-X - Voltar
-
-
-CLIENTES
-
-1 - Cadastrar cliente
-2 - Consultar agendamentos do cliente
-3 - Consultar cliente
-4 - Consultar ordens de servico do cliente
-5 - Consultar veiculos do cliente
-6 - Listar clientes
-X - Voltar
-
-
-MECANICOS -- Rickelve
-
-1 - Alterar especialidade
-2 - Atualizar status
-3 - Cadastrar mecanico
-4 - Consultar mecanico
-5 - Consultar ordens atribuidas
-6 - Listar mecanicos
-7 - Registrar diagnostico
-X - Voltar
-
-
-ORDENS DE SERVICO
-
-1 - Adicionar peca
-2 - Adicionar servico
-3 - Associar mecanico
-4 - Calcular valor total
-5 - Consultar ordem
-6 - Finalizar ordem
-7 - Listar ordens
-8 - Abrir ordem de servico
-9 - Atualizar status
-X - Voltar
-
-
-PECAS
-
-1 - Atualizar preco
-2 - Atualizar quantidade
-3 - Cadastrar peca
-4 - Consultar disponibilidade da peca
-5 - Consultar peca
-6 - Listar pecas
-7 - Listar pecas em falta
-X - Voltar
-
-
-SERVICOS
-
-1 - Atualizar descricao
-2 - Atualizar duracao
-3 - Atualizar duracao estimada
-4 - Atualizar preco
-5 - Calcular custo total
-6 - Cadastrar servico
-7 - Consultar servicos
-8 - Consultar tempo estimado
-X - Voltar
-
-
-VEICULOS
-
-1 - Atualizar placa
-2 - Associar cliente ao veiculo
-3 - Cadastrar veiculo
-4 - Consultar historico de manutencoes
-5 - Consultar veiculo
-6 - Listar veiculos
-7 - Registrar quilometragem
-X - Voltar
-*/
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -136,9 +19,9 @@ X - Voltar
 #include "Servico.hpp"
 
 std::vector<std::shared_ptr<Agendamento>> armazenamentoAgendamentos; // Armazena os agendamentos criados
-std::vector<std::shared_ptr<Veiculo>> armazenamentoVeiculos;         // Armazena os veiculos criados
-std::vector<std::shared_ptr<Servico>> armazenamentoServicos;         // Armazena os servicos cadastrados
-std::vector<std::shared_ptr<Mecanico>> listaDeMecanicos;              // Armazena os mecanicos cadastrados
+std::vector<std::shared_ptr<Veiculo>> armazenamentoVeiculos; // Armazena os veiculos criados
+std::vector<std::shared_ptr<Servico>> armazenamentoServicos; // Armazena os servicos cadastrados
+std::vector<std::shared_ptr<Mecanico>> listaDeMecanicos; // Armazena os mecanicos cadastrados
 std::vector<std::shared_ptr<OrdemDeServico>> armazenamentoOrdens; // Armazena as ordens de servico criadas
 
 // Função para limpar a tela do console
@@ -595,12 +478,16 @@ void carregarOrdens()
 {
     std::ifstream arquivo("ordens.txt");
 
-    if (!arquivo.is_open()) return;
+    if (!arquivo.is_open()) {
+        return;
+    }
 
     std::string linha;
     while (std::getline(arquivo, linha))
     {
-        if (linha.empty()) continue;
+        if (linha.empty()) {
+            continue;
+        }
 
         std::stringstream ss(linha);
         std::string placa, dataEntrada, dataSaida, diagnostico, statusStr, idMecanicoStr, servicosStr, pecasStr;
@@ -626,7 +513,9 @@ void carregarOrdens()
                     break;
                 }
             }
-            if (veiculoEncontrado == nullptr) continue; // Ordem ignorada se veiculo nao existir
+            if (veiculoEncontrado == nullptr) {
+                continue; // Ordem ignorada se veiculo nao existir
+            }
 
             //Cria a ordem e seta dados basicos
             auto novaOrdem = std::make_shared<OrdemDeServico>(veiculoEncontrado, dataEntrada);
@@ -701,8 +590,6 @@ void carregarOrdens()
     }
     arquivo.close();
 }
-
-//================================================= SERVICOS =============================================
 
 void servicos()
 {
@@ -1101,14 +988,12 @@ void servicos()
     } while (opcao != '0');
 }
 
-//============================================= Cliente =============================================
-
 void cliente() {
     
     char opcao = ' ';
 
     while (opcao != '0') {
-        limparTela(); // Utilizar essa função sempre que abrir o while
+        limparTela(); 
 
         std::cout << "-------------- CLIENTE --------------" << std::endl;
         std::cout << "1 - Cadastrar cliente" << std::endl;
@@ -1157,7 +1042,17 @@ switch (opcao) {
                 break;   
                 }
 
-                Cliente* consulta = Cliente::pesquisarPorCpf(cpf);
+                Cliente* consulta = nullptr;
+                try
+                    {
+                        consulta = Cliente::pesquisarPorCpf(cpf);
+                    }
+                catch (const std::invalid_argument &e)
+                    {
+                        std::cout << "Erro: " << e.what() << std::endl;
+                        break;
+                    }
+
                 if (consulta == nullptr) 
                     break;
 
@@ -1177,7 +1072,18 @@ switch (opcao) {
                 break;   
                 }
 
-                Cliente* consulta = Cliente::pesquisarPorCpf(cpf);
+                Cliente* consulta = nullptr;
+
+                try
+                {
+                    consulta = Cliente::pesquisarPorCpf(cpf);
+                }
+                catch (const std::invalid_argument &e)
+                {
+                    std::cout << "Erro: " << e.what() << std::endl;
+                    break;
+                }
+
                 if (consulta == nullptr) {
                     break;
                 }
@@ -1216,7 +1122,18 @@ switch (opcao) {
                     break;   
                 }
 
-                Cliente* consulta = Cliente::pesquisarPorCpf(cpf);
+               Cliente* consulta = nullptr;
+
+                try
+                {
+                    consulta = Cliente::pesquisarPorCpf(cpf);
+                }
+                catch (const std::invalid_argument &e)
+                {
+                    std::cout << "Erro: " << e.what() << std::endl;
+                    break;
+                }
+               
                 if (consulta == nullptr) {
                     break;
                 }
@@ -1237,7 +1154,18 @@ switch (opcao) {
                     break;   
                 }
 
-                Cliente* consulta = Cliente::pesquisarPorCpf(cpf);
+                Cliente* consulta = nullptr;
+
+                try
+                {
+                    consulta = Cliente::pesquisarPorCpf(cpf);
+                }
+                catch (const std::invalid_argument &e)
+                {
+                    std::cout << "Erro: " << e.what() << std::endl;
+                    break;
+                }
+
                 if (consulta == nullptr) {
                     break;
                 }
@@ -1287,9 +1215,6 @@ switch (opcao) {
     }
 }
 
-
-//============================================= AGENDAMENTOS =============================================
-
 void agendamento()
 {
 
@@ -1298,7 +1223,7 @@ void agendamento()
     do
     {
 
-        limparTela(); // Utilizar essa função sempre que abrir o do {}
+        limparTela(); 
 
         std::cout << "-------------- AGENDAMENTOS --------------" << std::endl;
         std::cout << "1- Verificar disponibilidade" << std::endl;
@@ -1313,13 +1238,13 @@ void agendamento()
                   << "Digite uma opcao:" << std::endl;
 
         std::cin >> opcao;
-        std::cin.ignore(5000, '\n'); // Limpa o buffer de entrada
+        std::cin.ignore(5000, '\n'); 
 
         switch (opcao)
         {
         case '1':
         {
-            limparTela(); // Utilizar essa função sempre que abrir um case novo
+            limparTela(); 
             std::cout << "Verificando disponibilidade" << std::endl;
 
             std::cout << "Digite a data (dd/mm/aaaa) ou digite '0' para voltar: " << std::endl;
@@ -1707,8 +1632,6 @@ void agendamento()
     } while (opcao != '0');
     salvarAgendamentos();
 }
-
-//================================================= VEÍCULOS =============================================
 
 void veiculos()
 {
@@ -2123,8 +2046,6 @@ void veiculos()
     } while (opcao != '0');
     salvarVeiculos();
 }
-
-//------------------------------- PEÇAS --------------------------------------
 
 void pecas()
 {
@@ -2647,7 +2568,7 @@ void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
             }
 
             std::cout << "\nOrdens atribuidas ao mecanico " << (*it)->getNome() << ":\n";
-            // Lista as ordens na tela começando do número 1 para facilitar para o usuário
+            // Lista as ordens na tela começando do número 1 
             for (size_t i = 0; i < ordens.size(); ++i)
             {
                 std::cout << "[" << i + 1 << "] Ordem com " << ordens[i]->getServicos().size() << " servico(s)" << " atribuida ao veiculo de placa " << ordens[i]->getVeiculo()->getPlaca() << std::endl;
@@ -2739,7 +2660,7 @@ void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
             }
 
             std::cout << "\nOrdens atribuidas ao mecanico " << (*it)->getNome() << ":\n";
-            // Lista as ordens na tela começando do número 1 para facilitar para o usuário
+            // Lista as ordens na tela começando do número 1
             for (size_t i = 0; i < ordens.size(); ++i)
             {
                 std::cout << "[" << i + 1 << "] Ordem com " << ordens[i]->getServicos().size() << " servico(s)" << " atribuida ao veiculo de placa " << ordens[i]->getVeiculo()->getPlaca() << " com o atual Status: " << converterStatusParaString(ordens[i]->getStatus()) << std::endl;
@@ -2898,10 +2819,6 @@ void mecanicos(std::vector<std::shared_ptr<Mecanico>> &listaDeMecanicos)
         }
     } while (opcao != '0');
 }
-
-//============================================= ORDENS DE SERVICO =============================================
-// COLE ESTE BLOCO INTEIRO NO main.cpp, DEPOIS da funcao mecanicos() e ANTES do int main().
-// Precisa tambem de:  #include <iomanip>  la no topo, junto com os outros includes.
 
 // Le um numero inteiro digitado pelo usuario. Retorna false se nao for um numero valido.
 bool lerInteiroOrdem(int &valor)

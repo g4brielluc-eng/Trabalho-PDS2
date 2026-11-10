@@ -54,10 +54,15 @@ private:
     std::vector<Peca*> pecas;
 
 public:
+    /// @brief Retorna o status atual da ordem de serviço. 
     StatusOrdem getStatus() const;
+    /// @brief Retorna o diagnóstico realizado no veículo.
     const std::string& getDiagnostico() const;
+    /// @brief Retorna a data de entrada do veículo na oficina.
     const std::string& getDataEntrada() const;
+    /// @brief Retorna a data de saída do veículo da oficina.
     const std::string& getDataSaida() const;
+    /// @brief Retorna o veículo relacionado à ordem de serviço.
     Veiculo* getVeiculo() const;
     
     /**
@@ -69,8 +74,11 @@ public:
      *         ainda não tiver cliente).
      */
     Cliente* getCliente() const;
+    /// @brief Retorna o mecânico responsável pela ordem de serviço. 
     Mecanico* getMecanico() const;
+    /// @brief Retorna a lista de serviços solicitados.
     const std::vector<Servico*>& getServicos() const;
+    /// @brief Retorna a lista de peças utilizadas na ordem de serviço.
     const std::vector<Peca*>& getPecas() const;
 
     /**
